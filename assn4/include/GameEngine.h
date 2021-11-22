@@ -7,7 +7,7 @@
 #include "Collectible.h"
 #include "ParticleEmitter.h"
 
-class GameObject{
+class GameEngine{
     private:
         SDL_Renderer* obj_renderer;
         SDL_Window* obj_window;
@@ -26,8 +26,8 @@ class GameObject{
         ParticleEmitter particle_emit;
         //ImageHandler image;
     public:
-        GameObject(SDL_Renderer* ren);
-        ~GameObject();
+        GameEngine(SDL_Renderer* ren);
+        ~GameEngine();
 
         bool game_is_running;
         

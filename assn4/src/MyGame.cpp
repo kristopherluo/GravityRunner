@@ -2,7 +2,7 @@
 
 SDL_Renderer* my_renderer = NULL;
 
-GameObject TheGameObject(my_renderer);
+GameEngine TheGameObject(my_renderer);
 
 int main(){ 
 

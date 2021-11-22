@@ -1,6 +1,6 @@
 #include "GameEngine.h"
 
-GameObject::GameObject(SDL_Renderer* ren){
+GameEngine::GameEngine(SDL_Renderer* ren){
   obj_renderer = ren;
   screen_width = 640;
   screen_height = 480;
@@ -15,9 +15,9 @@ GameObject::GameObject(SDL_Renderer* ren){
   collectible_rect_y = 0;
 }
 
-GameObject::~GameObject(){}
+GameEngine::~GameEngine(){}
 
-void GameObject::obj_init(){
+void GameEngine::obj_init(){
   if (SDL_Init(SDL_INIT_EVERYTHING) != 0){ 
     cout << "Error initializing SDL: " << SDL_GetError() << endl; 
   }
@@ -83,7 +83,7 @@ void GameObject::obj_init(){
   SDL_FreeSurface(temp);
 }
 
-void GameObject::obj_updateUI(){
+void GameEngine::obj_updateUI(){
   while (SDL_PollEvent(&obj_event)){
     if (obj_event.type == SDL_QUIT) game_is_running = false; //quits game is user presses X
   }
@@ -137,7 +137,7 @@ void GameObject::obj_updateUI(){
   SDL_Delay(50);
 }
 
-void GameObject::obj_update(){
+void GameEngine::obj_update(){
   if(mode == delta_pos){ //creates bounds for the player while in delta pos mode
     if(player.player_get_pos_x() > screen_width - sprite.sprite_get_width()) player.player_set_pos_x(player.player_get_pos_x() - player.player_get_vel());
     if(player.player_get_pos_x() < 0) player.player_set_pos_x(player.player_get_pos_x() + player.player_get_vel());
@@ -166,7 +166,7 @@ void GameObject::obj_update(){
   sprite.sprite_update_frame();
 }
 
-void GameObject::obj_render(){
+void GameEngine::obj_render(){
   SDL_RenderClear(obj_renderer);
 
   tile.tile_render(obj_renderer); //renders the tiles
@@ -188,7 +188,7 @@ void GameObject::obj_render(){
   }
 }
 
-void GameObject::obj_quit(){
+void GameEngine::obj_quit(){
   SDL_DestroyRenderer(obj_renderer);
   SDL_DestroyWindow(obj_window); 
   IMG_Quit();
