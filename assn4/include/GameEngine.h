@@ -15,7 +15,6 @@ class GameEngine{
 
         int screen_width, screen_height; //screen dimensions
         int this_start_time, this_duration, fps, frame_duration; //fps controller variables;
-        int delta_pos, pos, mode;
         int collectible_rect_x, collectible_rect_y;
 
         Player player; //variable of type Player to call that class' functions

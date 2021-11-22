@@ -8,9 +8,6 @@ GameEngine::GameEngine(SDL_Renderer* ren){
   this_start_time = SDL_GetTicks();
   fps = 60;
   frame_duration = 1000/fps;
-  delta_pos = 1;
-  pos = 2;
-  mode = delta_pos;
   collectible_rect_x = -300;
   collectible_rect_y = 0;
 }
@@ -56,7 +53,7 @@ void GameEngine::obj_init(){
   tile.tile_serve_texture(temp, obj_renderer, 2);
   SDL_FreeSurface(temp);
 
-  temp = IMG_Load("./images/collectible.png");
+  /*temp = IMG_Load("./images/collectible.png");
   int i;
   for(i = 0; i < 5; i++){                                       //for loop that serves in the collectible texture to 5 instances of the
     collectible[i].collectible_serve_texture(temp, obj_renderer);   //Collectible class. Sets the SDL_Rect for each to be different
@@ -80,7 +77,7 @@ void GameEngine::obj_init(){
     collectible[i].collectible_set_rect_y(collectible_rect_y);
     collectible_rect_y -= 25;
   }
-  SDL_FreeSurface(temp);
+  SDL_FreeSurface(temp);*/
 }
 
 void GameEngine::obj_updateUI(){
@@ -89,27 +86,27 @@ void GameEngine::obj_updateUI(){
   }
 
   const Uint8 *state = SDL_GetKeyboardState(NULL);
-  if(state[SDL_SCANCODE_LEFT]){
+  /*if(state[SDL_SCANCODE_LEFT]){
     sprite.sprite_set_state(1); //sets sprite state to run (1)
     if(sprite.sprite_get_direction() != 0){ //only runs the next 2 lines if the direction the sprite is facing is right
       sprite.sprite_set_direction(0); //sets the direction the sprite is facing to left
       player.player_set_pos_x(player.player_get_pos_x() - (player.player_get_vel()*5)); //changes player position to create a smoother change of direction
     }
     if(tile.tile_reach_screen_end()){ //if the screen has reached the edge, player position will be moved
-      if(!(player.player_get_pos_x() + 25 <= collectible[8].collectible_get_x_pos())){ //COLLISION DECTECTION: Only changes the x_pos of the player if not next to boxes
+      //if(!(player.player_get_pos_x() + 25 <= collectible[8].collectible_get_x_pos())){ //COLLISION DECTECTION: Only changes the x_pos of the player if not next to boxes
         player.player_set_pos_x(player.player_get_pos_x() - player.player_get_vel());
         if(player.player_get_pos_x() == screen_width/2 - (sprite.sprite_get_width()/2)){ //if the player goes back to the center of the screen, 
           tile.tile_update_screen_left(player.player_get_vel());                                                       //camera view will move rather than player position
         }
-      }
+      //}
     }else{ //only screen moves if the screen has not reached the edge
-      if(!(player.player_get_pos_x() <= collectible[8].collectible_get_x_pos() + 25)){ //COLLISION DECTECTION: Only changes x_pos of background and collectibles
+      //if(!(player.player_get_pos_x() <= collectible[8].collectible_get_x_pos() + 25)){ //COLLISION DECTECTION: Only changes x_pos of background and collectibles
         //cout << player.player_get_pos_x() << endl;                                   //if not next to the boxes
         tile.tile_update_screen_left(player.player_get_vel());
         for(int i = 0; i < 10; i++){
           collectible[i].collectible_set_rect_x(player.player_get_vel());
         }
-      }
+      //}
     }
   }
   else if(state[SDL_SCANCODE_RIGHT]){
@@ -124,41 +121,40 @@ void GameEngine::obj_updateUI(){
         tile.tile_update_screen_left(-1 * player.player_get_vel());                  //camera view will move rather than player position
       }
     }else{ //only screen moves if the screen has not reached the edge
-      if(!(player.player_get_pos_x() >= collectible[5].collectible_get_x_pos() - 49)){ //COLLISION DECTECTION: Only changes x_pos of background and collectibles
+      //if(!(player.player_get_pos_x() >= collectible[5].collectible_get_x_pos() - 49)){ //COLLISION DECTECTION: Only changes x_pos of background and collectibles
         tile.tile_update_screen_left(-1 * player.player_get_vel());                    //if not next to the boxes
         for(int i = 0; i < 10; i++){
           collectible[i].collectible_set_rect_x(-1 * player.player_get_vel());
         }
-      }
+      //}
     }
   }else{
     sprite.sprite_set_state(0); //sets sprite state to idle (0)
+  }*/
+  if(state[SDL_SCANCODE_SPACE]){
+    sprite.sprite_set_state(0);
+  }else{
+    sprite.sprite_set_state(1);
+    tile.tile_update_screen_left(-1 * player.player_get_vel());
   }
   SDL_Delay(50);
 }
 
 void GameEngine::obj_update(){
-  if(mode == delta_pos){ //creates bounds for the player while in delta pos mode
-    if(player.player_get_pos_x() > screen_width - sprite.sprite_get_width()) player.player_set_pos_x(player.player_get_pos_x() - player.player_get_vel());
-    if(player.player_get_pos_x() < 0) player.player_set_pos_x(player.player_get_pos_x() + player.player_get_vel());
-    if(player.player_get_pos_y() > screen_height - sprite.sprite_get_height()) player.player_set_pos_y(player.player_get_pos_y() - player.player_get_vel());
-    if(player.player_get_pos_y() < 0) player.player_set_pos_y(player.player_get_pos_y() + player.player_get_vel());
-  }
-  if(mode == pos){ //creates bounds for the player while in pos mode
-    if(player.player_get_pos_x() > screen_width - sprite.sprite_get_width()) player.player_set_pos_x(screen_width - sprite.sprite_get_width());
-    if(player.player_get_pos_x() < 0) player.player_set_pos_x(0);
-    if(player.player_get_pos_y() > screen_height - sprite.sprite_get_height()) player.player_set_pos_y(screen_height - sprite.sprite_get_height());
-    if(player.player_get_pos_y() < 0) player.player_set_pos_y(0);
-  }
+  /*if(player.player_get_pos_x() > screen_width - sprite.sprite_get_width()) player.player_set_pos_x(player.player_get_pos_x() - player.player_get_vel());
+  if(player.player_get_pos_x() < 0) player.player_set_pos_x(player.player_get_pos_x() + player.player_get_vel());
+  if(player.player_get_pos_y() > screen_height - sprite.sprite_get_height()) player.player_set_pos_y(player.player_get_pos_y() - player.player_get_vel());
+  if(player.player_get_pos_y() < 0) player.player_set_pos_y(player.player_get_pos_y() + player.player_get_vel());*/
 
-  for(int i = 0; i < 5; i++){ //collectible collision detection
+  /*for(int i = 0; i < 5; i++){ //collectible collision detection
     if(player.player_get_pos_x() <= collectible[i].collectible_get_x_pos() - 25 && player.player_get_pos_x() >= collectible[i].collectible_get_x_pos() - 40 && !collectible[i].collectible_collected()){
       particle_emit.particle_emitter_init("./images/collectible.png", obj_renderer, collectible[i].collectible_get_x_pos(), collectible[i].collectible_get_y_pos() - 10, 15, 15, 1);
       collectible[i].collectible_destroy();
       collectible[i].collectible_set_collected();
     }
-  }
-  
+  }*/
+  //player.player_set_pos_x(player.player_get_pos_x() + player.player_get_vel());
+
   particle_emit.particle_emitter_update();
 
   sprite.sprite_set_rect_x(player.player_get_pos_x());
