@@ -1,6 +1,9 @@
 #ifndef _TILEHANDLER_H
 #define _TILEHANDLER_H
 
+#define SCREEN_WIDTH 640
+#define SCREEN_HEIGHT 480
+
 #include <iostream>
 #include <string>
 #include <cstdlib>
@@ -15,6 +18,7 @@ class TileHandler{
     private:
         SDL_Texture* tile_texture[3]; //stores the 3 textures background, ground, and ground2
         SDL_Rect tile_rect[3]; //stores the SDL_Rect information for the different textures
+        SDL_RendererFlip flip;
         int screen_left; //represents the left edge camera view
     public:
         TileHandler();

@@ -1,8 +1,8 @@
 #include "Player.h"
 
 Player::Player(){
-  player_pos_x = 270;
-  player_pos_y = 280;
+  player_pos_x = 200;
+  player_pos_y = 320;
   player_vel = 10;
   player_step = 40;
 }
