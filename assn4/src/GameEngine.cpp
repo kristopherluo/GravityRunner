@@ -10,6 +10,7 @@ GameEngine::GameEngine(SDL_Renderer* ren){
   frame_duration = 1000/fps;
   collectible_rect_x = -300;
   collectible_rect_y = 0;
+  key_down = false;
 }
 
 GameEngine::~GameEngine(){}
@@ -83,6 +84,22 @@ void GameEngine::obj_init(){
 void GameEngine::obj_updateUI(){
   while (SDL_PollEvent(&obj_event)){
     if (obj_event.type == SDL_QUIT) game_is_running = false; //quits game is user presses X
+    /*switch(obj_event.type ){
+      case SDL_KEYDOWN:
+        if(key_down){
+          sprite.sprite_set_state(0);
+          sprite.sprite_change_gravity();
+        }
+        key_down = true;
+        break;
+      case SDL_KEYUP:
+        key_down = false;
+        break;
+      default:
+        sprite.sprite_set_state(1);
+        tile.tile_update_screen_left(-1 * player.player_get_vel());
+        break;
+    }*/
   }
 
   const Uint8 *state = SDL_GetKeyboardState(NULL);
@@ -131,9 +148,15 @@ void GameEngine::obj_updateUI(){
   }else{
     sprite.sprite_set_state(0); //sets sprite state to idle (0)
   }*/
+
   if(state[SDL_SCANCODE_SPACE]){
-    sprite.sprite_set_state(0);
+    if(!key_down){
+      sprite.sprite_change_gravity();
+    }
+    key_down = true;
+    tile.tile_update_screen_left(-1 * player.player_get_vel());
   }else{
+    key_down = false;
     sprite.sprite_set_state(1);
     tile.tile_update_screen_left(-1 * player.player_get_vel());
   }
@@ -155,7 +178,23 @@ void GameEngine::obj_update(){
   }*/
   //player.player_set_pos_x(player.player_get_pos_x() + player.player_get_vel());
 
-  particle_emit.particle_emitter_update();
+  //particle_emit.particle_emitter_update();
+  if(sprite.sprite_get_gravity_state()){ //if sprite is changing gravity
+    sprite.sprite_set_state(0);
+    if(sprite.sprite_get_direction()){ //player is normal oriented, changing gravity back toward the bottom ground
+      if(player.player_get_pos_y() < 320){ //ensures player stops changing gravity once it reaches the top ground
+        player.player_set_pos_y(player.player_get_pos_y() + player.player_get_vel());
+      }else{
+        sprite.sprite_set_gravity_change();
+      }
+    }else if(!sprite.sprite_get_direction()){ //player is upside down, changing gravity toward the top ground
+      if(player.player_get_pos_y() > 70){ //ensures player stops changing gravity once it reaches the bottom ground
+        player.player_set_pos_y(player.player_get_pos_y() - player.player_get_vel());
+      }else{
+        sprite.sprite_set_gravity_change();
+      }
+    }
+  }
 
   sprite.sprite_set_rect_x(player.player_get_pos_x());
   sprite.sprite_set_rect_y(player.player_get_pos_y());

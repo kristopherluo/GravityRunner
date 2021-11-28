@@ -1,14 +1,5 @@
 #include "PlayerSprite.h"
 
-#define IDLE 0
-#define RUN 1
-#define LEFT 0
-#define RIGHT 1
-#define IDLE_FRAME_DURATION 250
-#define RUN_FRAME_DURATION 150
-#define IDLE_FRAME_COUNT 4
-#define RUN_FRAME_COUNT 6
-
 PlayerSprite::PlayerSprite(){
     sprite_rect.w = 100;
     sprite_rect.h = 90;
@@ -20,6 +11,7 @@ PlayerSprite::PlayerSprite(){
     frame_count = 4;
     sprite_state = 0;
     sprite_direc = SDL_FLIP_NONE;
+    gravity_change = 0;
 }
 
 PlayerSprite::~PlayerSprite(){}
@@ -62,13 +54,19 @@ void PlayerSprite::sprite_set_state(int state){
     }
 }
 
-void PlayerSprite::sprite_set_direction(int direc){
-    if(direc == LEFT){
-        sprite_direc = SDL_FLIP_HORIZONTAL;
-    }
-    if(direc == RIGHT){
+void PlayerSprite::sprite_change_gravity(){
+    if(sprite_direc == SDL_FLIP_VERTICAL){
         sprite_direc = SDL_FLIP_NONE;
+        cout << sprite_direc << endl;
+    }else{
+        sprite_direc = SDL_FLIP_VERTICAL;
+        cout << sprite_direc << endl;
     }
+    gravity_change = 1;
+}
+
+void PlayerSprite::sprite_set_gravity_change(){
+    gravity_change = 0;
 }
 
 int PlayerSprite::sprite_get_state(){
@@ -76,9 +74,13 @@ int PlayerSprite::sprite_get_state(){
 }
 
 int PlayerSprite::sprite_get_direction(){
-    if(sprite_direc == SDL_FLIP_HORIZONTAL) return 0;
+    if(sprite_direc == SDL_FLIP_VERTICAL) return 0;
     if(sprite_direc == SDL_FLIP_NONE) return 1;
     else return 1;
+}
+
+int PlayerSprite::sprite_get_gravity_state(){
+    return gravity_change;
 }
 
 void PlayerSprite::sprite_set_rect_x(int x){

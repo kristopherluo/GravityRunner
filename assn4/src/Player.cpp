@@ -32,3 +32,11 @@ void Player::player_set_pos_x(int x){
 void Player::player_set_pos_y(int y){
     player_pos_y = y;
 }
+
+void Player::player_change_gravity(){
+    /*if(sprite.sprite_get_direction() == 0){
+        player_pos_y -= player_vel;
+    }else{
+
+    }*/
+}

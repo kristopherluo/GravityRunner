@@ -16,6 +16,7 @@ class GameEngine{
         int screen_width, screen_height; //screen dimensions
         int this_start_time, this_duration, fps, frame_duration; //fps controller variables;
         int collectible_rect_x, collectible_rect_y;
+        bool key_down;
 
         Player player; //variable of type Player to call that class' functions
         PlayerSprite sprite; //variable of type PlayerSprite to call that class' functions
@@ -23,7 +24,6 @@ class GameEngine{
         Collectible collectible[10]; //array of type Collectible to create instances of that GameObject
         Particle particle;
         ParticleEmitter particle_emit;
-        //ImageHandler image;
     public:
         GameEngine(SDL_Renderer* ren);
         ~GameEngine();
