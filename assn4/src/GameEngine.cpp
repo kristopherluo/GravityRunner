@@ -84,14 +84,17 @@ void GameEngine::obj_updateUI(){
 }
 
 void GameEngine::obj_update(){
-  /*for(int i = 0; i < 5; i++){ //collectible collision detection
-    if(player.player_get_pos_x() <= collectible[i].collectible_get_x_pos() - 25 && player.player_get_pos_x() >= collectible[i].collectible_get_x_pos() - 40 && !collectible[i].collectible_collected()){
-      particle_emit.particle_emitter_init("./images/collectible.png", obj_renderer, collectible[i].collectible_get_x_pos(), collectible[i].collectible_get_y_pos() - 10, 15, 15, 1);
-      collectible[i].collectible_destroy();
-      collectible[i].collectible_set_collected();
+  for(int i = 0; i < 3; i++){ //collectible collision detection
+    if(player.player_get_pos_x() + 48 >= collectible[i].collectible_get_x_pos()){ //if the rightmost pos of player is greater than the leftmost pos of obstacle
+      if(player.player_get_pos_x() <= collectible[i].collectible_get_x_pos() + 64){ //if the leftmost pos of player is less than the rightmost pos of obstacle
+        if(player.player_get_pos_y() + 70 >= collectible[i].collectible_get_y_pos()){ //if pos of bottom of player is greater than top of obstacle
+          if(player.player_get_pos_y() <= collectible[i].collectible_get_y_pos() + 25){ //if pos of top of player is less than bottom of obstacle
+            cout << "it works" << endl;
+          }
+        }
+      }
     }
-  }*/
-  //player.player_set_pos_x(player.player_get_pos_x() + player.player_get_vel());
+  }
 
   //particle_emit.particle_emitter_update();
   if(sprite.sprite_get_gravity_state()){ //if sprite is changing gravity
