@@ -57,10 +57,8 @@ void PlayerSprite::sprite_set_state(int state){
 void PlayerSprite::sprite_change_gravity(){
     if(sprite_direc == SDL_FLIP_VERTICAL){
         sprite_direc = SDL_FLIP_NONE;
-        cout << sprite_direc << endl;
     }else{
         sprite_direc = SDL_FLIP_VERTICAL;
-        cout << sprite_direc << endl;
     }
     gravity_change = 1;
 }

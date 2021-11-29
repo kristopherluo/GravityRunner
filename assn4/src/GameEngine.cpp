@@ -54,101 +54,21 @@ void GameEngine::obj_init(){
   tile.tile_serve_texture(temp, obj_renderer, 2);
   SDL_FreeSurface(temp);
 
-  /*temp = IMG_Load("./images/collectible.png");
+  temp = IMG_Load("./images/spikes.png");
   int i;
-  for(i = 0; i < 5; i++){                                       //for loop that serves in the collectible texture to 5 instances of the
-    collectible[i].collectible_serve_texture(temp, obj_renderer);   //Collectible class. Sets the SDL_Rect for each to be different
-    collectible[i].collectible_set_rect_x(collectible_rect_x);
-    collectible_rect_x += 300;
+  for(i = 0; i < 3; i++){                                           //for loop that serves in the collectible texture to 3 instances of the Collectible class
+    collectible[i].collectible_serve_texture(temp, obj_renderer);
+    collectible[i].collectible_set_rect_w(64);
+    collectible[i].collectible_set_rect_h(25);
   }
   SDL_FreeSurface(temp);
-
-  temp = IMG_Load("./images/box_collectible.png");
-  for(i = 5; i < 8; i++){
-    collectible[i].collectible_set_rect_x(575);
-    collectible[i].collectible_serve_texture(temp, obj_renderer);
-    collectible[i].collectible_set_rect_y(collectible_rect_y);
-    collectible_rect_y -= 25;
-  }
-
-  collectible_rect_y = 0;
-  for(i = 8; i < 10; i++){
-    collectible[i].collectible_set_rect_x(-500);
-    collectible[i].collectible_serve_texture(temp, obj_renderer);
-    collectible[i].collectible_set_rect_y(collectible_rect_y);
-    collectible_rect_y -= 25;
-  }
-  SDL_FreeSurface(temp);*/
 }
 
 void GameEngine::obj_updateUI(){
   while (SDL_PollEvent(&obj_event)){
     if (obj_event.type == SDL_QUIT) game_is_running = false; //quits game is user presses X
-    /*switch(obj_event.type ){
-      case SDL_KEYDOWN:
-        if(key_down){
-          sprite.sprite_set_state(0);
-          sprite.sprite_change_gravity();
-        }
-        key_down = true;
-        break;
-      case SDL_KEYUP:
-        key_down = false;
-        break;
-      default:
-        sprite.sprite_set_state(1);
-        tile.tile_update_screen_left(-1 * player.player_get_vel());
-        break;
-    }*/
   }
-
   const Uint8 *state = SDL_GetKeyboardState(NULL);
-  /*if(state[SDL_SCANCODE_LEFT]){
-    sprite.sprite_set_state(1); //sets sprite state to run (1)
-    if(sprite.sprite_get_direction() != 0){ //only runs the next 2 lines if the direction the sprite is facing is right
-      sprite.sprite_set_direction(0); //sets the direction the sprite is facing to left
-      player.player_set_pos_x(player.player_get_pos_x() - (player.player_get_vel()*5)); //changes player position to create a smoother change of direction
-    }
-    if(tile.tile_reach_screen_end()){ //if the screen has reached the edge, player position will be moved
-      //if(!(player.player_get_pos_x() + 25 <= collectible[8].collectible_get_x_pos())){ //COLLISION DECTECTION: Only changes the x_pos of the player if not next to boxes
-        player.player_set_pos_x(player.player_get_pos_x() - player.player_get_vel());
-        if(player.player_get_pos_x() == screen_width/2 - (sprite.sprite_get_width()/2)){ //if the player goes back to the center of the screen, 
-          tile.tile_update_screen_left(player.player_get_vel());                                                       //camera view will move rather than player position
-        }
-      //}
-    }else{ //only screen moves if the screen has not reached the edge
-      //if(!(player.player_get_pos_x() <= collectible[8].collectible_get_x_pos() + 25)){ //COLLISION DECTECTION: Only changes x_pos of background and collectibles
-        //cout << player.player_get_pos_x() << endl;                                   //if not next to the boxes
-        tile.tile_update_screen_left(player.player_get_vel());
-        for(int i = 0; i < 10; i++){
-          collectible[i].collectible_set_rect_x(player.player_get_vel());
-        }
-      //}
-    }
-  }
-  else if(state[SDL_SCANCODE_RIGHT]){
-    sprite.sprite_set_state(1); //sets sprite state to run (1)
-    if(sprite.sprite_get_direction() != 1){ //only runs the next 2 lines if the direction the sprite is facing is left
-      sprite.sprite_set_direction(1); //sets the direction the sprite is facing to right
-      player.player_set_pos_x(player.player_get_pos_x() + (player.player_get_vel()*5)); //changes player position to create a smoother change of direction
-    }
-    if(tile.tile_reach_screen_end()){ //if the screen has reached the edge, player position will be moved
-      player.player_set_pos_x(player.player_get_pos_x() + player.player_get_vel());
-      if(player.player_get_pos_x() == screen_width/2 - sprite.sprite_get_width()/2){ //if the player goes back to the center of the screen, 
-        tile.tile_update_screen_left(-1 * player.player_get_vel());                  //camera view will move rather than player position
-      }
-    }else{ //only screen moves if the screen has not reached the edge
-      //if(!(player.player_get_pos_x() >= collectible[5].collectible_get_x_pos() - 49)){ //COLLISION DECTECTION: Only changes x_pos of background and collectibles
-        tile.tile_update_screen_left(-1 * player.player_get_vel());                    //if not next to the boxes
-        for(int i = 0; i < 10; i++){
-          collectible[i].collectible_set_rect_x(-1 * player.player_get_vel());
-        }
-      //}
-    }
-  }else{
-    sprite.sprite_set_state(0); //sets sprite state to idle (0)
-  }*/
-
   if(state[SDL_SCANCODE_SPACE]){
     if(!key_down){
       sprite.sprite_change_gravity();
@@ -164,11 +84,6 @@ void GameEngine::obj_updateUI(){
 }
 
 void GameEngine::obj_update(){
-  /*if(player.player_get_pos_x() > screen_width - sprite.sprite_get_width()) player.player_set_pos_x(player.player_get_pos_x() - player.player_get_vel());
-  if(player.player_get_pos_x() < 0) player.player_set_pos_x(player.player_get_pos_x() + player.player_get_vel());
-  if(player.player_get_pos_y() > screen_height - sprite.sprite_get_height()) player.player_set_pos_y(player.player_get_pos_y() - player.player_get_vel());
-  if(player.player_get_pos_y() < 0) player.player_set_pos_y(player.player_get_pos_y() + player.player_get_vel());*/
-
   /*for(int i = 0; i < 5; i++){ //collectible collision detection
     if(player.player_get_pos_x() <= collectible[i].collectible_get_x_pos() - 25 && player.player_get_pos_x() >= collectible[i].collectible_get_x_pos() - 40 && !collectible[i].collectible_collected()){
       particle_emit.particle_emitter_init("./images/collectible.png", obj_renderer, collectible[i].collectible_get_x_pos(), collectible[i].collectible_get_y_pos() - 10, 15, 15, 1);
@@ -196,6 +111,45 @@ void GameEngine::obj_update(){
     }
   }
 
+  for(int i = 0; i < 3; i++){ //for loop that updates the collectible/obstacles
+    int num = rand() % 3;
+    int section_x_pos = 640;
+    bool available = true;
+
+    if(collectible[i].collectible_get_x_pos() >= -64){ //changes obstacle position
+        collectible[i].collectible_change_rect_x(-10);
+    }else{  //if off screen, recycle to create "new" obstacle
+      switch(num){
+        case 0:
+          break;
+        case 1: //sets obstacle to the bottom ground
+          for(int j = 0; j < 3; j++){ //ensures no obstacles overlap
+            if(collectible[j].collectible_get_x_pos() > (screen_width - 64)){
+              available = false;
+            }
+          }
+          if(available){
+            collectible[i].collectible_set_rect_x(section_x_pos);
+            collectible[i].collectible_set_rect_y(385);
+            collectible[i].collectible_set_type(1); //sets the type to bottom
+          }
+          break;
+        case 2: //sets obstacle to the top ground
+          for(int j = 0; j < 3; j++){
+            if(collectible[j].collectible_get_x_pos() > (screen_width - 64)){
+              available = false;
+            }
+          }
+          if(available){
+            collectible[i].collectible_set_rect_x(section_x_pos);
+            collectible[i].collectible_set_rect_y(70);
+            collectible[i].collectible_set_type(3); //sets the type to bottom
+          }
+          break;
+      }
+    }
+  }
+
   sprite.sprite_set_rect_x(player.player_get_pos_x());
   sprite.sprite_set_rect_y(player.player_get_pos_y());
   sprite.sprite_update_frame();
@@ -206,8 +160,10 @@ void GameEngine::obj_render(){
 
   tile.tile_render(obj_renderer); //renders the tiles
 
-  for(int i = 0; i < 10; i++){
-    collectible[i].collectible_render(obj_renderer); //renders all the collectibles
+  for(int i = 0; i < 3; i++){ //renders all collectibles/obstacles
+    if(collectible[i].collectible_get_x_pos() > -100){
+      collectible[i].collectible_render(obj_renderer);
+    }
   }
 
   sprite.sprite_render(obj_renderer); //renders the sprite

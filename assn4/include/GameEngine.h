@@ -15,15 +15,15 @@ class GameEngine{
 
         int screen_width, screen_height; //screen dimensions
         int this_start_time, this_duration, fps, frame_duration; //fps controller variables;
-        int collectible_rect_x, collectible_rect_y;
-        bool key_down;
+        int collectible_rect_x, collectible_rect_y; //collectible helper variables
+        bool key_down; //keeps track of whether or not a key is down
 
         Player player; //variable of type Player to call that class' functions
         PlayerSprite sprite; //variable of type PlayerSprite to call that class' functions
         TileHandler tile; //variable of type TileHandler to call that class' functions
         Collectible collectible[10]; //array of type Collectible to create instances of that GameObject
-        Particle particle;
-        ParticleEmitter particle_emit;
+        Particle particle; //variable of type Particle to call that class' functions
+        ParticleEmitter particle_emit; //variable of type ParticleEmitter to call that class' functions
     public:
         GameEngine(SDL_Renderer* ren);
         ~GameEngine();
