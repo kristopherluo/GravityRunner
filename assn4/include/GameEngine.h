@@ -16,6 +16,8 @@ class GameEngine{
         int screen_width, screen_height; //screen dimensions
         int this_start_time, this_duration, fps, frame_duration; //fps controller variables;
         int collectible_rect_x, collectible_rect_y; //collectible helper variables
+        int score; //keeps track of score
+        int obstacle_one; //number of obstacle one's
         bool key_down; //keeps track of whether or not a key is down
 
         Player player; //variable of type Player to call that class' functions
@@ -28,7 +30,8 @@ class GameEngine{
         GameEngine(SDL_Renderer* ren);
         ~GameEngine();
 
-        bool player_alive, game_is_running;
+        bool player_alive; //true if player is alive
+        bool game_is_running; //true if game is running
         
         void obj_init(); //initializes game
         void obj_updateUI(); //updates based off of user input

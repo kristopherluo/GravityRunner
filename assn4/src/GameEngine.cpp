@@ -1,17 +1,26 @@
 #include "GameEngine.h"
 
 GameEngine::GameEngine(SDL_Renderer* ren){
-  obj_renderer = ren;
   screen_width = 640;
   screen_height = 480;
-  game_is_running = true;
-  player_alive = true;
+
   this_start_time = SDL_GetTicks();
   fps = 60;
   frame_duration = 1000/fps;
+
   collectible_rect_x = -300;
   collectible_rect_y = 0;
+
+  score = 0;
+  
+  obstacle_one = 6;
+
   key_down = false;
+
+  player_alive = true;
+  game_is_running = true;
+
+  obj_renderer = ren;
 }
 
 GameEngine::~GameEngine(){}
@@ -55,9 +64,9 @@ void GameEngine::obj_init(){
   tile.tile_serve_texture(temp, obj_renderer, 2);
   SDL_FreeSurface(temp);
 
-  temp = IMG_Load("./images/spikes.png");
+  temp = IMG_Load("./images/spikes.png"); //adds spike obstacles
   int i;
-  for(i = 0; i < 6; i++){                                           //for loop that serves in the collectible texture to 6 instances of the Collectible class
+  for(i = 0; i < obstacle_one; i++){ //for loop that serves in the collectible texture to "obstacle_one (number)" instances of the Collectible class
     collectible[i].collectible_serve_texture(temp, obj_renderer);
     collectible[i].collectible_set_rect_w(screen_width/10);
     collectible[i].collectible_set_rect_h(25);
@@ -69,10 +78,11 @@ void GameEngine::obj_updateUI(){
   while (SDL_PollEvent(&obj_event)){
     if (obj_event.type == SDL_QUIT) game_is_running = false; //quits game is user presses X
   }
+
   const Uint8 *state = SDL_GetKeyboardState(NULL);
-  if(player_alive){
+  if(player_alive){ //updates user controls
     if(state[SDL_SCANCODE_SPACE]){
-      if(!key_down){
+      if(!key_down){ //ensures user cannot hold space key down to continuously change gravity
         sprite.sprite_change_gravity();
       }
       key_down = true;
@@ -87,27 +97,28 @@ void GameEngine::obj_updateUI(){
 }
 
 void GameEngine::obj_update(){
-  if(!player_alive){
-    for(int i = 0; i < 6; i++){
+  if(!player_alive){ //resets player and collectible/obstacle positions and states
+    for(int i = 0; i < obstacle_one; i++){
       collectible[i].collectible_set_rect_x(-100);
       collectible[i].collectible_set_rect_y(-100);
     }
     sprite.sprite_set_gravity_change();
     sprite.sprite_set_direction(SDL_FLIP_NONE);
     player.player_set_pos_y(330);
+    score = 0;
     player_alive = true;
   }
-    for(int i = 0; i < 6; i++){ //collectible collision detection
-      if(player.player_get_pos_x() + 33 >= collectible[i].collectible_get_x_pos()){ //if the rightmost pos of player is greater than the leftmost pos of obstacle
-        if(player.player_get_pos_x() <= collectible[i].collectible_get_x_pos() + 58){ //if the leftmost pos of player is less than the rightmost pos of obstacle
-          if(player.player_get_pos_y() + 65 >= collectible[i].collectible_get_y_pos()){ //if pos of bottom of player is greater than top of obstacle
-            if(player.player_get_pos_y() <= collectible[i].collectible_get_y_pos() + 25){ //if pos of top of player is less than bottom of obstacle
-              player_alive = false;
-            }
+  for(int i = 0; i < obstacle_one; i++){ //collectible collision detection
+    if(player.player_get_pos_x() + 33 >= collectible[i].collectible_get_x_pos()){ //if the rightmost pos of player is greater than the leftmost pos of obstacle
+      if(player.player_get_pos_x() <= collectible[i].collectible_get_x_pos() + 58){ //if the leftmost pos of player is less than the rightmost pos of obstacle
+        if(player.player_get_pos_y() + 65 >= collectible[i].collectible_get_y_pos()){ //if pos of bottom of player is greater than top of obstacle
+          if(player.player_get_pos_y() <= collectible[i].collectible_get_y_pos() + 25){ //if pos of top of player is less than bottom of obstacle
+            player_alive = false;
           }
         }
       }
     }
+  }
 
   //particle_emit.particle_emitter_update();
   if(sprite.sprite_get_gravity_state()){ //if sprite is changing gravity
@@ -127,19 +138,19 @@ void GameEngine::obj_update(){
     }
   }
 
-  for(int i = 0; i < 6; i++){ //for loop that updates and generates the collectible/obstacles
+  for(int i = 0; i < obstacle_one; i++){ //loop that updates and generates the collectible/obstacles
     int num = rand() % 4;
     int section_x_pos = 640;
     bool available = true;
 
     if(collectible[i].collectible_get_x_pos() >= -64){ //changes obstacle position
         collectible[i].collectible_change_rect_x(-10);
-    }else{  //if off screen, recycle to create "new" obstacle
+    }else{  //if off screen, recycle to create "new" obstacle randomly
       switch(num){
         case 0:
           break;
         case 1: //sets obstacle to the bottom ground
-          for(int j = 0; j < 6; j++){ //ensures no obstacles overlap
+          for(int j = 0; j < obstacle_one; j++){ //ensures no obstacles overlap
             if(collectible[j].collectible_get_x_pos() > (screen_width - 64)){
               available = false;
             }
@@ -151,7 +162,7 @@ void GameEngine::obj_update(){
           }
           break;
         case 2: //sets obstacle to the middle ground
-          for(int j = 0; j < 6; j++){
+          for(int j = 0; j < obstacle_one; j++){
             if(collectible[j].collectible_get_x_pos() > (screen_width - 64)){
               available = false;
             }
@@ -163,7 +174,7 @@ void GameEngine::obj_update(){
           }
           break;
         case 3: //sets obstacle to the top ground
-          for(int j = 0; j < 6; j++){
+          for(int j = 0; j < obstacle_one; j++){
             if(collectible[j].collectible_get_x_pos() > (screen_width - 64)){
               available = false;
             }
@@ -181,22 +192,25 @@ void GameEngine::obj_update(){
   sprite.sprite_set_rect_x(player.player_get_pos_x());
   sprite.sprite_set_rect_y(player.player_get_pos_y());
   sprite.sprite_update_frame();
+  
+  cout << "Score: " << score << endl;
+  score++;
 }
 
 void GameEngine::obj_render(){
   SDL_RenderClear(obj_renderer);
 
-  tile.tile_render(obj_renderer); //renders the tiles
+  tile.tile_render(obj_renderer); //renders tiles
 
-  for(int i = 0; i < 6; i++){ //renders all collectibles/obstacles
+  for(int i = 0; i < obstacle_one; i++){ //renders collectibles/obstacles
     if(collectible[i].collectible_get_x_pos() > -100){
       collectible[i].collectible_render(obj_renderer);
     }
   }
 
-  sprite.sprite_render(obj_renderer); //renders the sprite
+  sprite.sprite_render(obj_renderer); //renders sprite
 
-  particle_emit.particle_emitter_draw(obj_renderer);
+  //particle_emit.particle_emitter_draw(obj_renderer); //renders particles
 
   SDL_RenderPresent(obj_renderer);
 
