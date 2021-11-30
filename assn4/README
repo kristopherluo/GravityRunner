@@ -3,9 +3,11 @@
 - make: compiles the program
 - ./my_game: runs the program
 
+GAME OBJECTIVE:
+- Change gravity to dodge all of the obstacles
+
 PLAYER CONTROL KEYS:
-- Left arrow key: moves player to the left
-- Right arrow key: moves player to the right
+- Space bar to change gravity
 
 IMAGES (SPRITE SHEETS, TILE SHEETS, COLLECTIBLES):
 - I downloaded all my images from a website called CraftPix.net.
