@@ -1,12 +1,12 @@
 #include "PlayerSprite.h"
 
 PlayerSprite::PlayerSprite(){
-    sprite_rect.w = 100;
-    sprite_rect.h = 90;
-    sprite_frame.x = 100;
+    sprite_rect.w = 91;
+    sprite_rect.h = 80;
+    sprite_frame.x = 0;
     sprite_frame.y = 0;
     sprite_frame.w = 48;
-    sprite_frame.h = 70;
+    sprite_frame.h = 75;
     frame_duration = IDLE_FRAME_DURATION;
     frame_count = 4;
     sprite_state = 0;
@@ -65,6 +65,10 @@ void PlayerSprite::sprite_change_gravity(){
 
 void PlayerSprite::sprite_set_gravity_change(){
     gravity_change = 0;
+}
+
+void PlayerSprite::sprite_set_direction(SDL_RendererFlip direc){
+    sprite_direc = direc;
 }
 
 int PlayerSprite::sprite_get_state(){

@@ -16,6 +16,7 @@ void Collectible::collectible_serve_texture(SDL_Surface* collectible_surface, SD
 
 void Collectible::collectible_render(SDL_Renderer* obj_renderer){
     if(type == BOTTOM) SDL_RenderCopy(obj_renderer, collectible_texture, NULL, &collectible_rect);
+    if(type == MIDDLE) SDL_RenderCopy(obj_renderer, collectible_texture, NULL, &collectible_rect);
     if(type == TOP) SDL_RenderCopyEx(obj_renderer, collectible_texture, NULL, &collectible_rect, 0.0, NULL, SDL_FLIP_VERTICAL);
 }
 

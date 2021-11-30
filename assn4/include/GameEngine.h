@@ -28,7 +28,7 @@ class GameEngine{
         GameEngine(SDL_Renderer* ren);
         ~GameEngine();
 
-        bool game_is_running;
+        bool player_alive, game_is_running;
         
         void obj_init(); //initializes game
         void obj_updateUI(); //updates based off of user input

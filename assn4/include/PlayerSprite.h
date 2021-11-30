@@ -39,6 +39,7 @@ class PlayerSprite{
         void sprite_set_state(int state); //sets the state of the sprite
         void sprite_change_gravity(); //sets the direction the sprite faces
         void sprite_set_gravity_change(); //sets changing gravity variable to false
+        void sprite_set_direction(SDL_RendererFlip direc); //sets the direction of the sprite
         int sprite_get_state(); //returns the sprite's state (idle: 0 or running: 1)
         int sprite_get_direction(); //returns the direction the sprite is facing
         int sprite_get_gravity_state(); //returns whether the sprite is changing gravity

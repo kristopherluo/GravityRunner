@@ -5,6 +5,7 @@ GameEngine::GameEngine(SDL_Renderer* ren){
   screen_width = 640;
   screen_height = 480;
   game_is_running = true;
+  player_alive = true;
   this_start_time = SDL_GetTicks();
   fps = 60;
   frame_duration = 1000/fps;
@@ -56,9 +57,9 @@ void GameEngine::obj_init(){
 
   temp = IMG_Load("./images/spikes.png");
   int i;
-  for(i = 0; i < 3; i++){                                           //for loop that serves in the collectible texture to 3 instances of the Collectible class
+  for(i = 0; i < 6; i++){                                           //for loop that serves in the collectible texture to 6 instances of the Collectible class
     collectible[i].collectible_serve_texture(temp, obj_renderer);
-    collectible[i].collectible_set_rect_w(64);
+    collectible[i].collectible_set_rect_w(screen_width/10);
     collectible[i].collectible_set_rect_h(25);
   }
   SDL_FreeSurface(temp);
@@ -69,38 +70,50 @@ void GameEngine::obj_updateUI(){
     if (obj_event.type == SDL_QUIT) game_is_running = false; //quits game is user presses X
   }
   const Uint8 *state = SDL_GetKeyboardState(NULL);
-  if(state[SDL_SCANCODE_SPACE]){
-    if(!key_down){
-      sprite.sprite_change_gravity();
+  if(player_alive){
+    if(state[SDL_SCANCODE_SPACE]){
+      if(!key_down){
+        sprite.sprite_change_gravity();
+      }
+      key_down = true;
+      tile.tile_update_screen_left(-1 * player.player_get_vel());
+    }else{
+      key_down = false;
+      sprite.sprite_set_state(1);
+      tile.tile_update_screen_left(-1 * player.player_get_vel());
     }
-    key_down = true;
-    tile.tile_update_screen_left(-1 * player.player_get_vel());
-  }else{
-    key_down = false;
-    sprite.sprite_set_state(1);
-    tile.tile_update_screen_left(-1 * player.player_get_vel());
-  }
   SDL_Delay(50);
+  }
 }
 
 void GameEngine::obj_update(){
-  for(int i = 0; i < 3; i++){ //collectible collision detection
-    if(player.player_get_pos_x() + 48 >= collectible[i].collectible_get_x_pos()){ //if the rightmost pos of player is greater than the leftmost pos of obstacle
-      if(player.player_get_pos_x() <= collectible[i].collectible_get_x_pos() + 64){ //if the leftmost pos of player is less than the rightmost pos of obstacle
-        if(player.player_get_pos_y() + 70 >= collectible[i].collectible_get_y_pos()){ //if pos of bottom of player is greater than top of obstacle
-          if(player.player_get_pos_y() <= collectible[i].collectible_get_y_pos() + 25){ //if pos of top of player is less than bottom of obstacle
-            cout << "it works" << endl;
+  if(!player_alive){
+    for(int i = 0; i < 6; i++){
+      collectible[i].collectible_set_rect_x(-100);
+      collectible[i].collectible_set_rect_y(-100);
+    }
+    sprite.sprite_set_gravity_change();
+    sprite.sprite_set_direction(SDL_FLIP_NONE);
+    player.player_set_pos_y(330);
+    player_alive = true;
+  }
+    for(int i = 0; i < 6; i++){ //collectible collision detection
+      if(player.player_get_pos_x() + 33 >= collectible[i].collectible_get_x_pos()){ //if the rightmost pos of player is greater than the leftmost pos of obstacle
+        if(player.player_get_pos_x() <= collectible[i].collectible_get_x_pos() + 58){ //if the leftmost pos of player is less than the rightmost pos of obstacle
+          if(player.player_get_pos_y() + 65 >= collectible[i].collectible_get_y_pos()){ //if pos of bottom of player is greater than top of obstacle
+            if(player.player_get_pos_y() <= collectible[i].collectible_get_y_pos() + 25){ //if pos of top of player is less than bottom of obstacle
+              player_alive = false;
+            }
           }
         }
       }
     }
-  }
 
   //particle_emit.particle_emitter_update();
   if(sprite.sprite_get_gravity_state()){ //if sprite is changing gravity
     sprite.sprite_set_state(0);
     if(sprite.sprite_get_direction()){ //player is normal oriented, changing gravity back toward the bottom ground
-      if(player.player_get_pos_y() < 320){ //ensures player stops changing gravity once it reaches the top ground
+      if(player.player_get_pos_y() < 330){ //ensures player stops changing gravity once it reaches the top ground
         player.player_set_pos_y(player.player_get_pos_y() + player.player_get_vel());
       }else{
         sprite.sprite_set_gravity_change();
@@ -114,8 +127,8 @@ void GameEngine::obj_update(){
     }
   }
 
-  for(int i = 0; i < 3; i++){ //for loop that updates the collectible/obstacles
-    int num = rand() % 3;
+  for(int i = 0; i < 6; i++){ //for loop that updates and generates the collectible/obstacles
+    int num = rand() % 4;
     int section_x_pos = 640;
     bool available = true;
 
@@ -126,7 +139,7 @@ void GameEngine::obj_update(){
         case 0:
           break;
         case 1: //sets obstacle to the bottom ground
-          for(int j = 0; j < 3; j++){ //ensures no obstacles overlap
+          for(int j = 0; j < 6; j++){ //ensures no obstacles overlap
             if(collectible[j].collectible_get_x_pos() > (screen_width - 64)){
               available = false;
             }
@@ -137,8 +150,20 @@ void GameEngine::obj_update(){
             collectible[i].collectible_set_type(1); //sets the type to bottom
           }
           break;
-        case 2: //sets obstacle to the top ground
-          for(int j = 0; j < 3; j++){
+        case 2: //sets obstacle to the middle ground
+          for(int j = 0; j < 6; j++){
+            if(collectible[j].collectible_get_x_pos() > (screen_width - 64)){
+              available = false;
+            }
+          }
+          if(available){
+            collectible[i].collectible_set_rect_x(section_x_pos);
+            collectible[i].collectible_set_rect_y(230);
+            collectible[i].collectible_set_type(2); //sets the type to middle
+          }
+          break;
+        case 3: //sets obstacle to the top ground
+          for(int j = 0; j < 6; j++){
             if(collectible[j].collectible_get_x_pos() > (screen_width - 64)){
               available = false;
             }
@@ -163,7 +188,7 @@ void GameEngine::obj_render(){
 
   tile.tile_render(obj_renderer); //renders the tiles
 
-  for(int i = 0; i < 3; i++){ //renders all collectibles/obstacles
+  for(int i = 0; i < 6; i++){ //renders all collectibles/obstacles
     if(collectible[i].collectible_get_x_pos() > -100){
       collectible[i].collectible_render(obj_renderer);
     }

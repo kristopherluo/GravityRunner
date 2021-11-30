@@ -9,6 +9,7 @@ int main(){
   TheGameObject.obj_init();
 
   //Game Loop
+  
   while(TheGameObject.game_is_running){
     TheGameObject.obj_updateUI();
     TheGameObject.obj_update();

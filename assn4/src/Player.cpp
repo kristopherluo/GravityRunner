@@ -2,7 +2,7 @@
 
 Player::Player(){
   player_pos_x = 200;
-  player_pos_y = 320;
+  player_pos_y = 330;
   player_vel = 10;
   player_step = 40;
 }
@@ -31,12 +31,4 @@ void Player::player_set_pos_x(int x){
 
 void Player::player_set_pos_y(int y){
     player_pos_y = y;
-}
-
-void Player::player_change_gravity(){
-    /*if(sprite.sprite_get_direction() == 0){
-        player_pos_y -= player_vel;
-    }else{
-
-    }*/
 }
