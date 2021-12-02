@@ -80,124 +80,163 @@ void GameEngine::obj_updateUI(){
   }
 
   const Uint8 *state = SDL_GetKeyboardState(NULL);
-  if(player_alive){ //updates user controls
+  
+  if(player_alive) //updates user controls
+  // if(screens.restart_game == false)
+  {    
     if(state[SDL_SCANCODE_SPACE]){
       if(!key_down){ //ensures user cannot hold space key down to continuously change gravity
         sprite.sprite_change_gravity();
       }
       key_down = true;
       tile.tile_update_screen_left(-1 * player.player_get_vel());
-    }else{
+    }
+    
+    else
+    {
       key_down = false;
       sprite.sprite_set_state(1);
       tile.tile_update_screen_left(-1 * player.player_get_vel());
     }
   SDL_Delay(50);
   }
+
+  //If player died
+  else
+  {
+    if(state[SDL_SCANCODE_R]) screens.restart_game = true;
+  }
+
 }
 
 void GameEngine::obj_update(){
-  if(!player_alive){ //resets player and collectible/obstacle positions and states
-    for(int i = 0; i < obstacle_one; i++){
-      collectible[i].collectible_set_rect_x(-100);
-      collectible[i].collectible_set_rect_y(-100);
+
+  if(player_alive == false)
+  { 
+    //resets player and collectible/obstacle positions and states
+
+    if(screens.restart_game == true)
+    {
+      for(int i = 0; i < obstacle_one; i++)
+      {
+        collectible[i].collectible_set_rect_x(-100);
+        collectible[i].collectible_set_rect_y(-100);
+      }
+
+      sprite.sprite_set_gravity_change();
+      sprite.sprite_set_direction(SDL_FLIP_NONE);
+      player.player_set_pos_y(330);
+      score = 0;
+      player_alive = true;
+
+      //Reset restart game
+      screens.restart_game = false;
     }
-    sprite.sprite_set_gravity_change();
-    sprite.sprite_set_direction(SDL_FLIP_NONE);
-    player.player_set_pos_y(330);
-    score = 0;
-    player_alive = true;
+    
   }
-  for(int i = 0; i < obstacle_one; i++){ //collectible collision detection
-    if(player.player_get_pos_x() + 33 >= collectible[i].collectible_get_x_pos()){ //if the rightmost pos of player is greater than the leftmost pos of obstacle
-      if(player.player_get_pos_x() <= collectible[i].collectible_get_x_pos() + 58){ //if the leftmost pos of player is less than the rightmost pos of obstacle
-        if(player.player_get_pos_y() + 65 >= collectible[i].collectible_get_y_pos()){ //if pos of bottom of player is greater than top of obstacle
-          if(player.player_get_pos_y() <= collectible[i].collectible_get_y_pos() + 25){ //if pos of top of player is less than bottom of obstacle
-            player_alive = false;
+
+  if(player_alive == true && screens.restart_game == false)
+  {
+
+    for(int i = 0; i < obstacle_one; i++){ //collectible collision detection
+      if(player.player_get_pos_x() + 33 >= collectible[i].collectible_get_x_pos()){ //if the rightmost pos of player is greater than the leftmost pos of obstacle
+        if(player.player_get_pos_x() <= collectible[i].collectible_get_x_pos() + 58){ //if the leftmost pos of player is less than the rightmost pos of obstacle
+          if(player.player_get_pos_y() + 65 >= collectible[i].collectible_get_y_pos()){ //if pos of bottom of player is greater than top of obstacle
+            if(player.player_get_pos_y() <= collectible[i].collectible_get_y_pos() + 25){ //if pos of top of player is less than bottom of obstacle
+              
+              player_alive = false;
+            
+            }
           }
         }
       }
     }
-  }
 
-  //particle_emit.particle_emitter_update();
-  if(sprite.sprite_get_gravity_state()){ //if sprite is changing gravity
-    sprite.sprite_set_state(0);
-    if(sprite.sprite_get_direction()){ //player is normal oriented, changing gravity back toward the bottom ground
-      if(player.player_get_pos_y() < 330){ //ensures player stops changing gravity once it reaches the top ground
-        player.player_set_pos_y(player.player_get_pos_y() + player.player_get_vel());
-      }else{
-        sprite.sprite_set_gravity_change();
-      }
-    }else if(!sprite.sprite_get_direction()){ //player is upside down, changing gravity toward the top ground
-      if(player.player_get_pos_y() > 70){ //ensures player stops changing gravity once it reaches the bottom ground
-        player.player_set_pos_y(player.player_get_pos_y() - player.player_get_vel());
-      }else{
-        sprite.sprite_set_gravity_change();
-      }
-    }
-  }
-
-  for(int i = 0; i < obstacle_one; i++){ //loop that updates and generates the collectible/obstacles
-    int num = rand() % 4;
-    int section_x_pos = 640;
-    bool available = true;
-
-    if(collectible[i].collectible_get_x_pos() >= -64){ //changes obstacle position
-        collectible[i].collectible_change_rect_x(-10);
-    }else{  //if off screen, recycle to create "new" obstacle randomly
-      switch(num){
-        case 0:
-          break;
-        case 1: //sets obstacle to the bottom ground
-          for(int j = 0; j < obstacle_one; j++){ //ensures no obstacles overlap
-            if(collectible[j].collectible_get_x_pos() > (screen_width - 64)){
-              available = false;
-            }
-          }
-          if(available){
-            collectible[i].collectible_set_rect_x(section_x_pos);
-            collectible[i].collectible_set_rect_y(385);
-            collectible[i].collectible_set_type(1); //sets the type to bottom
-          }
-          break;
-        case 2: //sets obstacle to the middle ground
-          for(int j = 0; j < obstacle_one; j++){
-            if(collectible[j].collectible_get_x_pos() > (screen_width - 64)){
-              available = false;
-            }
-          }
-          if(available){
-            collectible[i].collectible_set_rect_x(section_x_pos);
-            collectible[i].collectible_set_rect_y(230);
-            collectible[i].collectible_set_type(2); //sets the type to middle
-          }
-          break;
-        case 3: //sets obstacle to the top ground
-          for(int j = 0; j < obstacle_one; j++){
-            if(collectible[j].collectible_get_x_pos() > (screen_width - 64)){
-              available = false;
-            }
-          }
-          if(available){
-            collectible[i].collectible_set_rect_x(section_x_pos);
-            collectible[i].collectible_set_rect_y(70);
-            collectible[i].collectible_set_type(3); //sets the type to bottom
-          }
-          break;
+    //particle_emit.particle_emitter_update();
+    if(sprite.sprite_get_gravity_state()){ //if sprite is changing gravity
+      sprite.sprite_set_state(0);
+      if(sprite.sprite_get_direction()){ //player is normal oriented, changing gravity back toward the bottom ground
+        if(player.player_get_pos_y() < 330){ //ensures player stops changing gravity once it reaches the top ground
+          player.player_set_pos_y(player.player_get_pos_y() + player.player_get_vel());
+        }else{
+          sprite.sprite_set_gravity_change();
+        }
+      }else if(!sprite.sprite_get_direction()){ //player is upside down, changing gravity toward the top ground
+          if(player.player_get_pos_y() > 70){ //ensures player stops changing gravity once it reaches the bottom ground
+          player.player_set_pos_y(player.player_get_pos_y() - player.player_get_vel());
+        }else{
+          sprite.sprite_set_gravity_change();
+        }
       }
     }
-  }
 
-  sprite.sprite_set_rect_x(player.player_get_pos_x());
-  sprite.sprite_set_rect_y(player.player_get_pos_y());
-  sprite.sprite_update_frame();
-  
-  cout << "Score: " << score << endl;
-  score++;
+    for(int i = 0; i < obstacle_one; i++){ //loop that updates and generates the collectible/obstacles
+      int num = rand() % 4;
+      int section_x_pos = 640;
+      bool available = true;
+
+      if(collectible[i].collectible_get_x_pos() >= -64){ //changes obstacle position
+          collectible[i].collectible_change_rect_x(-10);
+      }else{  //if off screen, recycle to create "new" obstacle randomly
+        switch(num){
+          case 0:
+            break;
+          case 1: //sets obstacle to the bottom ground
+            for(int j = 0; j < obstacle_one; j++){ //ensures no obstacles overlap
+              if(collectible[j].collectible_get_x_pos() > (screen_width - 64)){
+                available = false;
+              }
+            }
+            if(available){
+              collectible[i].collectible_set_rect_x(section_x_pos);
+              collectible[i].collectible_set_rect_y(385);
+              collectible[i].collectible_set_type(1); //sets the type to bottom
+            }
+            break;
+          case 2: //sets obstacle to the middle ground
+            for(int j = 0; j < obstacle_one; j++){
+              if(collectible[j].collectible_get_x_pos() > (screen_width - 64)){
+                available = false;
+              }
+            }
+            if(available){
+              collectible[i].collectible_set_rect_x(section_x_pos);
+              collectible[i].collectible_set_rect_y(230);
+              collectible[i].collectible_set_type(2); //sets the type to middle
+            }
+            break;
+          case 3: //sets obstacle to the top ground
+            for(int j = 0; j < obstacle_one; j++){
+              if(collectible[j].collectible_get_x_pos() > (screen_width - 64)){
+                available = false;
+              }
+            }
+            if(available){
+              collectible[i].collectible_set_rect_x(section_x_pos);
+              collectible[i].collectible_set_rect_y(70);
+              collectible[i].collectible_set_type(3); //sets the type to bottom
+            }
+            break;
+        }
+      }
+    }
+
+    sprite.sprite_set_rect_x(player.player_get_pos_x());
+    sprite.sprite_set_rect_y(player.player_get_pos_y());
+    sprite.sprite_update_frame();
+    
+    cout << "Score: " << score << endl;
+    score++;
+  }
 }
 
 void GameEngine::obj_render(){
+
+  if(!player_alive)
+  {
+    //render dead screen
+  }
+
   SDL_RenderClear(obj_renderer);
 
   tile.tile_render(obj_renderer); //renders tiles

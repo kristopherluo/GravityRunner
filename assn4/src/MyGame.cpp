@@ -11,6 +11,7 @@ int main(){
   //Game Loop
   
   while(TheGameObject.game_is_running){
+    
     TheGameObject.obj_updateUI();
     TheGameObject.obj_update();
     TheGameObject.obj_render();

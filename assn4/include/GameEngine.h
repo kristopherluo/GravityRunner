@@ -6,6 +6,7 @@
 #include "TileHandler.h"
 #include "Collectible.h"
 #include "ParticleEmitter.h"
+#include "Screens.h"
 
 class GameEngine{
     private:
@@ -26,6 +27,10 @@ class GameEngine{
         Collectible collectible[10]; //array of type Collectible to create instances of that GameObject
         Particle particle; //variable of type Particle to call that class' functions
         ParticleEmitter particle_emit; //variable of type ParticleEmitter to call that class' functions
+
+        //Variable of screens for start/end screens
+        Screens screens; 
+    
     public:
         GameEngine(SDL_Renderer* ren);
         ~GameEngine();
