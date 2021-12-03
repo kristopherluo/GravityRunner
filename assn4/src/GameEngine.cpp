@@ -81,71 +81,61 @@ void GameEngine::obj_updateUI(){
 
   const Uint8 *state = SDL_GetKeyboardState(NULL);
   
-  if(player_alive) //updates user controls
-  // if(screens.restart_game == false)
-  {    
+  if(player_alive && !screens.pause_game){ //updates user controls
     if(state[SDL_SCANCODE_SPACE]){
       if(!key_down){ //ensures user cannot hold space key down to continuously change gravity
         sprite.sprite_change_gravity();
       }
       key_down = true;
       tile.tile_update_screen_left(-1 * player.player_get_vel());
-    }
-    
-    else
-    {
+    }else if(state[SDL_SCANCODE_P]){
+      if(!key_down){
+        screens.pause_game = true;
+      }else{
+        sprite.sprite_set_state(1);
+        tile.tile_update_screen_left(-1 * player.player_get_vel());
+      }
+      key_down = true;
+    }else{
       key_down = false;
       sprite.sprite_set_state(1);
       tile.tile_update_screen_left(-1 * player.player_get_vel());
     }
   SDL_Delay(50);
-  }
-
-  //If player died
-  else
-  {
+  }else{
     if(state[SDL_SCANCODE_R]) screens.restart_game = true;
+    else if(screens.pause_game && state[SDL_SCANCODE_P]){
+      if(!key_down){
+        screens.pause_game = false;
+      }
+      key_down = true;
+    }else key_down = false;
   }
-
 }
 
 void GameEngine::obj_update(){
 
-  if(player_alive == false)
-  { 
-    //resets player and collectible/obstacle positions and states
-
-    if(screens.restart_game == true)
-    {
-      for(int i = 0; i < obstacle_one; i++)
-      {
-        collectible[i].collectible_set_rect_x(-100);
-        collectible[i].collectible_set_rect_y(-100);
-      }
-
-      sprite.sprite_set_gravity_change();
-      sprite.sprite_set_direction(SDL_FLIP_NONE);
-      player.player_set_pos_y(330);
-      score = 0;
-      player_alive = true;
-
-      //Reset restart game
-      screens.restart_game = false;
+  if(screens.restart_game == true){ //resets player and collectible/obstacle positions and states
+    for(int i = 0; i < obstacle_one; i++){
+      collectible[i].collectible_set_rect_x(-100);
+      collectible[i].collectible_set_rect_y(-100);
     }
-    
+    sprite.sprite_set_gravity_change();
+    sprite.sprite_set_direction(SDL_FLIP_NONE);
+    player.player_set_pos_y(330);
+    score = 0;
+    player_alive = true; //sets player to be alive
+    screens.pause_game = false; //resets pause game
+    screens.restart_game = false; //reset restart game
   }
 
-  if(player_alive == true && screens.restart_game == false)
-  {
-
+  if(player_alive && !screens.pause_game){
     for(int i = 0; i < obstacle_one; i++){ //collectible collision detection
       if(player.player_get_pos_x() + 33 >= collectible[i].collectible_get_x_pos()){ //if the rightmost pos of player is greater than the leftmost pos of obstacle
         if(player.player_get_pos_x() <= collectible[i].collectible_get_x_pos() + 58){ //if the leftmost pos of player is less than the rightmost pos of obstacle
           if(player.player_get_pos_y() + 65 >= collectible[i].collectible_get_y_pos()){ //if pos of bottom of player is greater than top of obstacle
             if(player.player_get_pos_y() <= collectible[i].collectible_get_y_pos() + 25){ //if pos of top of player is less than bottom of obstacle
-              
               player_alive = false;
-            
             }
           }
         }
@@ -225,19 +215,19 @@ void GameEngine::obj_update(){
     sprite.sprite_set_rect_y(player.player_get_pos_y());
     sprite.sprite_update_frame();
     
-    cout << "Score: " << score << endl;
+    //cout << "Score: " << score << endl;
     score++;
   }
 }
 
 void GameEngine::obj_render(){
-
-  if(!player_alive)
-  {
-    //render dead screen
-  }
-
   SDL_RenderClear(obj_renderer);
+
+  if(!player_alive){
+    screens.render_death_screen(obj_renderer);
+  }else{
+    SDL_SetRenderDrawColor(obj_renderer, 135, 206, 235, 255); //displays color of sky (sky blue)
+  }
 
   tile.tile_render(obj_renderer); //renders tiles
 
@@ -250,6 +240,10 @@ void GameEngine::obj_render(){
   sprite.sprite_render(obj_renderer); //renders sprite
 
   //particle_emit.particle_emitter_draw(obj_renderer); //renders particles
+  
+  if(screens.pause_game){
+    screens.pause_menu(obj_renderer);
+  }
 
   SDL_RenderPresent(obj_renderer);
 
