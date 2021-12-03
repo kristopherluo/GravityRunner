@@ -81,7 +81,7 @@ void GameEngine::obj_updateUI(){
 
   const Uint8 *state = SDL_GetKeyboardState(NULL);
   
-  if(player_alive && !screens.pause_game){ //updates user controls
+  if(player_alive && !screens.pause_game && !screens.in_main_menu){ //updates user controls
     if(state[SDL_SCANCODE_SPACE]){
       if(!key_down){ //ensures user cannot hold space key down to continuously change gravity
         sprite.sprite_change_gravity();
@@ -102,8 +102,18 @@ void GameEngine::obj_updateUI(){
       tile.tile_update_screen_left(-1 * player.player_get_vel());
     }
   SDL_Delay(50);
+  }else if(screens.in_main_menu){
+    if(state[SDL_SCANCODE_SPACE]){ 
+      if(!key_down){
+        screens.in_main_menu = false;
+        screens.restart_game = true;
+      }
+      key_down = true;
+    }else key_down = false;
   }else{
     if(state[SDL_SCANCODE_R]) screens.restart_game = true;
+    else if(state[SDL_SCANCODE_E]) game_is_running = false;
+    else if(state[SDL_SCANCODE_M]) screens.in_main_menu = true;
     else if(screens.pause_game && state[SDL_SCANCODE_P]){
       if(!key_down){
         screens.pause_game = false;
@@ -123,7 +133,7 @@ void GameEngine::obj_update(){
     sprite.sprite_set_gravity_change();
     sprite.sprite_set_direction(SDL_FLIP_NONE);
     player.player_set_pos_y(330);
-    score = 0;
+    score = 0; //resets score
     player_alive = true; //sets player to be alive
     screens.pause_game = false; //resets pause game
     screens.restart_game = false; //reset restart game
@@ -223,13 +233,13 @@ void GameEngine::obj_update(){
 void GameEngine::obj_render(){
   SDL_RenderClear(obj_renderer);
 
-  if(!player_alive){
+  if(!player_alive){ //renders death screen
     screens.render_death_screen(obj_renderer);
-  }else{
-    SDL_SetRenderDrawColor(obj_renderer, 135, 206, 235, 255); //displays color of sky (sky blue)
   }
 
   tile.tile_render(obj_renderer); //renders tiles
+
+  sprite.sprite_render(obj_renderer); //renders sprite
 
   for(int i = 0; i < obstacle_one; i++){ //renders collectibles/obstacles
     if(collectible[i].collectible_get_x_pos() > -100){
@@ -237,11 +247,11 @@ void GameEngine::obj_render(){
     }
   }
 
-  sprite.sprite_render(obj_renderer); //renders sprite
-
   //particle_emit.particle_emitter_draw(obj_renderer); //renders particles
   
-  if(screens.pause_game){
+  if(screens.in_main_menu){ //renders main menu
+    screens.main_menu(obj_renderer);
+  }else if(screens.pause_game){ //renders pause menu
     screens.pause_menu(obj_renderer);
   }
 
