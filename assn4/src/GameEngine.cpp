@@ -188,7 +188,7 @@ void GameEngine::obj_update(){
       lasers++;
       player.player_add_vel(1);
     }
-    cout << total_cases << endl;
+    // cout << total_cases << endl;
     for(int i = 0; i < lasers; i++){ //loop that updates and generates the obstacle/obstacles
       int num = rand() % total_cases;
       int section_x_pos = 640;
