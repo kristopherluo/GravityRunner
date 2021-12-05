@@ -121,6 +121,8 @@ void GameEngine::obj_updateUI(){
         score = 0;
       }
       key_down = true;
+    }else if(state[SDL_SCANCODE_E]){
+      game_is_running = false;
     }else key_down = false;
   }else{
     if(state[SDL_SCANCODE_R]) screens.restart_game = true;
