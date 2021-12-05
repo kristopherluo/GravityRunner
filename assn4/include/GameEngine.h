@@ -18,7 +18,8 @@ class GameEngine{
         int this_start_time, this_duration, fps, frame_duration; //fps controller variables;
         int collectible_rect_x, collectible_rect_y; //collectible helper variables
         int score; //keeps track of score
-        int obstacle_one; //number of obstacle one's
+        int lasers; //number of obstacle one's
+        int total_cases; //keeps track of the difficulty
         bool key_down; //keeps track of whether or not a key is down
 
         Player player; //variable of type Player to call that class' functions

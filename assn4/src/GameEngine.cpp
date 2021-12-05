@@ -13,7 +13,8 @@ GameEngine::GameEngine(SDL_Renderer* ren){
 
   score = 0;
   
-  obstacle_one = 6;
+  lasers = 3;
+  total_cases = 1;
 
   key_down = false;
 
@@ -66,7 +67,7 @@ void GameEngine::obj_init(){
   tile.tile_serve_texture(temp, obj_renderer, 2);
   SDL_FreeSurface(temp);
 
-  temp = IMG_Load("./images/background2.png");
+  temp = IMG_Load("./images/background4.png");
   tile.tile_serve_texture(temp, obj_renderer, 3);
   SDL_FreeSurface(temp);
 
@@ -76,7 +77,7 @@ void GameEngine::obj_init(){
 
   temp = IMG_Load("./images/spikes.png"); //adds spike obstacles
   int i;
-  for(i = 0; i < obstacle_one; i++){ //for loop that serves in the collectible texture to "obstacle_one (number)" instances of the Collectible class
+  for(i = 0; i <  lasers; i++){ //for loop that serves in the collectible texture to  lasers (number)" instances of the Collectible class
     collectible[i].collectible_serve_texture(temp, obj_renderer);
     collectible[i].collectible_set_rect_w(screen_width/10);
     collectible[i].collectible_set_rect_h(25);
@@ -117,6 +118,7 @@ void GameEngine::obj_updateUI(){
       if(!key_down){
         screens.in_main_menu = false;
         screens.restart_game = true;
+        score = 0;
       }
       key_down = true;
     }else key_down = false;
@@ -136,7 +138,7 @@ void GameEngine::obj_updateUI(){
 void GameEngine::obj_update(){
 
   if(screens.restart_game == true){ //resets player and collectible/obstacle positions and states
-    for(int i = 0; i < obstacle_one; i++){
+    for(int i = 0; i <  lasers; i++){
       collectible[i].collectible_set_rect_x(-100);
       collectible[i].collectible_set_rect_y(-100);
     }
@@ -147,10 +149,12 @@ void GameEngine::obj_update(){
     player_alive = true; //sets player to be alive
     screens.pause_game = false; //resets pause game
     screens.restart_game = false; //reset restart game
+    total_cases = 2;
+    lasers = 3;
   }
 
   if(player_alive && !screens.pause_game){
-    for(int i = 0; i < obstacle_one; i++){ //collectible collision detection
+    for(int i = 0; i <  lasers; i++){ //collectible collision detection
       if(player.player_get_pos_x() + 33 >= collectible[i].collectible_get_x_pos()){ //if the rightmost pos of player is greater than the leftmost pos of obstacle
         if(player.player_get_pos_x() <= collectible[i].collectible_get_x_pos() + 58){ //if the leftmost pos of player is less than the rightmost pos of obstacle
           if(player.player_get_pos_y() + 65 >= collectible[i].collectible_get_y_pos()){ //if pos of bottom of player is greater than top of obstacle
@@ -179,9 +183,13 @@ void GameEngine::obj_update(){
         }
       }
     }
-
-    for(int i = 0; i < obstacle_one; i++){ //loop that updates and generates the collectible/obstacles
-      int num = rand() % 4;
+    if(score % 300 == 0){
+      total_cases++;
+      lasers++;
+      cout << total_cases << endl;
+    }
+    for(int i = 0; i <  lasers; i++){ //loop that updates and generates the collectible/obstacles
+      int num = rand() % total_cases;
       int section_x_pos = 640;
       bool available = true;
 
@@ -192,7 +200,7 @@ void GameEngine::obj_update(){
           case 0:
             break;
           case 1: //sets obstacle to the bottom ground
-            for(int j = 0; j < obstacle_one; j++){ //ensures no obstacles overlap
+            for(int j = 0; j <  lasers; j++){ //ensures no obstacles overlap
               if(collectible[j].collectible_get_x_pos() > (screen_width - 64)){
                 available = false;
               }
@@ -203,20 +211,9 @@ void GameEngine::obj_update(){
               collectible[i].collectible_set_type(1); //sets the type to bottom
             }
             break;
-          case 2: //sets obstacle to the middle ground
-            for(int j = 0; j < obstacle_one; j++){
-              if(collectible[j].collectible_get_x_pos() > (screen_width - 64)){
-                available = false;
-              }
-            }
-            if(available){
-              collectible[i].collectible_set_rect_x(section_x_pos);
-              collectible[i].collectible_set_rect_y(230);
-              collectible[i].collectible_set_type(2); //sets the type to middle
-            }
-            break;
-          case 3: //sets obstacle to the top ground
-            for(int j = 0; j < obstacle_one; j++){
+          
+          case 2: //sets obstacle to the top ground
+            for(int j = 0; j <  lasers; j++){
               if(collectible[j].collectible_get_x_pos() > (screen_width - 64)){
                 available = false;
               }
@@ -225,6 +222,18 @@ void GameEngine::obj_update(){
               collectible[i].collectible_set_rect_x(section_x_pos);
               collectible[i].collectible_set_rect_y(70);
               collectible[i].collectible_set_type(3); //sets the type to bottom
+            }
+            break;
+          case 3: //sets obstacle to the middle ground
+            for(int j = 0; j <  lasers; j++){
+              if(collectible[j].collectible_get_x_pos() > (screen_width - 64)){
+                available = false;
+              }
+            }
+            if(available){
+              collectible[i].collectible_set_rect_x(section_x_pos);
+              collectible[i].collectible_set_rect_y(230);
+              collectible[i].collectible_set_type(2); //sets the type to middle
             }
             break;
         }
@@ -247,7 +256,7 @@ void GameEngine::obj_render(){
 
   sprite.sprite_render(obj_renderer); //renders sprite
 
-  for(int i = 0; i < obstacle_one; i++){ //renders collectibles/obstacles
+  for(int i = 0; i <  lasers; i++){ //renders collectibles/obstacles
     if(collectible[i].collectible_get_x_pos() > -100){
       collectible[i].collectible_render(obj_renderer);
     }
