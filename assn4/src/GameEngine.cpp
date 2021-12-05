@@ -30,6 +30,8 @@ void GameEngine::obj_init(){
     cout << "Error initializing SDL: " << SDL_GetError() << endl; 
   }
 
+  TTF_Init();
+
   //Enable gpu_enhanced textures
   IMG_Init(IMG_INIT_PNG);
   
@@ -235,6 +237,7 @@ void GameEngine::obj_render(){
   if(!player_alive)
   {
     //render dead screen
+    // screens.render_death_screen(obj_renderer);
   }
 
   SDL_RenderClear(obj_renderer);
@@ -265,4 +268,6 @@ void GameEngine::obj_quit(){
   SDL_DestroyWindow(obj_window); 
   IMG_Quit();
   SDL_Quit();
+  TTF_Quit();
+
 }

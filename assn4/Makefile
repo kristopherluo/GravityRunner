@@ -1,6 +1,6 @@
 CXX = g++
 CXXFLAGS = `sdl2-config --cflags` -Wall -g -std=c++17
-LDFLAGS = `sdl2-config --libs` -lSDL2_image -lm
+LDFLAGS = `sdl2-config --libs` -lSDL2_image -lSDL2_ttf -lm
 # This slightly modified INCLUDE lets you use #include<SDL.h> instead of #include<SDL/SDL.h>, etc.
 INCLUDE = -I ./include -I `sdl2-config --prefix`/include
 

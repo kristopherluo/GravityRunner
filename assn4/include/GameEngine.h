@@ -38,6 +38,7 @@ class GameEngine{
         bool player_alive; //true if player is alive
         bool game_is_running; //true if game is running
         
+        
         void obj_init(); //initializes game
         void obj_updateUI(); //updates based off of user input
         void obj_update(); //update mechanics
