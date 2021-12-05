@@ -51,17 +51,25 @@ void GameEngine::obj_init(){
   temp = IMG_Load("./images/sprite_run.png");
   sprite.sprite_serve_texture_run(temp, obj_renderer);
   SDL_FreeSurface(temp);
-  
-  temp = IMG_Load("./images/background_tile.png");
+
+  temp = IMG_Load("./images/ground1.png");
   tile.tile_serve_texture(temp, obj_renderer, 0);
   SDL_FreeSurface(temp);
 
-  temp = IMG_Load("./images/ground_tile1.png");
+  temp = IMG_Load("./images/ground2.png");
   tile.tile_serve_texture(temp, obj_renderer, 1);
   SDL_FreeSurface(temp);
 
-  temp = IMG_Load("./images/ground_tile2.png");
+  temp = IMG_Load("./images/ground3.png");
   tile.tile_serve_texture(temp, obj_renderer, 2);
+  SDL_FreeSurface(temp);
+
+  temp = IMG_Load("./images/background2.png");
+  tile.tile_serve_texture(temp, obj_renderer, 3);
+  SDL_FreeSurface(temp);
+
+  temp = IMG_Load("./images/door1.png");
+  tile.tile_serve_texture(temp, obj_renderer, 4);
   SDL_FreeSurface(temp);
 
   temp = IMG_Load("./images/spikes.png"); //adds spike obstacles
