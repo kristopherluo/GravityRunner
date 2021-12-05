@@ -19,13 +19,16 @@ class Obstacle{
     private:
         SDL_Texture* obstacle_texture; //stores the obstacle texture
         SDL_Rect obstacle_rect; //stores the SDL_Rect information for the different textures
+        SDL_Rect obstacle_frame;
         int type; //varible to tell if the obstacle is on top middle or bottom
-        bool collected; //keeps track of if a obstacle has been collected 
+        bool collected; //keeps track of if a obstacle has been collected
+        bool forwards;
     public:
         Obstacle();
         ~Obstacle();
 
         void obstacle_serve_texture(SDL_Surface* obstacle_surface, SDL_Renderer* object_renderer); //serves obstacle texture to Obstacle class which is stored in the obstacle_texture variable
+        void obstacle_update(); //updates obstacle
         void obstacle_render(SDL_Renderer* obj_renderer); //renders the obstacle
 
         void obstacle_change_rect_x(int x_change); //adds x_change to the obstacle_rect_x

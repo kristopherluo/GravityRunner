@@ -14,7 +14,7 @@ GameEngine::GameEngine(SDL_Renderer* ren){
   score = 0;
   
   lasers = 3;
-  total_cases = 3;
+  total_cases = 2;
 
   key_down = false;
 
@@ -79,8 +79,8 @@ void GameEngine::obj_init(){
   int i;
   for(i = 0; i < 6; i++){ //for loop that serves in the obstacle texture to  lasers (number)" instances of the obstacle class
     obstacle[i].obstacle_serve_texture(temp, obj_renderer);
-    obstacle[i].obstacle_set_rect_w(screen_width/10);
-    obstacle[i].obstacle_set_rect_h(25);
+    obstacle[i].obstacle_set_rect_w(screen_width/8);
+    obstacle[i].obstacle_set_rect_h(15);
   }
   SDL_FreeSurface(temp);
 }
@@ -149,7 +149,7 @@ void GameEngine::obj_update(){
     player_alive = true; //sets player to be alive
     screens.pause_game = false; //resets pause game
     screens.restart_game = false; //reset restart game
-    total_cases = 3;
+    total_cases = 2;
     lasers = 3;
   }
 
@@ -194,13 +194,15 @@ void GameEngine::obj_update(){
       int section_x_pos = 640;
       bool available = true;
 
+      obstacle[i].obstacle_update();
+
       if(obstacle[i].obstacle_get_x_pos() >= -64){ //changes obstacle position
           obstacle[i].obstacle_change_rect_x(-1 * player.player_get_vel());
       }else{  //if off screen, recycle to create "new" obstacle randomly
         switch(num){
-          case 0:
-            break;
-          case 1: //sets obstacle to the bottom ground
+          /*case 0:
+            break;*/
+          case 0: //sets obstacle to the bottom ground
             for(int j = 0; j < lasers; j++){ //ensures no obstacles overlap
               if(obstacle[j].obstacle_get_x_pos() > (screen_width - 64)){
                 available = false;
@@ -213,7 +215,7 @@ void GameEngine::obj_update(){
             }
             break;
           
-          case 2: //sets obstacle to the top ground
+          case 1: //sets obstacle to the top ground
             for(int j = 0; j < lasers; j++){
               if(obstacle[j].obstacle_get_x_pos() > (screen_width - 64)){
                 available = false;
@@ -225,7 +227,7 @@ void GameEngine::obj_update(){
               obstacle[i].obstacle_set_type(3); //sets the type to bottom
             }
             break;
-          case 3: //sets obstacle to the middle ground
+          case 2: //sets obstacle to the middle ground
             for(int j = 0; j < lasers; j++){
               if(obstacle[j].obstacle_get_x_pos() > (screen_width - 64)){
                 available = false;
@@ -240,7 +242,6 @@ void GameEngine::obj_update(){
         }
       }
     }
-
     sprite.sprite_set_rect_x(player.player_get_pos_x());
     sprite.sprite_set_rect_y(player.player_get_pos_y());
     sprite.sprite_update_frame();
