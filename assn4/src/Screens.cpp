@@ -12,17 +12,26 @@ Screens::~Screens(){}
 
 void Screens::main_menu(SDL_Renderer* obj_renderer)
 {
-  SDL_Rect fill_the_screen;
-  fill_the_screen.x = 0;
-  fill_the_screen.y = 0;
-  fill_the_screen.w = 640;
-  fill_the_screen.h = 480;
+  // SDL_Rect fill_the_screen;
+  // fill_the_screen.x = 0;
+  // fill_the_screen.y = 0;
+  // fill_the_screen.w = 640;
+  // fill_the_screen.h = 480;
 
   // SDL_SetRenderDrawColor(obj_renderer, 255, 255, 255, 255);
-  SDL_SetRenderDrawColor(obj_renderer, 245, 245, 245, 255);
-  SDL_RenderDrawRect(obj_renderer, &fill_the_screen);
-  SDL_RenderFillRect(obj_renderer, &fill_the_screen);
+  // SDL_SetRenderDrawColor(obj_renderer, 245, 245, 245, 255);
+  // SDL_RenderDrawRect(obj_renderer, &fill_the_screen);
+  // SDL_RenderFillRect(obj_renderer, &fill_the_screen);
 
+  SDL_Surface* backSurface = IMG_Load("./images/background4.png");
+  SDL_Rect backDest = { 0, 0, 640, 480 };
+  SDL_Texture* backText = SDL_CreateTextureFromSurface(obj_renderer, backSurface);
+  SDL_RenderCopy(obj_renderer, backText, NULL, &backDest);
+
+  SDL_Surface* playerSurface = IMG_Load("./images/door1.png");
+  SDL_Rect PlayerDest = { 290, 200, playerSurface->w + 20, playerSurface->h + 20 };
+  SDL_Texture* playerText = SDL_CreateTextureFromSurface(obj_renderer, playerSurface);
+  SDL_RenderCopy(obj_renderer, playerText, NULL, &PlayerDest);
 
 
   // Load in fonts and colors
@@ -32,19 +41,19 @@ void Screens::main_menu(SDL_Renderer* obj_renderer)
 
   // The words on screen for Main menu
   SDL_Surface* mainMenuSurface = TTF_RenderText_Solid(ethnocenticItalic, "Gravity Runner", color);
-  SDL_Rect MainMenuDest = { 100, 100, mainMenuSurface->w, mainMenuSurface->h };
+  SDL_Rect MainMenuDest = { 80, 100, mainMenuSurface->w, mainMenuSurface->h };
   SDL_Texture* MainMenutexture = SDL_CreateTextureFromSurface(obj_renderer, mainMenuSurface);
   SDL_RenderCopy(obj_renderer, MainMenutexture, NULL, &MainMenuDest);
 
 
   SDL_Surface* StartGame = TTF_RenderText_Solid(ethnocentic, "Space - Start", color);
-  SDL_Rect StartDest = { 100, 175, StartGame->w, StartGame->h };
+  SDL_Rect StartDest = { 80, 175, StartGame->w, StartGame->h };
   SDL_Texture* StartTexture = SDL_CreateTextureFromSurface(obj_renderer, StartGame);
   SDL_RenderCopy(obj_renderer, StartTexture, NULL, &StartDest);
 
 
   SDL_Surface* MainMenuEnd = TTF_RenderText_Solid(ethnocentic, "E - Exit", color);
-  SDL_Rect MainMenuEndDest = { 100, 225, MainMenuEnd->w, MainMenuEnd->h };
+  SDL_Rect MainMenuEndDest = { 80, 225, MainMenuEnd->w, MainMenuEnd->h };
   SDL_Texture* MainMenuEndTexture = SDL_CreateTextureFromSurface(obj_renderer, MainMenuEnd);
   SDL_RenderCopy(obj_renderer, MainMenuEndTexture, NULL, &MainMenuEndDest);
 
@@ -64,8 +73,6 @@ void Screens::main_menu(SDL_Renderer* obj_renderer)
 
 void Screens::pause_menu(SDL_Renderer* obj_renderer)
 {
-  PlayerSprite sprite; 
-
   SDL_Rect fill_screen;
   fill_screen.x = 90;
   fill_screen.y = 90;
@@ -163,6 +170,17 @@ void Screens::pause_menu(SDL_Renderer* obj_renderer)
     
 void Screens::render_death_screen(SDL_Renderer* obj_renderer)
 {
+
+  SDL_Rect fill_screen;
+  fill_screen.x = 90;
+  fill_screen.y = 90;
+  fill_screen.w = 460;
+  fill_screen.h = 300;
+
+  SDL_SetRenderDrawColor(obj_renderer, 220, 20, 60, 255);
+  SDL_RenderDrawRect(obj_renderer, &fill_screen);
+  SDL_RenderFillRect(obj_renderer, &fill_screen);
+
   //Game Over Box
   SDL_Rect fill_the_screen;
   fill_the_screen.x = 100;
@@ -221,7 +239,7 @@ void Screens::render_score(SDL_Renderer* obj_renderer, int score)
   string str_score = "Score: " + to_string(score);
   char const * the_score = str_score.c_str();
 
-  cout<< the_score <<endl;
+  // cout<< the_score <<endl;
 
   SDL_Surface* scoreSurface = TTF_RenderText_Solid(ethnocentic, the_score, color);
   SDL_Rect scoreDest = { 20, 20, scoreSurface->w, scoreSurface->h };
