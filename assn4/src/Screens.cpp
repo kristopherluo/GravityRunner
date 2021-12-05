@@ -11,17 +11,16 @@ Screens::~Screens(){}
 
 void Screens::main_menu(SDL_Renderer* obj_renderer)
 {
-  // SDL_RenderClear(my_renderer);
+  SDL_Rect fill_the_screen;
+  fill_the_screen.x = 100;
+  fill_the_screen.y = 100;
+  fill_the_screen.w = 440;
+  fill_the_screen.h = 280;
 
-  // SDL_Rect fill_the_screen;
-  // fill_the_screen.x = 0;
-  // fill_the_screen.y = 0;
-  // fill_the_screen.w = 700;
-  // fill_the_screen.h = 700;
-
-  // SDL_SetRenderDrawColor(my_renderer, 0, 0, 0, 255);
-  // SDL_RenderDrawRect(my_renderer, &fill_the_screen);
-  // SDL_RenderFillRect(my_renderer, &fill_the_screen);
+  SDL_SetRenderDrawColor(obj_renderer, 0, 0, 0, 255);
+  SDL_RenderDrawRect(obj_renderer, &fill_the_screen);
+  SDL_RenderFillRect(obj_renderer, &fill_the_screen);
+  SDL_SetRenderDrawColor(obj_renderer, 135, 206, 235, 255);
 }
 
 void Screens::pause_menu(SDL_Renderer* obj_renderer){
@@ -40,18 +39,52 @@ void Screens::pause_menu(SDL_Renderer* obj_renderer){
     
 void Screens::render_death_screen(SDL_Renderer* obj_renderer)
 {
-  SDL_Surface* gameOverSurface = TTF_RenderText_Solid(ethnocentic, "Game Over!!!", black);
-  
-  cout<<"BAAAAA"<<endl;
-  
-  SDL_Rect GameOverDest = { 300, 300, gameOverSurface->w, gameOverSurface->h };
+  //Game Over Box
+  SDL_Rect fill_the_screen;
+  fill_the_screen.x = 100;
+  fill_the_screen.y = 100;
+  fill_the_screen.w = 440;
+  fill_the_screen.h = 280;
 
-  SDL_Texture* texture = SDL_CreateTextureFromSurface(obj_renderer, gameOverSurface);
+  SDL_SetRenderDrawColor(obj_renderer, 0, 0, 0, 255);
+  SDL_RenderDrawRect(obj_renderer, &fill_the_screen);
+  SDL_RenderFillRect(obj_renderer, &fill_the_screen);
+  SDL_SetRenderDrawColor(obj_renderer, 135, 206, 235, 255);
 
-  SDL_RenderCopy(obj_renderer, texture, &GameOverDest, NULL);
+  // Load in fonts and colors
+  TTF_Font* ethnocenticItalic = TTF_OpenFont("./Fonts/ethnocentric rg it.ttf", 40);
+  TTF_Font* ethnocentic = TTF_OpenFont("./Fonts/ethnocentric rg.ttf", 20);
+  SDL_Color color = { 255, 255, 255 };
 
-  SDL_DestroyTexture(texture);
+  // The words on screen for Game over
+
+  SDL_Surface* gameOverSurface = TTF_RenderText_Solid(ethnocenticItalic, "Game Over!!!", color);
+  SDL_Rect GameOverDest = { 100, 100, gameOverSurface->w, gameOverSurface->h };
+  SDL_Texture* GameOvertexture = SDL_CreateTextureFromSurface(obj_renderer, gameOverSurface);
+  SDL_RenderCopy(obj_renderer, GameOvertexture, NULL, &GameOverDest);
+
+
+  SDL_Surface* gameOverRestart = TTF_RenderText_Solid(ethnocentic, "R - Restart", color);
+  SDL_Rect RestartDest = { 100, 175, gameOverRestart->w, gameOverRestart->h };
+  SDL_Texture* RestartTexture = SDL_CreateTextureFromSurface(obj_renderer, gameOverRestart);
+  SDL_RenderCopy(obj_renderer, RestartTexture, NULL, &RestartDest);
+
+
+  SDL_Surface* gameOverEnd = TTF_RenderText_Solid(ethnocentic, "E - Exit", color);
+  SDL_Rect EndDest = { 100, 225, gameOverEnd->w, gameOverEnd->h };
+  SDL_Texture* EndTexture = SDL_CreateTextureFromSurface(obj_renderer, gameOverEnd);
+  SDL_RenderCopy(obj_renderer, EndTexture, NULL, &EndDest);
+
+
+  // Clean Up
   SDL_FreeSurface(gameOverSurface);
-  TTF_CloseFont(ethnocentic);
+  SDL_FreeSurface(gameOverRestart);
+  SDL_FreeSurface(gameOverEnd);
 
+  SDL_DestroyTexture(GameOvertexture);
+  SDL_DestroyTexture(RestartTexture);
+  SDL_DestroyTexture(EndTexture);
+
+  TTF_CloseFont(ethnocenticItalic);
+  TTF_CloseFont(ethnocentic);
 }

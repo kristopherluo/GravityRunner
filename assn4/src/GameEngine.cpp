@@ -243,13 +243,6 @@ void GameEngine::obj_update(){
 void GameEngine::obj_render(){
   SDL_RenderClear(obj_renderer);
 
-  if(!player_alive)
-  {
-    //render dead screen
-    
-    // screens.render_death_screen(obj_renderer);
-  }
-
   tile.tile_render(obj_renderer); //renders tiles
 
   sprite.sprite_render(obj_renderer); //renders sprite
@@ -261,6 +254,13 @@ void GameEngine::obj_render(){
   }
 
   //particle_emit.particle_emitter_draw(obj_renderer); //renders particles
+
+  if(!player_alive)
+  {
+    // cout<<"BAAAA"<<endl;
+    //render dead screen
+    screens.render_death_screen(obj_renderer);
+  }
   
   if(screens.in_main_menu){ //renders main menu
     screens.main_menu(obj_renderer);

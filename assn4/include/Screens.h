@@ -26,9 +26,6 @@ class Screens
     Screens();
     ~Screens();
 
-    TTF_Font* ethnocentic = TTF_OpenFont("../Fonts/ethnocentric rg.ttf", 12);
-    SDL_Color black = { 0, 0, 0 };
-
 
     void main_menu(SDL_Renderer* obj_renderer); //menu that appears when game is launched
     void pause_menu(SDL_Renderer* obj_renderer); //menu that appears while pausing in game
