@@ -5,7 +5,6 @@
 #include <string>
 #include <cstdlib>
 #include <fstream>
-using namespace std;
 
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL.h> 
@@ -31,6 +30,7 @@ class Screens
     void pause_menu(SDL_Renderer* obj_renderer); //menu that appears while pausing in game
     void render_death_screen(SDL_Renderer* obj_renderer); //screen that appears when player dies
 
+    void render_score(SDL_Renderer* obj_renderer, int);
 };
 
 #endif

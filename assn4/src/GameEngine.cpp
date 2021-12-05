@@ -265,6 +265,8 @@ void GameEngine::obj_render(){
 
   //particle_emit.particle_emitter_draw(obj_renderer); //renders particles
 
+  screens.render_score(obj_renderer, score);
+
   if(!player_alive)
   {
     // cout<<"BAAAA"<<endl;
