@@ -125,7 +125,7 @@ void GameEngine::obj_updateUI(){
   }else{
     if(state[SDL_SCANCODE_R]) screens.restart_game = true;
     else if(state[SDL_SCANCODE_E]) game_is_running = false;
-    else if(state[SDL_SCANCODE_M]) screens.in_main_menu = true;
+    else if(state[SDL_SCANCODE_M]&& screens.pause_game) screens.in_main_menu = true;
     else if(screens.pause_game && state[SDL_SCANCODE_P]){
       if(!key_down){
         screens.pause_game = false;

@@ -1,4 +1,5 @@
 #include "Screens.h"
+#include "PlayerSprite.h"
 
 Screens::Screens(){
   in_main_menu = true;
@@ -17,10 +18,11 @@ void Screens::main_menu(SDL_Renderer* obj_renderer)
   fill_the_screen.w = 640;
   fill_the_screen.h = 480;
 
-  SDL_SetRenderDrawColor(obj_renderer, 255, 255, 255, 255);
+  // SDL_SetRenderDrawColor(obj_renderer, 255, 255, 255, 255);
+  SDL_SetRenderDrawColor(obj_renderer, 245, 245, 245, 255);
   SDL_RenderDrawRect(obj_renderer, &fill_the_screen);
   SDL_RenderFillRect(obj_renderer, &fill_the_screen);
-  SDL_SetRenderDrawColor(obj_renderer, 135, 206, 235, 255);
+
 
 
   // Load in fonts and colors
@@ -62,6 +64,18 @@ void Screens::main_menu(SDL_Renderer* obj_renderer)
 
 void Screens::pause_menu(SDL_Renderer* obj_renderer)
 {
+  PlayerSprite sprite; 
+
+  SDL_Rect fill_screen;
+  fill_screen.x = 90;
+  fill_screen.y = 90;
+  fill_screen.w = 460;
+  fill_screen.h = 300;
+
+  SDL_SetRenderDrawColor(obj_renderer, 60, 179, 113, 255);
+  SDL_RenderDrawRect(obj_renderer, &fill_screen);
+  SDL_RenderFillRect(obj_renderer, &fill_screen);
+
   SDL_Rect fill_the_screen;
   fill_the_screen.x = 100;
   fill_the_screen.y = 100;
@@ -71,7 +85,6 @@ void Screens::pause_menu(SDL_Renderer* obj_renderer)
   SDL_SetRenderDrawColor(obj_renderer, 0, 0, 0, 255);
   SDL_RenderDrawRect(obj_renderer, &fill_the_screen);
   SDL_RenderFillRect(obj_renderer, &fill_the_screen);
-  SDL_SetRenderDrawColor(obj_renderer, 135, 206, 235, 255);
 
 
   // Load in fonts and colors
@@ -82,30 +95,65 @@ void Screens::pause_menu(SDL_Renderer* obj_renderer)
   // The words on screen for Game over
 
   SDL_Surface* PauseSurface = TTF_RenderText_Solid(ethnocenticItalic, "Pause!!!", color);
-  SDL_Rect PauseDest = { 100, 100, PauseSurface->w, PauseSurface->h };
+  SDL_Rect PauseDest = { 110, 100, PauseSurface->w, PauseSurface->h };
   SDL_Texture* Pausetexture = SDL_CreateTextureFromSurface(obj_renderer, PauseSurface);
   SDL_RenderCopy(obj_renderer, Pausetexture, NULL, &PauseDest);
 
 
-  SDL_Surface* PauseResume = TTF_RenderText_Solid(ethnocentic, "P - Resume", color);
-  SDL_Rect PauseResumeDest = { 100, 175, PauseResume->w, PauseResume->h };
+  SDL_Surface* PauseResume = TTF_RenderText_Solid(ethnocentic, "P - Un-Pause", color);
+  SDL_Rect PauseResumeDest = { 110, 175, PauseResume->w, PauseResume->h };
   SDL_Texture* PauseResumeTexture = SDL_CreateTextureFromSurface(obj_renderer, PauseResume);
   SDL_RenderCopy(obj_renderer, PauseResumeTexture, NULL, &PauseResumeDest);
 
+  SDL_Surface* PauseToMenu = TTF_RenderText_Solid(ethnocentic, "M - Menu", color);
+  SDL_Rect PauseToMenuDest = { 110, 225, PauseToMenu->w, PauseToMenu->h };
+  SDL_Texture* PauseToMenuTexture = SDL_CreateTextureFromSurface(obj_renderer, PauseToMenu);
+  SDL_RenderCopy(obj_renderer, PauseToMenuTexture, NULL, &PauseToMenuDest);
+
 
   SDL_Surface* PauseEnd = TTF_RenderText_Solid(ethnocentic, "E - Exit", color);
-  SDL_Rect PauseEndDest = { 100, 225, PauseEnd->w, PauseEnd->h };
+  SDL_Rect PauseEndDest = { 110, 275, PauseEnd->w, PauseEnd->h };
   SDL_Texture* PauseEndTexture = SDL_CreateTextureFromSurface(obj_renderer, PauseEnd);
   SDL_RenderCopy(obj_renderer, PauseEndTexture, NULL, &PauseEndDest);
+
+
+  SDL_Surface* playerSurface = IMG_Load("./images/alienSpritePNG.png");
+  SDL_Rect PlayerDest = { 250, 275, playerSurface->w, playerSurface->h };
+  SDL_Texture* playerText = SDL_CreateTextureFromSurface(obj_renderer, playerSurface);
+
+  SDL_Rect Player_src;
+  int tick = SDL_GetTicks() / 1000;
+
+  if(tick % 2 == 0)
+  {
+    Player_src.x = 0;
+    Player_src.y = 0;
+    Player_src.w = 32;
+    Player_src.h = 32;
+  }
+
+  if(tick % 2 == 1)
+  {
+    Player_src.x = 0;
+    Player_src.y = 64;
+    Player_src.w = 32;
+    Player_src.h = 32;
+  }
+
+  SDL_RenderCopy(obj_renderer, playerText, &Player_src, &PlayerDest);
+
+  SDL_FreeSurface(playerSurface);
 
 
   // Clean Up
   SDL_FreeSurface(PauseSurface);
   SDL_FreeSurface(PauseResume);
+  SDL_FreeSurface(PauseToMenu);
   SDL_FreeSurface(PauseEnd);
 
   SDL_DestroyTexture(Pausetexture);
   SDL_DestroyTexture(PauseResumeTexture);
+  SDL_DestroyTexture(PauseToMenuTexture);
   SDL_DestroyTexture(PauseEndTexture);
 
   TTF_CloseFont(ethnocenticItalic);
@@ -125,7 +173,6 @@ void Screens::render_death_screen(SDL_Renderer* obj_renderer)
   SDL_SetRenderDrawColor(obj_renderer, 0, 0, 0, 255);
   SDL_RenderDrawRect(obj_renderer, &fill_the_screen);
   SDL_RenderFillRect(obj_renderer, &fill_the_screen);
-  SDL_SetRenderDrawColor(obj_renderer, 135, 206, 235, 255);
 
   // Load in fonts and colors
   TTF_Font* ethnocenticItalic = TTF_OpenFont("./Fonts/ethnocentric rg it.ttf", 40);
@@ -135,19 +182,19 @@ void Screens::render_death_screen(SDL_Renderer* obj_renderer)
   // The words on screen for Game over
 
   SDL_Surface* gameOverSurface = TTF_RenderText_Solid(ethnocenticItalic, "Game Over!!!", color);
-  SDL_Rect GameOverDest = { 100, 100, gameOverSurface->w, gameOverSurface->h };
+  SDL_Rect GameOverDest = { 110, 100, gameOverSurface->w, gameOverSurface->h };
   SDL_Texture* GameOvertexture = SDL_CreateTextureFromSurface(obj_renderer, gameOverSurface);
   SDL_RenderCopy(obj_renderer, GameOvertexture, NULL, &GameOverDest);
 
 
   SDL_Surface* gameOverRestart = TTF_RenderText_Solid(ethnocentic, "R - Restart", color);
-  SDL_Rect RestartDest = { 100, 175, gameOverRestart->w, gameOverRestart->h };
+  SDL_Rect RestartDest = { 110, 175, gameOverRestart->w, gameOverRestart->h };
   SDL_Texture* RestartTexture = SDL_CreateTextureFromSurface(obj_renderer, gameOverRestart);
   SDL_RenderCopy(obj_renderer, RestartTexture, NULL, &RestartDest);
 
 
   SDL_Surface* gameOverEnd = TTF_RenderText_Solid(ethnocentic, "E - Exit", color);
-  SDL_Rect EndDest = { 100, 225, gameOverEnd->w, gameOverEnd->h };
+  SDL_Rect EndDest = { 110, 225, gameOverEnd->w, gameOverEnd->h };
   SDL_Texture* EndTexture = SDL_CreateTextureFromSurface(obj_renderer, gameOverEnd);
   SDL_RenderCopy(obj_renderer, EndTexture, NULL, &EndDest);
 
