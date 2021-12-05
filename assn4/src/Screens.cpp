@@ -142,19 +142,19 @@ void Screens::pause_menu(SDL_Renderer* obj_renderer)
 
   SDL_RenderCopy(obj_renderer, playerText, &Player_src, &PlayerDest);
 
-  SDL_FreeSurface(playerSurface);
-
 
   // Clean Up
   SDL_FreeSurface(PauseSurface);
   SDL_FreeSurface(PauseResume);
   SDL_FreeSurface(PauseToMenu);
   SDL_FreeSurface(PauseEnd);
+  SDL_FreeSurface(playerSurface);
 
   SDL_DestroyTexture(Pausetexture);
   SDL_DestroyTexture(PauseResumeTexture);
   SDL_DestroyTexture(PauseToMenuTexture);
   SDL_DestroyTexture(PauseEndTexture);
+  SDL_DestroyTexture(playerText);
 
   TTF_CloseFont(ethnocenticItalic);
   TTF_CloseFont(ethnocentic);
@@ -209,5 +209,27 @@ void Screens::render_death_screen(SDL_Renderer* obj_renderer)
   SDL_DestroyTexture(EndTexture);
 
   TTF_CloseFont(ethnocenticItalic);
+  TTF_CloseFont(ethnocentic);
+}
+
+void Screens::render_score(SDL_Renderer* obj_renderer, int score)
+{
+  // Load in fonts and colors
+  TTF_Font* ethnocentic = TTF_OpenFont("./Fonts/ethnocentric rg.ttf", 20);
+  SDL_Color color = { 255, 255, 255 };
+
+  string str_score = "Score: " + to_string(score);
+  char const * the_score = str_score.c_str();
+
+  cout<< the_score <<endl;
+
+  SDL_Surface* scoreSurface = TTF_RenderText_Solid(ethnocentic, the_score, color);
+  SDL_Rect scoreDest = { 20, 20, scoreSurface->w, scoreSurface->h };
+  SDL_Texture* scoreTexture = SDL_CreateTextureFromSurface(obj_renderer, scoreSurface);
+  SDL_RenderCopy(obj_renderer, scoreTexture, NULL, &scoreDest);
+
+  // Clean Up
+  SDL_FreeSurface(scoreSurface);
+  SDL_DestroyTexture(scoreTexture);
   TTF_CloseFont(ethnocentic);
 }
