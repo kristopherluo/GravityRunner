@@ -1,12 +1,12 @@
 #include "PlayerSprite.h"
 
 PlayerSprite::PlayerSprite(){
-    sprite_rect.w = 91;
-    sprite_rect.h = 80;
+    sprite_rect.w = 64;
+    sprite_rect.h = 64;
     sprite_frame.x = 0;
     sprite_frame.y = 0;
-    sprite_frame.w = 48;
-    sprite_frame.h = 75;
+    sprite_frame.w = 32;
+    sprite_frame.h = 32;
     frame_duration = IDLE_FRAME_DURATION;
     frame_count = 4;
     sprite_state = 0;

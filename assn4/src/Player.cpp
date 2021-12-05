@@ -21,6 +21,10 @@ int Player::player_get_vel(){
     return player_vel;
 }
 
+void Player::player_add_vel(int v){
+    player_vel += v;
+}
+
 int Player::player_get_step(){
     return player_step;
 }

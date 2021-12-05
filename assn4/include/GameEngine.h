@@ -4,7 +4,7 @@
 #include "Player.h"
 #include "PlayerSprite.h"
 #include "TileHandler.h"
-#include "Collectible.h"
+#include "Obstacle.h"
 #include "ParticleEmitter.h"
 #include "Screens.h"
 
@@ -16,7 +16,7 @@ class GameEngine{
 
         int screen_width, screen_height; //screen dimensions
         int this_start_time, this_duration, fps, frame_duration; //fps controller variables;
-        int collectible_rect_x, collectible_rect_y; //collectible helper variables
+        int obstacle_rect_x, obstacle_rect_y; //obstacle helper variables
         int score; //keeps track of score
         int lasers; //number of obstacle one's
         int total_cases; //keeps track of the difficulty
@@ -25,7 +25,7 @@ class GameEngine{
         Player player; //variable of type Player to call that class' functions
         PlayerSprite sprite; //variable of type PlayerSprite to call that class' functions
         TileHandler tile; //variable of type TileHandler to call that class' functions
-        Collectible collectible[10]; //array of type Collectible to create instances of that GameObject
+        Obstacle obstacle[10]; //array of type Collectible to create instances of that GameObject
         Particle particle; //variable of type Particle to call that class' functions
         ParticleEmitter particle_emit; //variable of type ParticleEmitter to call that class' functions
         Screens screens; //Variable of screens for start/end screens

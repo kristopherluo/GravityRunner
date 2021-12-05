@@ -8,13 +8,13 @@ GameEngine::GameEngine(SDL_Renderer* ren){
   fps = 60;
   frame_duration = 1000/fps;
 
-  collectible_rect_x = -300;
-  collectible_rect_y = 0;
+  obstacle_rect_x = -300;
+  obstacle_rect_y = 0;
 
   score = 0;
   
   lasers = 3;
-  total_cases = 1;
+  total_cases = 3;
 
   key_down = false;
 
@@ -47,11 +47,11 @@ void GameEngine::obj_init(){
 
   SDL_RenderClear(obj_renderer);
 
-  SDL_Surface* temp = IMG_Load("./images/sprite_idle.png"); //imports all the .png's needed and calls the serve_texture functions of the PlayerSprite and
+  SDL_Surface* temp = IMG_Load("./images/idleAlien.png"); //imports all the .png's needed and calls the serve_texture functions of the PlayerSprite and
   sprite.sprite_serve_texture_idle(temp, obj_renderer);     //TileHandler classes to import them
   SDL_FreeSurface(temp);
 
-  temp = IMG_Load("./images/sprite_run.png");
+  temp = IMG_Load("./images/runAlien.png");
   sprite.sprite_serve_texture_run(temp, obj_renderer);
   SDL_FreeSurface(temp);
 
@@ -77,10 +77,10 @@ void GameEngine::obj_init(){
 
   temp = IMG_Load("./images/spikes.png"); //adds spike obstacles
   int i;
-  for(i = 0; i <  lasers; i++){ //for loop that serves in the collectible texture to  lasers (number)" instances of the Collectible class
-    collectible[i].collectible_serve_texture(temp, obj_renderer);
-    collectible[i].collectible_set_rect_w(screen_width/10);
-    collectible[i].collectible_set_rect_h(25);
+  for(i = 0; i < 6; i++){ //for loop that serves in the obstacle texture to  lasers (number)" instances of the obstacle class
+    obstacle[i].obstacle_serve_texture(temp, obj_renderer);
+    obstacle[i].obstacle_set_rect_w(screen_width/10);
+    obstacle[i].obstacle_set_rect_h(25);
   }
   SDL_FreeSurface(temp);
 }
@@ -137,28 +137,28 @@ void GameEngine::obj_updateUI(){
 
 void GameEngine::obj_update(){
 
-  if(screens.restart_game == true){ //resets player and collectible/obstacle positions and states
+  if(screens.restart_game == true){ //resets player and obstacle/obstacle positions and states
     for(int i = 0; i <  lasers; i++){
-      collectible[i].collectible_set_rect_x(-100);
-      collectible[i].collectible_set_rect_y(-100);
+      obstacle[i].obstacle_set_rect_x(-100);
+      obstacle[i].obstacle_set_rect_y(-100);
     }
     sprite.sprite_set_gravity_change();
     sprite.sprite_set_direction(SDL_FLIP_NONE);
-    player.player_set_pos_y(330);
+    player.player_set_pos_y(350);
     score = 0; //resets score
     player_alive = true; //sets player to be alive
     screens.pause_game = false; //resets pause game
     screens.restart_game = false; //reset restart game
-    total_cases = 2;
+    total_cases = 3;
     lasers = 3;
   }
 
   if(player_alive && !screens.pause_game){
-    for(int i = 0; i <  lasers; i++){ //collectible collision detection
-      if(player.player_get_pos_x() + 33 >= collectible[i].collectible_get_x_pos()){ //if the rightmost pos of player is greater than the leftmost pos of obstacle
-        if(player.player_get_pos_x() <= collectible[i].collectible_get_x_pos() + 58){ //if the leftmost pos of player is less than the rightmost pos of obstacle
-          if(player.player_get_pos_y() + 65 >= collectible[i].collectible_get_y_pos()){ //if pos of bottom of player is greater than top of obstacle
-            if(player.player_get_pos_y() <= collectible[i].collectible_get_y_pos() + 25){ //if pos of top of player is less than bottom of obstacle
+    for(int i = 0; i <  lasers; i++){ //obstacle collision detection
+      if(player.player_get_pos_x() + 33 >= obstacle[i].obstacle_get_x_pos()){ //if the rightmost pos of player is greater than the leftmost pos of obstacle
+        if(player.player_get_pos_x() <= obstacle[i].obstacle_get_x_pos() + 58){ //if the leftmost pos of player is less than the rightmost pos of obstacle
+          if(player.player_get_pos_y() + 65 >= obstacle[i].obstacle_get_y_pos()){ //if pos of bottom of player is greater than top of obstacle
+            if(player.player_get_pos_y() <= obstacle[i].obstacle_get_y_pos() + 25){ //if pos of top of player is less than bottom of obstacle
               player_alive = false;
             }
           }
@@ -170,70 +170,71 @@ void GameEngine::obj_update(){
     if(sprite.sprite_get_gravity_state()){ //if sprite is changing gravity
       sprite.sprite_set_state(0);
       if(sprite.sprite_get_direction()){ //player is normal oriented, changing gravity back toward the bottom ground
-        if(player.player_get_pos_y() < 330){ //ensures player stops changing gravity once it reaches the top ground
-          player.player_set_pos_y(player.player_get_pos_y() + player.player_get_vel());
+        if(player.player_get_pos_y() < 350){ //ensures player stops changing gravity once it reaches the top ground
+          player.player_set_pos_y(player.player_get_pos_y() + 10);
         }else{
           sprite.sprite_set_gravity_change();
         }
       }else if(!sprite.sprite_get_direction()){ //player is upside down, changing gravity toward the top ground
           if(player.player_get_pos_y() > 70){ //ensures player stops changing gravity once it reaches the bottom ground
-          player.player_set_pos_y(player.player_get_pos_y() - player.player_get_vel());
+          player.player_set_pos_y(player.player_get_pos_y() - 10);
         }else{
           sprite.sprite_set_gravity_change();
         }
       }
     }
-    if(score % 300 == 0){
+    if(score % 300 == 0 && score != 0){
       total_cases++;
       lasers++;
-      cout << total_cases << endl;
+      player.player_add_vel(5);
     }
-    for(int i = 0; i <  lasers; i++){ //loop that updates and generates the collectible/obstacles
+    cout << total_cases << endl;
+    for(int i = 0; i < lasers; i++){ //loop that updates and generates the obstacle/obstacles
       int num = rand() % total_cases;
       int section_x_pos = 640;
       bool available = true;
 
-      if(collectible[i].collectible_get_x_pos() >= -64){ //changes obstacle position
-          collectible[i].collectible_change_rect_x(-10);
+      if(obstacle[i].obstacle_get_x_pos() >= -64){ //changes obstacle position
+          obstacle[i].obstacle_change_rect_x(-10);
       }else{  //if off screen, recycle to create "new" obstacle randomly
         switch(num){
           case 0:
             break;
           case 1: //sets obstacle to the bottom ground
-            for(int j = 0; j <  lasers; j++){ //ensures no obstacles overlap
-              if(collectible[j].collectible_get_x_pos() > (screen_width - 64)){
+            for(int j = 0; j < lasers; j++){ //ensures no obstacles overlap
+              if(obstacle[j].obstacle_get_x_pos() > (screen_width - 64)){
                 available = false;
               }
             }
             if(available){
-              collectible[i].collectible_set_rect_x(section_x_pos);
-              collectible[i].collectible_set_rect_y(385);
-              collectible[i].collectible_set_type(1); //sets the type to bottom
+              obstacle[i].obstacle_set_rect_x(section_x_pos);
+              obstacle[i].obstacle_set_rect_y(385);
+              obstacle[i].obstacle_set_type(1); //sets the type to bottom
             }
             break;
           
           case 2: //sets obstacle to the top ground
-            for(int j = 0; j <  lasers; j++){
-              if(collectible[j].collectible_get_x_pos() > (screen_width - 64)){
+            for(int j = 0; j < lasers; j++){
+              if(obstacle[j].obstacle_get_x_pos() > (screen_width - 64)){
                 available = false;
               }
             }
             if(available){
-              collectible[i].collectible_set_rect_x(section_x_pos);
-              collectible[i].collectible_set_rect_y(70);
-              collectible[i].collectible_set_type(3); //sets the type to bottom
+              obstacle[i].obstacle_set_rect_x(section_x_pos);
+              obstacle[i].obstacle_set_rect_y(70);
+              obstacle[i].obstacle_set_type(3); //sets the type to bottom
             }
             break;
           case 3: //sets obstacle to the middle ground
-            for(int j = 0; j <  lasers; j++){
-              if(collectible[j].collectible_get_x_pos() > (screen_width - 64)){
+            for(int j = 0; j < lasers; j++){
+              if(obstacle[j].obstacle_get_x_pos() > (screen_width - 64)){
                 available = false;
               }
             }
             if(available){
-              collectible[i].collectible_set_rect_x(section_x_pos);
-              collectible[i].collectible_set_rect_y(230);
-              collectible[i].collectible_set_type(2); //sets the type to middle
+              obstacle[i].obstacle_set_rect_x(section_x_pos);
+              obstacle[i].obstacle_set_rect_y(230);
+              obstacle[i].obstacle_set_type(2); //sets the type to middle
             }
             break;
         }
@@ -256,9 +257,9 @@ void GameEngine::obj_render(){
 
   sprite.sprite_render(obj_renderer); //renders sprite
 
-  for(int i = 0; i <  lasers; i++){ //renders collectibles/obstacles
-    if(collectible[i].collectible_get_x_pos() > -100){
-      collectible[i].collectible_render(obj_renderer);
+  for(int i = 0; i <  lasers; i++){ //renders obstacles/obstacles
+    if(obstacle[i].obstacle_get_x_pos() > -100){
+      obstacle[i].obstacle_render(obj_renderer);
     }
   }
 
