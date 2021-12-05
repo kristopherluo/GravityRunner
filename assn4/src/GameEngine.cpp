@@ -75,7 +75,7 @@ void GameEngine::obj_init(){
   tile.tile_serve_texture(temp, obj_renderer, 4);
   SDL_FreeSurface(temp);
 
-  temp = IMG_Load("./images/spikes.png"); //adds spike obstacles
+  temp = IMG_Load("./images/lazer.png"); //adds spike obstacles
   int i;
   for(i = 0; i < 6; i++){ //for loop that serves in the obstacle texture to  lasers (number)" instances of the obstacle class
     obstacle[i].obstacle_serve_texture(temp, obj_renderer);
@@ -186,7 +186,7 @@ void GameEngine::obj_update(){
     if(score % 300 == 0 && score != 0){
       total_cases++;
       lasers++;
-      player.player_add_vel(5);
+      player.player_add_vel(1);
     }
     // cout << total_cases << endl;
     for(int i = 0; i < lasers; i++){ //loop that updates and generates the obstacle/obstacles
@@ -195,7 +195,7 @@ void GameEngine::obj_update(){
       bool available = true;
 
       if(obstacle[i].obstacle_get_x_pos() >= -64){ //changes obstacle position
-          obstacle[i].obstacle_change_rect_x(-10);
+          obstacle[i].obstacle_change_rect_x(-1 * player.player_get_vel());
       }else{  //if off screen, recycle to create "new" obstacle randomly
         switch(num){
           case 0:
