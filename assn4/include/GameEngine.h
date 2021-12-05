@@ -13,6 +13,8 @@ class GameEngine{
         SDL_Renderer* obj_renderer;
         SDL_Window* obj_window;
         SDL_Event obj_event;
+        SDL_Rect laser_end_rect;
+        SDL_Texture* laser_end;
 
         int screen_width, screen_height; //screen dimensions
         int this_start_time, this_duration, fps, frame_duration; //fps controller variables;

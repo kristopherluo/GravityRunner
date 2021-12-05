@@ -19,7 +19,7 @@ class Obstacle{
     private:
         SDL_Texture* obstacle_texture; //stores the obstacle texture
         SDL_Rect obstacle_rect; //stores the SDL_Rect information for the different textures
-        SDL_Rect obstacle_frame;
+        SDL_Rect obstacle_frame; //stores the SDL_Rect information for the frame of the texture
         int type; //varible to tell if the obstacle is on top middle or bottom
         bool collected; //keeps track of if a obstacle has been collected
         bool forwards;

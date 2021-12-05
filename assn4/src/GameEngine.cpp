@@ -22,6 +22,11 @@ GameEngine::GameEngine(SDL_Renderer* ren){
   game_is_running = true;
 
   obj_renderer = ren;
+
+  laser_end_rect.x = 0;
+  laser_end_rect.y = 0;
+  laser_end_rect.w = 25;
+  laser_end_rect.h = 25;
 }
 
 GameEngine::~GameEngine(){}
@@ -75,13 +80,17 @@ void GameEngine::obj_init(){
   tile.tile_serve_texture(temp, obj_renderer, 4);
   SDL_FreeSurface(temp);
 
-  temp = IMG_Load("./images/lazer.png"); //adds spike obstacles
+  temp = IMG_Load("./images/lazer.png"); //adds lazer obstacles
   int i;
   for(i = 0; i < 6; i++){ //for loop that serves in the obstacle texture to  lasers (number)" instances of the obstacle class
     obstacle[i].obstacle_serve_texture(temp, obj_renderer);
     obstacle[i].obstacle_set_rect_w(screen_width/8);
     obstacle[i].obstacle_set_rect_h(15);
   }
+  SDL_FreeSurface(temp);
+
+  temp = IMG_Load("./images/lazerEnd.png"); //adds lazer end
+  laser_end = SDL_CreateTextureFromSurface(obj_renderer, temp);
   SDL_FreeSurface(temp);
 }
 
@@ -139,7 +148,7 @@ void GameEngine::obj_updateUI(){
 
 void GameEngine::obj_update(){
 
-  if(screens.restart_game == true){ //resets player and obstacle/obstacle positions and states
+  if(screens.restart_game){ //resets player and obstacle/obstacle positions and states
     for(int i = 0; i <  lasers; i++){
       obstacle[i].obstacle_set_rect_x(-100);
       obstacle[i].obstacle_set_rect_y(-100);
@@ -263,6 +272,23 @@ void GameEngine::obj_render(){
   for(int i = 0; i <  lasers; i++){ //renders obstacles/obstacles
     if(obstacle[i].obstacle_get_x_pos() > -100){
       obstacle[i].obstacle_render(obj_renderer);
+      laser_end_rect.x = obstacle[i].obstacle_get_x_pos() - 10;
+      laser_end_rect.y = obstacle[i].obstacle_get_y_pos() - 4;
+      if(i > 0){
+        if(obstacle[i - 1].obstacle_get_type() != obstacle[i].obstacle_get_type() || obstacle[i - 1].obstacle_get_x_pos() + 80 < obstacle[i].obstacle_get_x_pos()){
+          SDL_RenderCopy(obj_renderer, laser_end, NULL, &laser_end_rect);
+        }
+      }else{
+        SDL_RenderCopy(obj_renderer, laser_end, NULL, &laser_end_rect);
+      }
+      laser_end_rect.x = obstacle[i].obstacle_get_x_pos() + 64;
+      if(i < (lasers - 1)){
+        if(obstacle[i + 1].obstacle_get_type() != obstacle[i].obstacle_get_type() || obstacle[i + 1].obstacle_get_x_pos() > obstacle[i].obstacle_get_x_pos() + 80){
+          SDL_RenderCopyEx(obj_renderer, laser_end, NULL, &laser_end_rect, 0.0, NULL, SDL_FLIP_HORIZONTAL);
+        }
+      }else{
+        SDL_RenderCopyEx(obj_renderer, laser_end, NULL, &laser_end_rect, 0.0, NULL, SDL_FLIP_HORIZONTAL);
+      }
     }
   }
 
@@ -270,10 +296,7 @@ void GameEngine::obj_render(){
 
   screens.render_score(obj_renderer, score);
 
-  if(!player_alive)
-  {
-    // cout<<"BAAAA"<<endl;
-    //render dead screen
+  if(!player_alive){
     screens.render_death_screen(obj_renderer);
   }
   
