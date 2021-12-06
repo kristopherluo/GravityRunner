@@ -12,17 +12,7 @@ Screens::~Screens(){}
 
 void Screens::main_menu(SDL_Renderer* obj_renderer)
 {
-  // SDL_Rect fill_the_screen;
-  // fill_the_screen.x = 0;
-  // fill_the_screen.y = 0;
-  // fill_the_screen.w = 640;
-  // fill_the_screen.h = 480;
-
-  // SDL_SetRenderDrawColor(obj_renderer, 255, 255, 255, 255);
-  // SDL_SetRenderDrawColor(obj_renderer, 245, 245, 245, 255);
-  // SDL_RenderDrawRect(obj_renderer, &fill_the_screen);
-  // SDL_RenderFillRect(obj_renderer, &fill_the_screen);
-
+  //Load background
   SDL_Surface* backSurface = IMG_Load("./images/background4.png");
   SDL_Rect backDest = { 0, 0, 640, 480 };
   SDL_Texture* backText = SDL_CreateTextureFromSurface(obj_renderer, backSurface);
@@ -99,7 +89,7 @@ void Screens::pause_menu(SDL_Renderer* obj_renderer)
   TTF_Font* ethnocentic = TTF_OpenFont("./Fonts/ethnocentric rg.ttf", 20);
   SDL_Color color = { 255, 255, 255 };
 
-  // The words on screen for Game over
+  // The words on screen for pause
 
   SDL_Surface* PauseSurface = TTF_RenderText_Solid(ethnocenticItalic, "Pause!!!", color);
   SDL_Rect PauseDest = { 110, 100, PauseSurface->w, PauseSurface->h };
