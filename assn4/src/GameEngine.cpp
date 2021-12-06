@@ -260,7 +260,6 @@ void GameEngine::obj_update(){
     sprite.sprite_set_rect_y(player.player_get_pos_y());
     sprite.sprite_update_frame();
     score++;
-    cout << total_cases << endl;
   }
 }
 
