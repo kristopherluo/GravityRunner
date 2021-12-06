@@ -21,6 +21,8 @@ class Screens
     bool restart_game; //true if user restarts the game
     bool end_game; //true if user ends game
     bool pause_game; //true if user pauses game
+    bool credits;
+    bool controls;
 
     Screens();
     ~Screens();
@@ -31,6 +33,8 @@ class Screens
     void render_death_screen(SDL_Renderer* obj_renderer); //screen that appears when player dies
 
     void render_score(SDL_Renderer* obj_renderer, int);
+    void render_credits(SDL_Renderer* obj_renderer);
+    void render_controls(SDL_Renderer* obj_renderer);
 };
 
 #endif

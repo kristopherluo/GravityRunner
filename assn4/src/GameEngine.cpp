@@ -124,21 +124,36 @@ void GameEngine::obj_updateUI(){
       tile.tile_update_screen_left(-1 * player.player_get_vel());
     }
   SDL_Delay(50);
-  }else if(screens.in_main_menu){
-    if(state[SDL_SCANCODE_SPACE]){ 
+  }
+  else if(screens.in_main_menu){
+    if(state[SDL_SCANCODE_SPACE] && screens.credits == false){ 
       if(!key_down){
         screens.in_main_menu = false;
+        screens.credits = false;
         screens.restart_game = true;
         score = 0;
       }
       key_down = true;
-    }else if(state[SDL_SCANCODE_E]){
+    }else if(state[SDL_SCANCODE_E] && screens.credits == false){
       game_is_running = false;
-    }else key_down = false;
-  }else{
+    }
+    else if(state[SDL_SCANCODE_C]){
+      screens.credits = true;
+
+    }
+    else if(state[SDL_SCANCODE_M])
+    { 
+      screens.credits = false;
+      screens.in_main_menu = true;
+    }
+
+    else key_down = false;
+  }
+
+  else{
     if(state[SDL_SCANCODE_R]) screens.restart_game = true;
     else if(state[SDL_SCANCODE_E]) game_is_running = false;
-    else if(state[SDL_SCANCODE_M]&& screens.pause_game) screens.in_main_menu = true;
+    else if(state[SDL_SCANCODE_M] && screens.pause_game) screens.in_main_menu = true;
     else if(screens.pause_game && state[SDL_SCANCODE_P]){
       if(!key_down){
         screens.pause_game = false;
@@ -313,10 +328,14 @@ void GameEngine::obj_render(){
     screens.render_death_screen(obj_renderer);
   }
   
-  if(screens.in_main_menu){ //renders main menu
+  if(screens.in_main_menu && !screens.credits){ //renders main menu
     screens.main_menu(obj_renderer);
   }else if(screens.pause_game){ //renders pause menu
     screens.pause_menu(obj_renderer);
+  }
+  else if(screens.credits)
+  {
+    screens.render_credits(obj_renderer);
   }
 
   SDL_RenderPresent(obj_renderer);

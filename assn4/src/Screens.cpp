@@ -5,6 +5,8 @@ Screens::Screens(){
   restart_game = false;
   end_game = false;
   pause_game = false;
+  credits = false;
+  controls = false;
 }
 
 Screens::~Screens(){}
@@ -39,10 +41,14 @@ void Screens::main_menu(SDL_Renderer* obj_renderer)
   SDL_Rect StartDest = { 80, 175, StartGame->w, StartGame->h };
   SDL_Texture* StartTexture = SDL_CreateTextureFromSurface(obj_renderer, StartGame);
   SDL_RenderCopy(obj_renderer, StartTexture, NULL, &StartDest);
-
+  
+  SDL_Surface* creditsSurface = TTF_RenderText_Solid(ethnocentic, "C- Credits", color);
+  SDL_Rect creditsDest = { 80, 225, creditsSurface->w, creditsSurface->h };
+  SDL_Texture* creditsTexture = SDL_CreateTextureFromSurface(obj_renderer, creditsSurface);
+  SDL_RenderCopy(obj_renderer, creditsTexture, NULL, &creditsDest); 
 
   SDL_Surface* MainMenuEnd = TTF_RenderText_Solid(ethnocentic, "E - Exit", color);
-  SDL_Rect MainMenuEndDest = { 80, 225, MainMenuEnd->w, MainMenuEnd->h };
+  SDL_Rect MainMenuEndDest = { 80, 275, MainMenuEnd->w, MainMenuEnd->h };
   SDL_Texture* MainMenuEndTexture = SDL_CreateTextureFromSurface(obj_renderer, MainMenuEnd);
   SDL_RenderCopy(obj_renderer, MainMenuEndTexture, NULL, &MainMenuEndDest);
 
@@ -51,10 +57,14 @@ void Screens::main_menu(SDL_Renderer* obj_renderer)
   SDL_FreeSurface(mainMenuSurface);
   SDL_FreeSurface(StartGame);
   SDL_FreeSurface(MainMenuEnd);
+  SDL_FreeSurface(creditsSurface);
+
 
   SDL_DestroyTexture(MainMenutexture);
   SDL_DestroyTexture(StartTexture);
   SDL_DestroyTexture(MainMenuEndTexture);
+  SDL_DestroyTexture(creditsTexture);
+
 
   TTF_CloseFont(ethnocenticItalic);
   TTF_CloseFont(ethnocentic);
@@ -239,4 +249,68 @@ void Screens::render_score(SDL_Renderer* obj_renderer, int score)
   SDL_FreeSurface(scoreSurface);
   SDL_DestroyTexture(scoreTexture);
   TTF_CloseFont(ethnocentic);
+}
+
+void Screens::render_credits(SDL_Renderer* obj_renderer)
+{
+  SDL_Rect fill_screen;
+  fill_screen.x = 0;
+  fill_screen.y = 0;
+  fill_screen.w = 640;
+  fill_screen.h = 480;
+
+  SDL_SetRenderDrawColor(obj_renderer, 0, 0, 0, 255);
+  SDL_RenderDrawRect(obj_renderer, &fill_screen);
+  SDL_RenderFillRect(obj_renderer, &fill_screen);
+
+  TTF_Font* ethnocenticItalic = TTF_OpenFont("./Fonts/ethnocentric rg it.ttf", 20);
+  TTF_Font* ethnocentic = TTF_OpenFont("./Fonts/ethnocentric rg.ttf", 12);
+  SDL_Color color = { 50, 205, 50 };
+
+  SDL_Surface* creditsSurface = TTF_RenderText_Solid(ethnocenticItalic, "Credits:", color);
+  SDL_Rect creditsDest = { 100, 80, creditsSurface->w, creditsSurface->h };
+  SDL_Texture* creditsTexture = SDL_CreateTextureFromSurface(obj_renderer, creditsSurface);
+  SDL_RenderCopy(obj_renderer, creditsTexture, NULL, &creditsDest);
+
+  SDL_Surface* credit1Surface = TTF_RenderText_Solid(ethnocentic, "Kristopher Luo: Team Leader, Designer, Programmer", color);
+  SDL_Rect credit1Dest = { 100, 175, credit1Surface->w, credit1Surface->h };
+  SDL_Texture* credit1Texture = SDL_CreateTextureFromSurface(obj_renderer, credit1Surface);
+  SDL_RenderCopy(obj_renderer, credit1Texture, NULL, &credit1Dest);
+
+  SDL_Surface* credit2Surface = TTF_RenderText_Solid(ethnocentic, "Chase Williams: Designer, Programmer", color);
+  SDL_Rect credit2Dest = { 100, 225, credit2Surface->w, credit2Surface->h };
+  SDL_Texture* credit2Texture = SDL_CreateTextureFromSurface(obj_renderer, credit2Surface);
+  SDL_RenderCopy(obj_renderer, credit2Texture, NULL, &credit2Dest);
+
+
+
+  SDL_Surface* toMenu = TTF_RenderText_Solid(ethnocentic, "M - Menu", color);
+  SDL_Rect toMenuDest = { 100, 255, toMenu->w, toMenu->h };
+  SDL_Texture* toMenuTexture = SDL_CreateTextureFromSurface(obj_renderer, toMenu);
+  SDL_RenderCopy(obj_renderer, toMenuTexture, NULL, &toMenuDest);
+
+
+  // Clean Up
+  SDL_FreeSurface(creditsSurface);
+  SDL_FreeSurface(credit1Surface);
+  SDL_FreeSurface(credit2Surface);
+
+  SDL_FreeSurface(toMenu);
+
+
+
+  SDL_DestroyTexture(creditsTexture);
+  SDL_DestroyTexture(credit1Texture);
+  SDL_DestroyTexture(credit2Texture);
+
+  SDL_DestroyTexture(toMenuTexture);
+
+
+  TTF_CloseFont(ethnocenticItalic);
+  TTF_CloseFont(ethnocentic);
+}
+
+void Screens::render_controls(SDL_Renderer* obj_renderer)
+{
+
 }
