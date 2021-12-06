@@ -17,7 +17,7 @@ GLOB = $(foreach d, $(wildcard $(1:=/*)), $(call rwildcard, $d, $2) $(filter $(s
 SRCS = $(call GLOB, src, *.cpp) 
 OBJS = $(patsubst %.cpp, bin/%.o, $(SRCS))
 
-EXEC = my_game
+EXEC = Gravity_Runner
 
 bin/%.o: %.cpp 
 	@mkdir -p $(dir $@) #I didn't mention it, but putting @ in front of a command prevents it from displaying to terminal
@@ -32,4 +32,4 @@ run: $(EXEC)
 
 clean:
 	rm -rf bin
-	rm -rf my_game
+	rm -rf Gravity_Runner

@@ -43,7 +43,7 @@ void GameEngine::obj_init(){
   //Enable gpu_enhanced textures
   IMG_Init(IMG_INIT_PNG);
   
-  obj_window = SDL_CreateWindow("my_game", 
+  obj_window = SDL_CreateWindow("Gravity Runner", 
 			       SDL_WINDOWPOS_CENTERED, 
 			       SDL_WINDOWPOS_CENTERED, 
 			       screen_width,

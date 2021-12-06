@@ -193,7 +193,7 @@ void Screens::render_death_screen(SDL_Renderer* obj_renderer)
   SDL_Texture* GameOvertexture = SDL_CreateTextureFromSurface(obj_renderer, gameOverSurface);
   SDL_RenderCopy(obj_renderer, GameOvertexture, NULL, &GameOverDest);
 
-  color = { 50, 205, 50 };
+  // color = { 50, 205, 50 };
   SDL_Surface* gameOverRestart = TTF_RenderText_Solid(ethnocentic, "R - Restart", color);
   SDL_Rect RestartDest = { 110, 175, gameOverRestart->w, gameOverRestart->h };
   SDL_Texture* RestartTexture = SDL_CreateTextureFromSurface(obj_renderer, gameOverRestart);
