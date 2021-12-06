@@ -164,6 +164,7 @@ void GameEngine::obj_update(){
     screens.restart_game = false; //reset restart game
     total_cases = 2;
     lasers = 3;
+    player.player_set_vel(10);
   }
 
   if(player_alive && !screens.pause_game){
@@ -237,7 +238,7 @@ void GameEngine::obj_update(){
             if(available){
               obstacle[i].obstacle_set_rect_x(section_x_pos);
               obstacle[i].obstacle_set_rect_y(70);
-              obstacle[i].obstacle_set_type(3); //sets the type to bottom
+              obstacle[i].obstacle_set_type(3); //sets the type to top
             }
             break;
           case 2: //sets obstacle to the middle ground
@@ -259,6 +260,7 @@ void GameEngine::obj_update(){
     sprite.sprite_set_rect_y(player.player_get_pos_y());
     sprite.sprite_update_frame();
     score++;
+    cout << total_cases << endl;
   }
 }
 
@@ -270,26 +272,37 @@ void GameEngine::obj_render(){
   sprite.sprite_render(obj_renderer); //renders sprite
 
   for(int i = 0; i < lasers; i++){ //renders obstacles/obstacles
-    if(obstacle[i].obstacle_get_x_pos() > -100){
+    if(obstacle[i].obstacle_get_x_pos() > -150){
       obstacle[i].obstacle_render(obj_renderer);
+      
+      bool left_end = true;
+      bool right_end = true;
+
+      for(int j = 0; j < lasers; j++){
+        if(i != j){
+          if(obstacle[i].obstacle_get_type() == obstacle[j].obstacle_get_type() && obstacle[i].obstacle_get_x_pos() > obstacle[j].obstacle_get_x_pos()){
+            if(obstacle[i].obstacle_get_x_pos() <= obstacle[j].obstacle_get_x_pos() + 100){
+              left_end = false;
+            }
+          }
+        }
+      }
       laser_end_rect[i].x = obstacle[i].obstacle_get_x_pos() - 10;
       laser_end_rect[i].y = obstacle[i].obstacle_get_y_pos() - 4;
-      if(i > 0){
-        if(obstacle[i - 1].obstacle_get_type() != obstacle[i].obstacle_get_type() || obstacle[i - 1].obstacle_get_x_pos() + 80 < obstacle[i].obstacle_get_x_pos()){
-          SDL_RenderCopy(obj_renderer, laser_end, NULL, &laser_end_rect[i]);
+      if(left_end && laser_end_rect[i].y > 50) SDL_RenderCopy(obj_renderer, laser_end, NULL, &laser_end_rect[i]);
+
+      for(int j = 0; j < lasers; j++){
+        if(i != j){
+          if(obstacle[i].obstacle_get_type() == obstacle[j].obstacle_get_type() && obstacle[i].obstacle_get_x_pos() < obstacle[j].obstacle_get_x_pos()){
+            if(obstacle[i].obstacle_get_x_pos() + 100 >= obstacle[j].obstacle_get_x_pos()){
+              right_end = false;
+            }
+          }
         }
-      }else{
-        SDL_RenderCopy(obj_renderer, laser_end, NULL, &laser_end_rect[i]);
       }
-      laser_end_rect[i+6].x = obstacle[i].obstacle_get_x_pos() + 64;
-      laser_end_rect[i+6].y = obstacle[i].obstacle_get_y_pos() - 4;
-      if(i < (lasers - 1)){
-        if(obstacle[i + 1].obstacle_get_type() != obstacle[i].obstacle_get_type() || obstacle[i + 1].obstacle_get_x_pos() > obstacle[i].obstacle_get_x_pos() + 80){
-          SDL_RenderCopyEx(obj_renderer, laser_end, NULL, &laser_end_rect[i+6], 0.0, NULL, SDL_FLIP_HORIZONTAL);
-        }
-      }else{
-        SDL_RenderCopyEx(obj_renderer, laser_end, NULL, &laser_end_rect[i+6], 0.0, NULL, SDL_FLIP_HORIZONTAL);
-      }
+      laser_end_rect[i + lasers].x = obstacle[i].obstacle_get_x_pos() + 70;
+      laser_end_rect[i + lasers].y = obstacle[i].obstacle_get_y_pos() - 4;
+      if(right_end && laser_end_rect[i + lasers].y > 50) SDL_RenderCopyEx(obj_renderer, laser_end, NULL, &laser_end_rect[i + lasers], 0.0, NULL, SDL_FLIP_HORIZONTAL);
     }
   }
 
@@ -322,5 +335,4 @@ void GameEngine::obj_quit(){
   IMG_Quit();
   SDL_Quit();
   TTF_Quit();
-
 }

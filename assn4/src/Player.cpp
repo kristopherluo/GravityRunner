@@ -36,3 +36,7 @@ void Player::player_set_pos_x(int x){
 void Player::player_set_pos_y(int y){
     player_pos_y = y;
 }
+
+void Player::player_set_vel(int v){
+    player_vel = v;
+}
