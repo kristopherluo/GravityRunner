@@ -1,5 +1,4 @@
 #include "Screens.h"
-#include "PlayerSprite.h"
 
 Screens::Screens(){
   in_main_menu = true;
@@ -27,7 +26,7 @@ void Screens::main_menu(SDL_Renderer* obj_renderer)
   // Load in fonts and colors
   TTF_Font* ethnocenticItalic = TTF_OpenFont("./Fonts/ethnocentric rg it.ttf", 40);
   TTF_Font* ethnocentic = TTF_OpenFont("./Fonts/ethnocentric rg.ttf", 20);
-  SDL_Color color = { 0, 0, 0 };
+  SDL_Color color = { 50, 205, 50 };
 
   // The words on screen for Main menu
   SDL_Surface* mainMenuSurface = TTF_RenderText_Solid(ethnocenticItalic, "Gravity Runner", color);
@@ -69,7 +68,7 @@ void Screens::pause_menu(SDL_Renderer* obj_renderer)
   fill_screen.w = 460;
   fill_screen.h = 300;
 
-  SDL_SetRenderDrawColor(obj_renderer, 60, 179, 113, 255);
+  SDL_SetRenderDrawColor(obj_renderer, 50, 205, 50, 255);
   SDL_RenderDrawRect(obj_renderer, &fill_screen);
   SDL_RenderFillRect(obj_renderer, &fill_screen);
 
@@ -87,7 +86,7 @@ void Screens::pause_menu(SDL_Renderer* obj_renderer)
   // Load in fonts and colors
   TTF_Font* ethnocenticItalic = TTF_OpenFont("./Fonts/ethnocentric rg it.ttf", 40);
   TTF_Font* ethnocentic = TTF_OpenFont("./Fonts/ethnocentric rg.ttf", 20);
-  SDL_Color color = { 255, 255, 255 };
+  SDL_Color color = { 50, 205, 50 };
 
   // The words on screen for pause
 
@@ -185,7 +184,7 @@ void Screens::render_death_screen(SDL_Renderer* obj_renderer)
   // Load in fonts and colors
   TTF_Font* ethnocenticItalic = TTF_OpenFont("./Fonts/ethnocentric rg it.ttf", 40);
   TTF_Font* ethnocentic = TTF_OpenFont("./Fonts/ethnocentric rg.ttf", 20);
-  SDL_Color color = { 255, 255, 255 };
+  SDL_Color color = { 255, 0, 0 };
 
   // The words on screen for Game over
 
@@ -194,7 +193,7 @@ void Screens::render_death_screen(SDL_Renderer* obj_renderer)
   SDL_Texture* GameOvertexture = SDL_CreateTextureFromSurface(obj_renderer, gameOverSurface);
   SDL_RenderCopy(obj_renderer, GameOvertexture, NULL, &GameOverDest);
 
-
+  color = { 50, 205, 50 };
   SDL_Surface* gameOverRestart = TTF_RenderText_Solid(ethnocentic, "R - Restart", color);
   SDL_Rect RestartDest = { 110, 175, gameOverRestart->w, gameOverRestart->h };
   SDL_Texture* RestartTexture = SDL_CreateTextureFromSurface(obj_renderer, gameOverRestart);
@@ -224,7 +223,7 @@ void Screens::render_score(SDL_Renderer* obj_renderer, int score)
 {
   // Load in fonts and colors
   TTF_Font* ethnocentic = TTF_OpenFont("./Fonts/ethnocentric rg.ttf", 20);
-  SDL_Color color = { 255, 255, 255 };
+  SDL_Color color = { 50, 205, 50 };
 
   string str_score = "Score: " + to_string(score);
   char const * the_score = str_score.c_str();

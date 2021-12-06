@@ -18,6 +18,7 @@ class Player{
         int player_get_step(); //returns step of player
         void player_set_pos_x(int x); //sets player x position to x parameter
         void player_set_pos_y(int y); //sets player y position to y parameter
+        void player_set_vel(int v); //sets velocity of player
 };
 
 #endif
