@@ -23,10 +23,12 @@ GameEngine::GameEngine(SDL_Renderer* ren){
 
   obj_renderer = ren;
 
-  laser_end_rect.x = 0;
-  laser_end_rect.y = 0;
-  laser_end_rect.w = 25;
-  laser_end_rect.h = 25;
+  for(int i = 0; i < 12; i++){
+    laser_end_rect[i].x = 0;
+    laser_end_rect[i].y = 0;
+    laser_end_rect[i].w = 25;
+    laser_end_rect[i].h = 25;
+  }
 }
 
 GameEngine::~GameEngine(){}
@@ -80,7 +82,7 @@ void GameEngine::obj_init(){
   tile.tile_serve_texture(temp, obj_renderer, 4);
   SDL_FreeSurface(temp);
 
-  temp = IMG_Load("./images/lazer.png"); //adds lazer obstacles
+  temp = IMG_Load("./images/laser.png"); //adds laser obstacles
   int i;
   for(i = 0; i < 6; i++){ //for loop that serves in the obstacle texture to  lasers (number)" instances of the obstacle class
     obstacle[i].obstacle_serve_texture(temp, obj_renderer);
@@ -89,7 +91,7 @@ void GameEngine::obj_init(){
   }
   SDL_FreeSurface(temp);
 
-  temp = IMG_Load("./images/lazerEnd.png"); //adds lazer end
+  temp = IMG_Load("./images/laser_end.png"); //adds laser end
   laser_end = SDL_CreateTextureFromSurface(obj_renderer, temp);
   SDL_FreeSurface(temp);
 }
@@ -195,8 +197,8 @@ void GameEngine::obj_update(){
       }
     }
     if(score % 300 == 0 && score != 0){
-      total_cases++;
-      lasers++;
+      if(total_cases < 3) total_cases++;
+      if(lasers < 6) lasers++;
       player.player_add_vel(1);
     }
     // cout << total_cases << endl;
@@ -256,8 +258,6 @@ void GameEngine::obj_update(){
     sprite.sprite_set_rect_x(player.player_get_pos_x());
     sprite.sprite_set_rect_y(player.player_get_pos_y());
     sprite.sprite_update_frame();
-    
-    //cout << "Score: " << score << endl;
     score++;
   }
 }
@@ -269,25 +269,26 @@ void GameEngine::obj_render(){
 
   sprite.sprite_render(obj_renderer); //renders sprite
 
-  for(int i = 0; i <  lasers; i++){ //renders obstacles/obstacles
+  for(int i = 0; i < lasers; i++){ //renders obstacles/obstacles
     if(obstacle[i].obstacle_get_x_pos() > -100){
       obstacle[i].obstacle_render(obj_renderer);
-      laser_end_rect.x = obstacle[i].obstacle_get_x_pos() - 10;
-      laser_end_rect.y = obstacle[i].obstacle_get_y_pos() - 4;
+      laser_end_rect[i].x = obstacle[i].obstacle_get_x_pos() - 10;
+      laser_end_rect[i].y = obstacle[i].obstacle_get_y_pos() - 4;
       if(i > 0){
         if(obstacle[i - 1].obstacle_get_type() != obstacle[i].obstacle_get_type() || obstacle[i - 1].obstacle_get_x_pos() + 80 < obstacle[i].obstacle_get_x_pos()){
-          SDL_RenderCopy(obj_renderer, laser_end, NULL, &laser_end_rect);
+          SDL_RenderCopy(obj_renderer, laser_end, NULL, &laser_end_rect[i]);
         }
       }else{
-        SDL_RenderCopy(obj_renderer, laser_end, NULL, &laser_end_rect);
+        SDL_RenderCopy(obj_renderer, laser_end, NULL, &laser_end_rect[i]);
       }
-      laser_end_rect.x = obstacle[i].obstacle_get_x_pos() + 64;
+      laser_end_rect[i+6].x = obstacle[i].obstacle_get_x_pos() + 64;
+      laser_end_rect[i+6].y = obstacle[i].obstacle_get_y_pos() - 4;
       if(i < (lasers - 1)){
         if(obstacle[i + 1].obstacle_get_type() != obstacle[i].obstacle_get_type() || obstacle[i + 1].obstacle_get_x_pos() > obstacle[i].obstacle_get_x_pos() + 80){
-          SDL_RenderCopyEx(obj_renderer, laser_end, NULL, &laser_end_rect, 0.0, NULL, SDL_FLIP_HORIZONTAL);
+          SDL_RenderCopyEx(obj_renderer, laser_end, NULL, &laser_end_rect[i+6], 0.0, NULL, SDL_FLIP_HORIZONTAL);
         }
       }else{
-        SDL_RenderCopyEx(obj_renderer, laser_end, NULL, &laser_end_rect, 0.0, NULL, SDL_FLIP_HORIZONTAL);
+        SDL_RenderCopyEx(obj_renderer, laser_end, NULL, &laser_end_rect[i+6], 0.0, NULL, SDL_FLIP_HORIZONTAL);
       }
     }
   }

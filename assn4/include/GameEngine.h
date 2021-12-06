@@ -13,7 +13,7 @@ class GameEngine{
         SDL_Renderer* obj_renderer;
         SDL_Window* obj_window;
         SDL_Event obj_event;
-        SDL_Rect laser_end_rect;
+        SDL_Rect laser_end_rect[12];
         SDL_Texture* laser_end;
 
         int screen_width, screen_height; //screen dimensions
