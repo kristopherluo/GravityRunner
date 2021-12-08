@@ -230,16 +230,27 @@ void Screens::render_score(SDL_Renderer* obj_renderer, int score)
   string str_score = "Score: " + to_string(score);
   char const * the_score = str_score.c_str();
 
+  string str_pause = "p - Pause ";
+  char const * HUD_pause = str_pause.c_str();
+
   // cout<< the_score <<endl;
 
   SDL_Surface* scoreSurface = TTF_RenderText_Solid(ethnocentic, the_score, color);
-  SDL_Rect scoreDest = { 20, 20, scoreSurface->w, scoreSurface->h };
+  SDL_Rect scoreDest = { 20, 10, scoreSurface->w, scoreSurface->h };
   SDL_Texture* scoreTexture = SDL_CreateTextureFromSurface(obj_renderer, scoreSurface);
   SDL_RenderCopy(obj_renderer, scoreTexture, NULL, &scoreDest);
+
+//pause HUD message
+  SDL_Surface* HUDSurface = TTF_RenderText_Solid(ethnocentic, HUD_pause, color);
+  SDL_Rect HUDDest = { 450, 10, HUDSurface->w, HUDSurface->h };
+  SDL_Texture* HUDTexture = SDL_CreateTextureFromSurface(obj_renderer, HUDSurface);
+  SDL_RenderCopy(obj_renderer, HUDTexture, NULL, &HUDDest);
 
   // Clean Up
   SDL_FreeSurface(scoreSurface);
   SDL_DestroyTexture(scoreTexture);
+  SDL_FreeSurface(HUDSurface);
+  SDL_DestroyTexture(HUDTexture);
   TTF_CloseFont(ethnocentic);
 }
 
