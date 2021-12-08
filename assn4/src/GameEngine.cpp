@@ -122,6 +122,12 @@ void GameEngine::obj_updateUI(){
   SDL_Delay(50);
   }
   else if(screens.in_main_menu){
+    sprite.sprite_set_state(1);
+    tile.tile_update_screen_left(-1 * player.player_get_vel());
+    for(int i = 0; i <  lasers; i++){
+      obstacle[i].obstacle_set_rect_x(-100);
+      obstacle[i].obstacle_set_rect_y(-100);
+    }
     if(state[SDL_SCANCODE_SPACE] && screens.credits == false){ //starts the game
       if(!key_down){
         screens.in_main_menu = false;
@@ -141,6 +147,7 @@ void GameEngine::obj_updateUI(){
       screens.in_main_menu = true;
     }
     else key_down = false;
+    SDL_Delay(50);
   }
 
   else{
@@ -177,7 +184,7 @@ void GameEngine::obj_update(){
     player.player_set_vel(10);
   }
 
-  if(player_alive && !screens.pause_game){
+  if(player_alive && !screens.pause_game && !screens.in_main_menu){
     for(int i = 0; i <  lasers; i++){ //obstacle collision detection
       if(player.player_get_pos_x() + 33 >= obstacle[i].obstacle_get_x_pos()){ //if the rightmost pos of player is greater than the leftmost pos of obstacle
         if(player.player_get_pos_x() <= obstacle[i].obstacle_get_x_pos() + 58){ //if the leftmost pos of player is less than the rightmost pos of obstacle
@@ -224,8 +231,6 @@ void GameEngine::obj_update(){
           obstacle[i].obstacle_change_rect_x(-1 * player.player_get_vel());
       }else{  //if off screen, recycle to create "new" obstacle randomly
         switch(num){
-          /*case 0:
-            break;*/
           case 0: //sets obstacle to the bottom ground
             for(int j = 0; j < lasers; j++){ //ensures no obstacles overlap
               if(obstacle[j].obstacle_get_x_pos() > (screen_width - 64)){
@@ -238,7 +243,6 @@ void GameEngine::obj_update(){
               obstacle[i].obstacle_set_type(1); //sets the type to bottom
             }
             break;
-          
           case 1: //sets obstacle to the top ground
             for(int j = 0; j < lasers; j++){
               if(obstacle[j].obstacle_get_x_pos() > (screen_width - 64)){
@@ -266,11 +270,11 @@ void GameEngine::obj_update(){
         }
       }
     }
-    sprite.sprite_set_rect_x(player.player_get_pos_x());
-    sprite.sprite_set_rect_y(player.player_get_pos_y());
-    sprite.sprite_update_frame();
     score++;
   }
+  sprite.sprite_set_rect_x(player.player_get_pos_x());
+  sprite.sprite_set_rect_y(player.player_get_pos_y());
+  sprite.sprite_update_frame();
 }
 
 void GameEngine::obj_render(){
@@ -317,19 +321,15 @@ void GameEngine::obj_render(){
 
   //particle_emit.particle_emitter_draw(obj_renderer); //renders particles
 
-  screens.render_score(obj_renderer, score);
+  if(!screens.in_main_menu) screens.render_score(obj_renderer, score);
 
-  if(!player_alive){
-    screens.render_death_screen(obj_renderer);
-  }
+  if(!player_alive) screens.render_death_screen(obj_renderer);
   
   if(screens.in_main_menu && !screens.credits){ //renders main menu
     screens.main_menu(obj_renderer);
   }else if(screens.pause_game){ //renders pause menu
     screens.pause_menu(obj_renderer);
-  }
-  else if(screens.credits)
-  {
+  }else if(screens.credits){ //renders credits
     screens.render_credits(obj_renderer);
   }
 
