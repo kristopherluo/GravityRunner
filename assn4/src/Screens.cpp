@@ -236,13 +236,13 @@ void Screens::render_score(SDL_Renderer* obj_renderer, int score)
   // cout<< the_score <<endl;
 
   SDL_Surface* scoreSurface = TTF_RenderText_Solid(ethnocentic, the_score, color);
-  SDL_Rect scoreDest = { 20, 10, scoreSurface->w, scoreSurface->h };
+  SDL_Rect scoreDest = { 20, 17, scoreSurface->w, scoreSurface->h };
   SDL_Texture* scoreTexture = SDL_CreateTextureFromSurface(obj_renderer, scoreSurface);
   SDL_RenderCopy(obj_renderer, scoreTexture, NULL, &scoreDest);
 
 //pause HUD message
   SDL_Surface* HUDSurface = TTF_RenderText_Solid(ethnocentic, HUD_pause, color);
-  SDL_Rect HUDDest = { 450, 10, HUDSurface->w, HUDSurface->h };
+  SDL_Rect HUDDest = { 470, 17, HUDSurface->w, HUDSurface->h };
   SDL_Texture* HUDTexture = SDL_CreateTextureFromSurface(obj_renderer, HUDSurface);
   SDL_RenderCopy(obj_renderer, HUDTexture, NULL, &HUDDest);
 
@@ -300,8 +300,8 @@ void Screens::render_credits(SDL_Renderer* obj_renderer)
   SDL_Texture* credit5Texture = SDL_CreateTextureFromSurface(obj_renderer, credit5Surface);
   SDL_RenderCopy(obj_renderer, credit5Texture, NULL, &credit5Dest);
 
-  SDL_Surface* toMenu = TTF_RenderText_Solid(ethnocentic, "M - Menu", color);
-  SDL_Rect toMenuDest = { 100, 375, toMenu->w, toMenu->h };
+  SDL_Surface* toMenu = TTF_RenderText_Solid(ethnocentic, "B - Back", color);
+  SDL_Rect toMenuDest = { 50, 425, toMenu->w, toMenu->h };
   SDL_Texture* toMenuTexture = SDL_CreateTextureFromSurface(obj_renderer, toMenu);
   SDL_RenderCopy(obj_renderer, toMenuTexture, NULL, &toMenuDest);
 

@@ -146,7 +146,7 @@ void GameEngine::obj_updateUI(){
     else if(state[SDL_SCANCODE_I]){ //goes to instructions
       screens.instructions = true;
     }
-    else if(state[SDL_SCANCODE_M] && screens.credits){ //goes to main menu from credits
+    else if(state[SDL_SCANCODE_B] && screens.credits){ //goes to main menu from credits
       screens.credits = false;
       screens.in_main_menu = true;
     }
@@ -282,7 +282,7 @@ void GameEngine::obj_update(){
   }
   sprite.sprite_set_rect_x(player.player_get_pos_x());
   sprite.sprite_set_rect_y(player.player_get_pos_y());
-  sprite.sprite_update_frame();
+  if(!screens.pause_game) sprite.sprite_update_frame();
 }
 
 void GameEngine::obj_render(){
