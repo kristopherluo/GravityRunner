@@ -6,24 +6,13 @@ Screens::Screens(){
   end_game = false;
   pause_game = false;
   credits = false;
+  instructions = false;
 }
 
 Screens::~Screens(){}
 
 void Screens::main_menu(SDL_Renderer* obj_renderer)
 {
-  //Load background
-  /*SDL_Surface* backSurface = IMG_Load("./images/background1.png");
-  SDL_Rect backDest = { 0, 0, 640, 480 };
-  SDL_Texture* backText = SDL_CreateTextureFromSurface(obj_renderer, backSurface);
-  SDL_RenderCopy(obj_renderer, backText, NULL, &backDest);
-
-  SDL_Surface* playerSurface = IMG_Load("./images/door1.png");
-  SDL_Rect PlayerDest = { 290, 200, playerSurface->w + 20, playerSurface->h + 20 };
-  SDL_Texture* playerText = SDL_CreateTextureFromSurface(obj_renderer, playerSurface);
-  SDL_RenderCopy(obj_renderer, playerText, NULL, &PlayerDest);*/
-
-
   // Load in fonts and colors
   TTF_Font* ethnocenticItalic = TTF_OpenFont("./Fonts/ethnocentric rg it.ttf", 40);
   TTF_Font* ethnocentic = TTF_OpenFont("./Fonts/ethnocentric rg.ttf", 20);
@@ -31,7 +20,7 @@ void Screens::main_menu(SDL_Renderer* obj_renderer)
 
   // The words on screen for Main menu
   SDL_Surface* mainMenuSurface = TTF_RenderText_Solid(ethnocenticItalic, "Gravity Runner", color);
-  SDL_Rect MainMenuDest = { 80, 140, mainMenuSurface->w, mainMenuSurface->h };
+  SDL_Rect MainMenuDest = { 70, 140, mainMenuSurface->w, mainMenuSurface->h };
   SDL_Texture* MainMenutexture = SDL_CreateTextureFromSurface(obj_renderer, mainMenuSurface);
   SDL_RenderCopy(obj_renderer, MainMenutexture, NULL, &MainMenuDest);
 
@@ -41,13 +30,18 @@ void Screens::main_menu(SDL_Renderer* obj_renderer)
   SDL_Texture* StartTexture = SDL_CreateTextureFromSurface(obj_renderer, StartGame);
   SDL_RenderCopy(obj_renderer, StartTexture, NULL, &StartDest);
   
-  SDL_Surface* creditsSurface = TTF_RenderText_Solid(ethnocentic, "C- Credits", color);
-  SDL_Rect creditsDest = { 80, 265, creditsSurface->w, creditsSurface->h };
+  SDL_Surface* creditsSurface = TTF_RenderText_Solid(ethnocentic, "C - Credits", color);
+  SDL_Rect creditsDest = { 383, 215, creditsSurface->w, creditsSurface->h };
   SDL_Texture* creditsTexture = SDL_CreateTextureFromSurface(obj_renderer, creditsSurface);
   SDL_RenderCopy(obj_renderer, creditsTexture, NULL, &creditsDest); 
 
+  SDL_Surface* InstructionsSurface = TTF_RenderText_Solid(ethnocentic, "I - Instructions", color);
+  SDL_Rect InstructionsDest = { 80, 265, InstructionsSurface->w, InstructionsSurface->h };
+  SDL_Texture* InstructionsTexture = SDL_CreateTextureFromSurface(obj_renderer, InstructionsSurface);
+  SDL_RenderCopy(obj_renderer, InstructionsTexture, NULL, &InstructionsDest);
+
   SDL_Surface* MainMenuEnd = TTF_RenderText_Solid(ethnocentic, "E - Exit", color);
-  SDL_Rect MainMenuEndDest = { 80, 315, MainMenuEnd->w, MainMenuEnd->h };
+  SDL_Rect MainMenuEndDest = { 440, 265, MainMenuEnd->w, MainMenuEnd->h };
   SDL_Texture* MainMenuEndTexture = SDL_CreateTextureFromSurface(obj_renderer, MainMenuEnd);
   SDL_RenderCopy(obj_renderer, MainMenuEndTexture, NULL, &MainMenuEndDest);
 
@@ -57,13 +51,13 @@ void Screens::main_menu(SDL_Renderer* obj_renderer)
   SDL_FreeSurface(StartGame);
   SDL_FreeSurface(MainMenuEnd);
   SDL_FreeSurface(creditsSurface);
-
+  SDL_FreeSurface(InstructionsSurface);
 
   SDL_DestroyTexture(MainMenutexture);
   SDL_DestroyTexture(StartTexture);
   SDL_DestroyTexture(MainMenuEndTexture);
   SDL_DestroyTexture(creditsTexture);
-
+  SDL_DestroyTexture(InstructionsTexture);
 
   TTF_CloseFont(ethnocenticItalic);
   TTF_CloseFont(ethnocentic);
@@ -318,6 +312,71 @@ void Screens::render_credits(SDL_Renderer* obj_renderer)
   SDL_DestroyTexture(credit5Texture);
   SDL_DestroyTexture(toMenuTexture);
 
+
+  TTF_CloseFont(ethnocenticItalic);
+  TTF_CloseFont(ethnocentic);
+}
+
+void Screens::render_instructions(SDL_Renderer* obj_renderer)
+{
+  SDL_Rect fill_screen;
+  fill_screen.x = 90;
+  fill_screen.y = 90;
+  fill_screen.w = 460;
+  fill_screen.h = 300;
+
+  SDL_SetRenderDrawColor(obj_renderer, 50, 205, 50, 255);
+  SDL_RenderDrawRect(obj_renderer, &fill_screen);
+  SDL_RenderFillRect(obj_renderer, &fill_screen);
+
+  //Game Over Box
+  SDL_Rect fill_the_screen;
+  fill_the_screen.x = 100;
+  fill_the_screen.y = 100;
+  fill_the_screen.w = 440;
+  fill_the_screen.h = 280;
+
+  SDL_SetRenderDrawColor(obj_renderer, 0, 0, 0, 255);
+  SDL_RenderDrawRect(obj_renderer, &fill_the_screen);
+  SDL_RenderFillRect(obj_renderer, &fill_the_screen);
+
+  // Load in fonts and colors
+  TTF_Font* ethnocenticItalic = TTF_OpenFont("./Fonts/ethnocentric rg it.ttf", 40);
+  TTF_Font* ethnocentic = TTF_OpenFont("./Fonts/ethnocentric rg.ttf", 20);
+  SDL_Color color = { 50, 205, 50 };
+
+  // The words on screen for Game over
+
+  SDL_Surface* InstructionsSurface = TTF_RenderText_Solid(ethnocenticItalic, "Instructions", color);
+  SDL_Rect InstructionsDest = { 110, 100, InstructionsSurface->w, InstructionsSurface->h };
+  SDL_Texture* InstructionsTexture = SDL_CreateTextureFromSurface(obj_renderer, InstructionsSurface);
+  SDL_RenderCopy(obj_renderer, InstructionsTexture, NULL, &InstructionsDest);
+
+  SDL_Surface* InstructionsSpace = TTF_RenderText_Solid(ethnocentic, "Space - Change Gravity", color);
+  SDL_Rect SpaceDest = { 110, 175, InstructionsSpace->w, InstructionsSpace->h };
+  SDL_Texture* SpaceTexture = SDL_CreateTextureFromSurface(obj_renderer, InstructionsSpace);
+  SDL_RenderCopy(obj_renderer, SpaceTexture, NULL, &SpaceDest);
+
+
+  SDL_Surface* InstructionsPause = TTF_RenderText_Solid(ethnocentic, "P - Pause", color);
+  SDL_Rect PauseDest = { 110, 225, InstructionsPause->w, InstructionsPause->h };
+  SDL_Texture* PauseTexture = SDL_CreateTextureFromSurface(obj_renderer, InstructionsPause);
+  SDL_RenderCopy(obj_renderer, PauseTexture, NULL, &PauseDest);
+
+  SDL_Surface* toMenu = TTF_RenderText_Solid(ethnocentic, "B - Back", color);
+  SDL_Rect toMenuDest = { 110, 325, toMenu->w, toMenu->h };
+  SDL_Texture* toMenuTexture = SDL_CreateTextureFromSurface(obj_renderer, toMenu);
+  SDL_RenderCopy(obj_renderer, toMenuTexture, NULL, &toMenuDest);
+
+
+  // Clean Up
+  SDL_FreeSurface(InstructionsSurface);
+  SDL_FreeSurface(InstructionsSpace);
+  SDL_FreeSurface(InstructionsPause);
+
+  SDL_DestroyTexture(InstructionsTexture);
+  SDL_DestroyTexture(SpaceTexture);
+  SDL_DestroyTexture(PauseTexture);
 
   TTF_CloseFont(ethnocenticItalic);
   TTF_CloseFont(ethnocentic);

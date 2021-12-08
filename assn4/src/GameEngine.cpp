@@ -128,22 +128,30 @@ void GameEngine::obj_updateUI(){
       obstacle[i].obstacle_set_rect_x(-100);
       obstacle[i].obstacle_set_rect_y(-100);
     }
-    if(state[SDL_SCANCODE_SPACE] && screens.credits == false){ //starts the game
+    if(state[SDL_SCANCODE_SPACE] && !screens.credits && !screens.instructions){ //starts the game
       if(!key_down){
         screens.in_main_menu = false;
         screens.credits = false;
+        screens.instructions = false;
         screens.restart_game = true;
         score = 0;
       }
       key_down = true;
-    }else if(state[SDL_SCANCODE_E] && screens.credits == false){ //exits the game
+    }else if(state[SDL_SCANCODE_E] && !screens.credits && !screens.instructions){ //exits the game
       game_is_running = false;
     }
     else if(state[SDL_SCANCODE_C]){ //goes to credits
       screens.credits = true;
     }
-    else if(state[SDL_SCANCODE_M] && screens.credits == true){ //goes to main menu from credits
+    else if(state[SDL_SCANCODE_I]){ //goes to instructions
+      screens.instructions = true;
+    }
+    else if(state[SDL_SCANCODE_M] && screens.credits){ //goes to main menu from credits
       screens.credits = false;
+      screens.in_main_menu = true;
+    }
+    else if(state[SDL_SCANCODE_B] && screens.instructions){ //goes to main menu from credits
+      screens.instructions = false;
       screens.in_main_menu = true;
     }
     else key_down = false;
@@ -325,12 +333,14 @@ void GameEngine::obj_render(){
 
   if(!player_alive) screens.render_death_screen(obj_renderer);
   
-  if(screens.in_main_menu && !screens.credits){ //renders main menu
+  if(screens.in_main_menu && !screens.credits && !screens.instructions){ //renders main menu
     screens.main_menu(obj_renderer);
   }else if(screens.pause_game){ //renders pause menu
     screens.pause_menu(obj_renderer);
   }else if(screens.credits){ //renders credits
     screens.render_credits(obj_renderer);
+  }else if(screens.instructions){ //renders instructions
+    screens.render_instructions(obj_renderer);
   }
 
   SDL_RenderPresent(obj_renderer);

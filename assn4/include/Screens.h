@@ -21,7 +21,8 @@ class Screens
     bool restart_game; //true if user restarts the game
     bool end_game; //true if user ends game
     bool pause_game; //true if user pauses game
-    bool credits;
+    bool credits; //true if user pulls up credits
+    bool instructions; //true if user pulls up instructions
 
     Screens();
     ~Screens();
@@ -33,6 +34,7 @@ class Screens
 
     void render_score(SDL_Renderer* obj_renderer, int);
     void render_credits(SDL_Renderer* obj_renderer);
+    void render_instructions(SDL_Renderer* obj_renderer);
 };
 
 #endif
