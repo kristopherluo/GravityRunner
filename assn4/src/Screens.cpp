@@ -24,13 +24,12 @@ void Screens::main_menu(SDL_Renderer* obj_renderer)
   SDL_Texture* MainMenutexture = SDL_CreateTextureFromSurface(obj_renderer, mainMenuSurface);
   SDL_RenderCopy(obj_renderer, MainMenutexture, NULL, &MainMenuDest);
 
-  color = { 50, 205, 50 };
+  color = { 255, 255, 255 };
   SDL_Surface* StartGame = TTF_RenderText_Solid(ethnocentic, "Space - Start", color);
   SDL_Rect StartDest = { 80, 235, StartGame->w, StartGame->h };
   SDL_Texture* StartTexture = SDL_CreateTextureFromSurface(obj_renderer, StartGame);
   SDL_RenderCopy(obj_renderer, StartTexture, NULL, &StartDest);
   
-  color = { 255, 255, 255 };
   SDL_Surface* creditsSurface = TTF_RenderText_Solid(ethnocentic, "C - Credits", color);
   SDL_Rect creditsDest = { 383, 235, creditsSurface->w, creditsSurface->h };
   SDL_Texture* creditsTexture = SDL_CreateTextureFromSurface(obj_renderer, creditsSurface);
@@ -360,7 +359,6 @@ void Screens::render_instructions(SDL_Renderer* obj_renderer)
   // Load in fonts and colors
   TTF_Font* ethnocenticItalic = TTF_OpenFont("./Fonts/ethnocentric rg it.ttf", 40);
   TTF_Font* ethnocentic = TTF_OpenFont("./Fonts/ethnocentric rg.ttf", 20);
-  TTF_Font* ethnocenticWarning = TTF_OpenFont("./Fonts/ethnocentric rg it.ttf", 25);
   SDL_Color color = { 50, 205, 50 };
 
   // The words on screen for Game over
@@ -382,14 +380,14 @@ void Screens::render_instructions(SDL_Renderer* obj_renderer)
   SDL_RenderCopy(obj_renderer, PauseTexture, NULL, &PauseDest);
 
   color = { 255, 0, 0 };
-  SDL_Surface* InstructionsLasers = TTF_RenderText_Solid(ethnocenticWarning, "AVOID THE RED LASERS", color);
+  SDL_Surface* InstructionsLasers = TTF_RenderText_Solid(ethnocentic, "AVOID THE RED LASERS!!!", color);
   SDL_Rect LasersDest = { 110, 275, InstructionsLasers->w, InstructionsLasers->h };
   SDL_Texture* LasersTexture = SDL_CreateTextureFromSurface(obj_renderer, InstructionsLasers);
   SDL_RenderCopy(obj_renderer, LasersTexture, NULL, &LasersDest);
 
   color = { 50, 205, 50 };
   SDL_Surface* toMenu = TTF_RenderText_Solid(ethnocentic, "B - Back", color);
-  SDL_Rect toMenuDest = { 110, 335, toMenu->w, toMenu->h };
+  SDL_Rect toMenuDest = { 110, 350, toMenu->w, toMenu->h };
   SDL_Texture* toMenuTexture = SDL_CreateTextureFromSurface(obj_renderer, toMenu);
   SDL_RenderCopy(obj_renderer, toMenuTexture, NULL, &toMenuDest);
 
