@@ -171,7 +171,7 @@ void GameEngine::obj_update(){
     }
     sprite.sprite_set_gravity_change();
     sprite.sprite_set_direction(SDL_FLIP_NONE);
-    player.player_set_pos_y(350);
+    player.player_set_pos_y(370);
     score = 0; //resets score
     player_alive = true; //sets player to be alive
     screens.pause_game = false; //resets pause game
@@ -198,13 +198,13 @@ void GameEngine::obj_update(){
     if(sprite.sprite_get_gravity_state()){ //if sprite is changing gravity
       sprite.sprite_set_state(0);
       if(sprite.sprite_get_direction()){ //player is normal oriented, changing gravity back toward the bottom ground
-        if(player.player_get_pos_y() < 350){ //ensures player stops changing gravity once it reaches the top ground
+        if(player.player_get_pos_y() < 370){ //ensures player stops changing gravity once it reaches the top ground
           player.player_set_pos_y(player.player_get_pos_y() + 10);
         }else{
           sprite.sprite_set_gravity_change();
         }
       }else if(!sprite.sprite_get_direction()){ //player is upside down, changing gravity toward the top ground
-          if(player.player_get_pos_y() > 70){ //ensures player stops changing gravity once it reaches the bottom ground
+          if(player.player_get_pos_y() > 50){ //ensures player stops changing gravity once it reaches the bottom ground
           player.player_set_pos_y(player.player_get_pos_y() - 10);
         }else{
           sprite.sprite_set_gravity_change();
@@ -238,7 +238,7 @@ void GameEngine::obj_update(){
             }
             if(available){
               obstacle[i].obstacle_set_rect_x(section_x_pos);
-              obstacle[i].obstacle_set_rect_y(385);
+              obstacle[i].obstacle_set_rect_y(410);
               obstacle[i].obstacle_set_type(1); //sets the type to bottom
             }
             break;
@@ -251,7 +251,7 @@ void GameEngine::obj_update(){
             }
             if(available){
               obstacle[i].obstacle_set_rect_x(section_x_pos);
-              obstacle[i].obstacle_set_rect_y(70);
+              obstacle[i].obstacle_set_rect_y(55);
               obstacle[i].obstacle_set_type(3); //sets the type to top
             }
             break;
@@ -302,7 +302,7 @@ void GameEngine::obj_render(){
       }
       laser_end_rect[i].x = obstacle[i].obstacle_get_x_pos() - 10;
       laser_end_rect[i].y = obstacle[i].obstacle_get_y_pos() - 4;
-      if(left_end && laser_end_rect[i].y > 50) SDL_RenderCopy(obj_renderer, laser_end, NULL, &laser_end_rect[i]);
+      if(left_end && laser_end_rect[i].y > 30) SDL_RenderCopy(obj_renderer, laser_end, NULL, &laser_end_rect[i]);
 
       for(int j = 0; j < lasers; j++){
         if(i != j){
@@ -315,7 +315,7 @@ void GameEngine::obj_render(){
       }
       laser_end_rect[i + lasers].x = obstacle[i].obstacle_get_x_pos() + 70;
       laser_end_rect[i + lasers].y = obstacle[i].obstacle_get_y_pos() - 4;
-      if(right_end && laser_end_rect[i + lasers].y > 50) SDL_RenderCopyEx(obj_renderer, laser_end, NULL, &laser_end_rect[i + lasers], 0.0, NULL, SDL_FLIP_HORIZONTAL);
+      if(right_end && laser_end_rect[i + lasers].y > 30) SDL_RenderCopyEx(obj_renderer, laser_end, NULL, &laser_end_rect[i + lasers], 0.0, NULL, SDL_FLIP_HORIZONTAL);
     }
   }
 
