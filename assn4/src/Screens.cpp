@@ -24,7 +24,7 @@ void Screens::main_menu(SDL_Renderer* obj_renderer)
   SDL_Texture* MainMenutexture = SDL_CreateTextureFromSurface(obj_renderer, mainMenuSurface);
   SDL_RenderCopy(obj_renderer, MainMenutexture, NULL, &MainMenuDest);
 
-
+  color = { 255, 255, 255 };
   SDL_Surface* StartGame = TTF_RenderText_Solid(ethnocentic, "Space - Start", color);
   SDL_Rect StartDest = { 80, 215, StartGame->w, StartGame->h };
   SDL_Texture* StartTexture = SDL_CreateTextureFromSurface(obj_renderer, StartGame);
