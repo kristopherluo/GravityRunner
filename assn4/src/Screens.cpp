@@ -277,32 +277,32 @@ void Screens::render_credits(SDL_Renderer* obj_renderer)
   SDL_Color color = { 50, 205, 50 };
 
   SDL_Surface* creditsSurface = TTF_RenderText_Solid(ethnocenticItalic, "Credits:", color);
-  SDL_Rect creditsDest = { 100, 80, creditsSurface->w, creditsSurface->h };
+  SDL_Rect creditsDest = { 260, 60, creditsSurface->w, creditsSurface->h };
   SDL_Texture* creditsTexture = SDL_CreateTextureFromSurface(obj_renderer, creditsSurface);
   SDL_RenderCopy(obj_renderer, creditsTexture, NULL, &creditsDest);
 
   SDL_Surface* credit1Surface = TTF_RenderText_Solid(ethnocentic, "Kristopher Luo: Team Leader, Designer, Programmer", color);
-  SDL_Rect credit1Dest = { 100, 125, credit1Surface->w, credit1Surface->h };
+  SDL_Rect credit1Dest = { 70, 125, credit1Surface->w, credit1Surface->h };
   SDL_Texture* credit1Texture = SDL_CreateTextureFromSurface(obj_renderer, credit1Surface);
   SDL_RenderCopy(obj_renderer, credit1Texture, NULL, &credit1Dest);
 
   SDL_Surface* credit2Surface = TTF_RenderText_Solid(ethnocentic, "Chase Williams: Designer, Programmer", color);
-  SDL_Rect credit2Dest = { 100, 175, credit2Surface->w, credit2Surface->h };
+  SDL_Rect credit2Dest = { 70, 175, credit2Surface->w, credit2Surface->h };
   SDL_Texture* credit2Texture = SDL_CreateTextureFromSurface(obj_renderer, credit2Surface);
   SDL_RenderCopy(obj_renderer, credit2Texture, NULL, &credit2Dest);
 
   SDL_Surface* credit3Surface = TTF_RenderText_Solid(ethnocentic, "Logan Barrow: Designer", color);
-  SDL_Rect credit3Dest = { 100, 225, credit3Surface->w, credit3Surface->h };
+  SDL_Rect credit3Dest = { 70, 225, credit3Surface->w, credit3Surface->h };
   SDL_Texture* credit3Texture = SDL_CreateTextureFromSurface(obj_renderer, credit3Surface);
   SDL_RenderCopy(obj_renderer, credit3Texture, NULL, &credit3Dest);
 
   SDL_Surface* credit4Surface = TTF_RenderText_Solid(ethnocentic, "Chloe Caples: Programmer", color);
-  SDL_Rect credit4Dest = { 100, 275, credit4Surface->w, credit4Surface->h };
+  SDL_Rect credit4Dest = { 70, 275, credit4Surface->w, credit4Surface->h };
   SDL_Texture* credit4Texture = SDL_CreateTextureFromSurface(obj_renderer, credit4Surface);
   SDL_RenderCopy(obj_renderer, credit4Texture, NULL, &credit4Dest);
 
   SDL_Surface* credit5Surface = TTF_RenderText_Solid(ethnocentic, "Emily Johnson: Visual Artist, Programmer", color);
-  SDL_Rect credit5Dest = { 100, 325, credit5Surface->w, credit5Surface->h };
+  SDL_Rect credit5Dest = { 70, 325, credit5Surface->w, credit5Surface->h };
   SDL_Texture* credit5Texture = SDL_CreateTextureFromSurface(obj_renderer, credit5Surface);
   SDL_RenderCopy(obj_renderer, credit5Texture, NULL, &credit5Dest);
 
