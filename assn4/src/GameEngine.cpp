@@ -122,6 +122,9 @@ void GameEngine::obj_updateUI(){
   SDL_Delay(50);
   }
   else if(screens.in_main_menu){
+    sprite.sprite_set_gravity_change();
+    sprite.sprite_set_direction(SDL_FLIP_NONE); 
+    player.player_set_pos_y(370);
     sprite.sprite_set_state(1);
     tile.tile_update_screen_left(-1 * player.player_get_vel());
     for(int i = 0; i <  lasers; i++){
@@ -163,6 +166,10 @@ void GameEngine::obj_updateUI(){
     else if(state[SDL_SCANCODE_E]) game_is_running = false;
     else if(state[SDL_SCANCODE_M] && screens.pause_game){
       screens.pause_game = false;
+      screens.in_main_menu = true;
+    }else if(state[SDL_SCANCODE_M] && !player_alive){
+      player_alive = true;
+      screens.end_game = false;
       screens.in_main_menu = true;
     }else if(screens.pause_game && state[SDL_SCANCODE_P]){
       if(!key_down){

@@ -24,24 +24,25 @@ void Screens::main_menu(SDL_Renderer* obj_renderer)
   SDL_Texture* MainMenutexture = SDL_CreateTextureFromSurface(obj_renderer, mainMenuSurface);
   SDL_RenderCopy(obj_renderer, MainMenutexture, NULL, &MainMenuDest);
 
-  color = { 255, 255, 255 };
+  color = { 50, 205, 50 };
   SDL_Surface* StartGame = TTF_RenderText_Solid(ethnocentic, "Space - Start", color);
-  SDL_Rect StartDest = { 80, 215, StartGame->w, StartGame->h };
+  SDL_Rect StartDest = { 80, 235, StartGame->w, StartGame->h };
   SDL_Texture* StartTexture = SDL_CreateTextureFromSurface(obj_renderer, StartGame);
   SDL_RenderCopy(obj_renderer, StartTexture, NULL, &StartDest);
   
+  color = { 255, 255, 255 };
   SDL_Surface* creditsSurface = TTF_RenderText_Solid(ethnocentic, "C - Credits", color);
-  SDL_Rect creditsDest = { 383, 215, creditsSurface->w, creditsSurface->h };
+  SDL_Rect creditsDest = { 383, 235, creditsSurface->w, creditsSurface->h };
   SDL_Texture* creditsTexture = SDL_CreateTextureFromSurface(obj_renderer, creditsSurface);
   SDL_RenderCopy(obj_renderer, creditsTexture, NULL, &creditsDest); 
 
   SDL_Surface* InstructionsSurface = TTF_RenderText_Solid(ethnocentic, "I - Instructions", color);
-  SDL_Rect InstructionsDest = { 80, 265, InstructionsSurface->w, InstructionsSurface->h };
+  SDL_Rect InstructionsDest = { 80, 285, InstructionsSurface->w, InstructionsSurface->h };
   SDL_Texture* InstructionsTexture = SDL_CreateTextureFromSurface(obj_renderer, InstructionsSurface);
   SDL_RenderCopy(obj_renderer, InstructionsTexture, NULL, &InstructionsDest);
 
   SDL_Surface* MainMenuEnd = TTF_RenderText_Solid(ethnocentic, "E - Exit", color);
-  SDL_Rect MainMenuEndDest = { 440, 265, MainMenuEnd->w, MainMenuEnd->h };
+  SDL_Rect MainMenuEndDest = { 440, 285, MainMenuEnd->w, MainMenuEnd->h };
   SDL_Texture* MainMenuEndTexture = SDL_CreateTextureFromSurface(obj_renderer, MainMenuEnd);
   SDL_RenderCopy(obj_renderer, MainMenuEndTexture, NULL, &MainMenuEndDest);
 
@@ -195,15 +196,18 @@ void Screens::render_death_screen(SDL_Renderer* obj_renderer)
   SDL_Texture* GameOvertexture = SDL_CreateTextureFromSurface(obj_renderer, gameOverSurface);
   SDL_RenderCopy(obj_renderer, GameOvertexture, NULL, &GameOverDest);
 
-  // color = { 50, 205, 50 };
   SDL_Surface* gameOverRestart = TTF_RenderText_Solid(ethnocentic, "R - Restart", color);
   SDL_Rect RestartDest = { 110, 175, gameOverRestart->w, gameOverRestart->h };
   SDL_Texture* RestartTexture = SDL_CreateTextureFromSurface(obj_renderer, gameOverRestart);
   SDL_RenderCopy(obj_renderer, RestartTexture, NULL, &RestartDest);
 
+  SDL_Surface* gameOverMenu = TTF_RenderText_Solid(ethnocentic, "M - Menu", color);
+  SDL_Rect MenuDest = { 110, 225, gameOverMenu->w, gameOverMenu->h };
+  SDL_Texture* MenuTexture = SDL_CreateTextureFromSurface(obj_renderer, gameOverMenu);
+  SDL_RenderCopy(obj_renderer, MenuTexture, NULL, &MenuDest);
 
   SDL_Surface* gameOverEnd = TTF_RenderText_Solid(ethnocentic, "E - Exit", color);
-  SDL_Rect EndDest = { 110, 225, gameOverEnd->w, gameOverEnd->h };
+  SDL_Rect EndDest = { 110, 275, gameOverEnd->w, gameOverEnd->h };
   SDL_Texture* EndTexture = SDL_CreateTextureFromSurface(obj_renderer, gameOverEnd);
   SDL_RenderCopy(obj_renderer, EndTexture, NULL, &EndDest);
 
@@ -211,10 +215,12 @@ void Screens::render_death_screen(SDL_Renderer* obj_renderer)
   // Clean Up
   SDL_FreeSurface(gameOverSurface);
   SDL_FreeSurface(gameOverRestart);
+  SDL_FreeSurface(gameOverMenu);
   SDL_FreeSurface(gameOverEnd);
 
   SDL_DestroyTexture(GameOvertexture);
   SDL_DestroyTexture(RestartTexture);
+  SDL_DestroyTexture(MenuTexture);
   SDL_DestroyTexture(EndTexture);
 
   TTF_CloseFont(ethnocenticItalic);
@@ -354,6 +360,7 @@ void Screens::render_instructions(SDL_Renderer* obj_renderer)
   // Load in fonts and colors
   TTF_Font* ethnocenticItalic = TTF_OpenFont("./Fonts/ethnocentric rg it.ttf", 40);
   TTF_Font* ethnocentic = TTF_OpenFont("./Fonts/ethnocentric rg.ttf", 20);
+  TTF_Font* ethnocenticWarning = TTF_OpenFont("./Fonts/ethnocentric rg it.ttf", 25);
   SDL_Color color = { 50, 205, 50 };
 
   // The words on screen for Game over
@@ -374,8 +381,15 @@ void Screens::render_instructions(SDL_Renderer* obj_renderer)
   SDL_Texture* PauseTexture = SDL_CreateTextureFromSurface(obj_renderer, InstructionsPause);
   SDL_RenderCopy(obj_renderer, PauseTexture, NULL, &PauseDest);
 
+  color = { 255, 0, 0 };
+  SDL_Surface* InstructionsLasers = TTF_RenderText_Solid(ethnocenticWarning, "AVOID THE RED LASERS", color);
+  SDL_Rect LasersDest = { 110, 275, InstructionsLasers->w, InstructionsLasers->h };
+  SDL_Texture* LasersTexture = SDL_CreateTextureFromSurface(obj_renderer, InstructionsLasers);
+  SDL_RenderCopy(obj_renderer, LasersTexture, NULL, &LasersDest);
+
+  color = { 50, 205, 50 };
   SDL_Surface* toMenu = TTF_RenderText_Solid(ethnocentic, "B - Back", color);
-  SDL_Rect toMenuDest = { 110, 325, toMenu->w, toMenu->h };
+  SDL_Rect toMenuDest = { 110, 335, toMenu->w, toMenu->h };
   SDL_Texture* toMenuTexture = SDL_CreateTextureFromSurface(obj_renderer, toMenu);
   SDL_RenderCopy(obj_renderer, toMenuTexture, NULL, &toMenuDest);
 
@@ -384,10 +398,12 @@ void Screens::render_instructions(SDL_Renderer* obj_renderer)
   SDL_FreeSurface(InstructionsSurface);
   SDL_FreeSurface(InstructionsSpace);
   SDL_FreeSurface(InstructionsPause);
+  SDL_FreeSurface(InstructionsLasers);
 
   SDL_DestroyTexture(InstructionsTexture);
   SDL_DestroyTexture(SpaceTexture);
   SDL_DestroyTexture(PauseTexture);
+  SDL_DestroyTexture(LasersTexture);
 
   TTF_CloseFont(ethnocenticItalic);
   TTF_CloseFont(ethnocentic);
