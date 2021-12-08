@@ -5,7 +5,6 @@
 #include "PlayerSprite.h"
 #include "TileHandler.h"
 #include "Obstacle.h"
-#include "ParticleEmitter.h"
 #include "Screens.h"
 
 class GameEngine{
@@ -28,8 +27,6 @@ class GameEngine{
         PlayerSprite sprite; //variable of type PlayerSprite to call that class' functions
         TileHandler tile; //variable of type TileHandler to call that class' functions
         Obstacle obstacle[10]; //array of type Collectible to create instances of that GameObject
-        Particle particle; //variable of type Particle to call that class' functions
-        ParticleEmitter particle_emit; //variable of type ParticleEmitter to call that class' functions
         Screens screens; //Variable of screens for start/end screens
     
     public:

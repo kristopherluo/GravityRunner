@@ -11,8 +11,7 @@ Screens::Screens(){
 
 Screens::~Screens(){}
 
-void Screens::main_menu(SDL_Renderer* obj_renderer)
-{
+void Screens::render_main_menu(SDL_Renderer* obj_renderer){
   // Load in fonts and colors
   TTF_Font* ethnocenticItalic = TTF_OpenFont("./Fonts/ethnocentric rg it.ttf", 40);
   TTF_Font* ethnocentic = TTF_OpenFont("./Fonts/ethnocentric rg.ttf", 20);
@@ -63,8 +62,7 @@ void Screens::main_menu(SDL_Renderer* obj_renderer)
   TTF_CloseFont(ethnocentic);
 }
 
-void Screens::pause_menu(SDL_Renderer* obj_renderer)
-{
+void Screens::render_pause_menu(SDL_Renderer* obj_renderer){
   SDL_Rect fill_screen;
   fill_screen.x = 90;
   fill_screen.y = 90;
@@ -122,16 +120,14 @@ void Screens::pause_menu(SDL_Renderer* obj_renderer)
   SDL_Rect Player_src;
   int tick = SDL_GetTicks() / 1000;
 
-  if(tick % 2 == 0)
-  {
+  if(tick % 2 == 0){
     Player_src.x = 0;
     Player_src.y = 0;
     Player_src.w = 32;
     Player_src.h = 32;
   }
 
-  if(tick % 2 == 1)
-  {
+  if(tick % 2 == 1){
     Player_src.x = 0;
     Player_src.y = 64;
     Player_src.w = 32;
@@ -159,8 +155,7 @@ void Screens::pause_menu(SDL_Renderer* obj_renderer)
 }
 
     
-void Screens::render_death_screen(SDL_Renderer* obj_renderer)
-{
+void Screens::render_death_screen(SDL_Renderer* obj_renderer){
 
   SDL_Rect fill_screen;
   fill_screen.x = 90;
@@ -226,8 +221,7 @@ void Screens::render_death_screen(SDL_Renderer* obj_renderer)
   TTF_CloseFont(ethnocentic);
 }
 
-void Screens::render_score(SDL_Renderer* obj_renderer, int score)
-{
+void Screens::render_score(SDL_Renderer* obj_renderer, int score){
   // Load in fonts and colors
   TTF_Font* ethnocentic = TTF_OpenFont("./Fonts/ethnocentric rg.ttf", 20);
   SDL_Color color = { 50, 205, 50 };
@@ -259,8 +253,7 @@ void Screens::render_score(SDL_Renderer* obj_renderer, int score)
   TTF_CloseFont(ethnocentic);
 }
 
-void Screens::render_credits(SDL_Renderer* obj_renderer)
-{
+void Screens::render_credits(SDL_Renderer* obj_renderer){
   SDL_Rect fill_screen;
   fill_screen.x = 0;
   fill_screen.y = 0;
@@ -333,8 +326,7 @@ void Screens::render_credits(SDL_Renderer* obj_renderer)
   TTF_CloseFont(ethnocentic);
 }
 
-void Screens::render_instructions(SDL_Renderer* obj_renderer)
-{
+void Screens::render_instructions(SDL_Renderer* obj_renderer){
   SDL_Rect fill_screen;
   fill_screen.x = 90;
   fill_screen.y = 90;

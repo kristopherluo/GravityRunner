@@ -1,7 +1,7 @@
 #include "TileHandler.h"
 
 TileHandler::TileHandler(){
-    tile_rect[0].y = 410; //rect initialization for tileGradient
+    tile_rect[0].y = 410; //rect initialization for ground1
     tile_rect[0].w = 40;
     tile_rect[0].h = 40;
 
@@ -9,13 +9,13 @@ TileHandler::TileHandler(){
     tile_rect[1].w = tile_rect[0].w;
     tile_rect[1].h = tile_rect[0].h;
 
-    tile_rect[2].y = 70; //rect initialization for background
-    tile_rect[2].w = 320; //width of the screen
-    tile_rect[2].h = 340; //height of the screen
+    tile_rect[2].y = 70; //rect initialization for background1
+    tile_rect[2].w = 320; 
+    tile_rect[2].h = 340; 
 
-    tile_rect[3].y = 330; //rect initialization for background
-    tile_rect[3].w = 80; //width of the screen
-    tile_rect[3].h = 80; //height of the screen
+    tile_rect[3].y = 330; //rect initialization for door1
+    tile_rect[3].w = 80; 
+    tile_rect[3].h = 80; 
 
     screen_left = 0;
     flip = SDL_FLIP_VERTICAL;
@@ -69,13 +69,3 @@ void TileHandler::tile_update_screen_left(int x_change){
         screen_left = 0;
     }
 }
-
-bool TileHandler::tile_reach_screen_end(){
-    if(screen_left == 0 || screen_left == tile_rect[0].w + tile_rect[0].w/2){ //checks if the screen has reached the edge
-        return true;
-    }else{
-        return false;
-    }
-}
-
-

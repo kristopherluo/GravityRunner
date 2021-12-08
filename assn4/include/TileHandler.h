@@ -27,7 +27,6 @@ class TileHandler{
         void tile_serve_texture(SDL_Surface* tile_surface, SDL_Renderer* object_renderer, int tile_num); //serves a tile texture to TileHandler class which is stored in the tile_texture array
         void tile_render(SDL_Renderer* obj_renderer); //renders all the tiles that are in the camera view
         void tile_update_screen_left(int x_change); //changes the left side of the camera view
-        bool tile_reach_screen_end(); //returns true if the screen_left variable (representing the left edge camera view) reaches the bounds
 };
 
 #endif

@@ -55,7 +55,7 @@ void GameEngine::obj_init(){
   SDL_RenderClear(obj_renderer);
 
   SDL_Surface* temp = IMG_Load("./images/idleAlien.png"); //imports all the .png's needed and calls the serve_texture functions of the PlayerSprite and
-  sprite.sprite_serve_texture_idle(temp, obj_renderer);     //TileHandler classes to import them
+  sprite.sprite_serve_texture_idle(temp, obj_renderer);   //TileHandler classes to import them
   SDL_FreeSurface(temp);
 
   temp = IMG_Load("./images/runAlien.png");
@@ -80,7 +80,7 @@ void GameEngine::obj_init(){
 
   temp = IMG_Load("./images/laser.png"); //adds laser obstacles
   int i;
-  for(i = 0; i < 6; i++){ //for loop that serves in the obstacle texture to  lasers (number)" instances of the obstacle class
+  for(i = 0; i < 6; i++){ //for loop that serves in the obstacle texture to 6 instances of the obstacle class
     obstacle[i].obstacle_serve_texture(temp, obj_renderer);
     obstacle[i].obstacle_set_rect_w(screen_width/8);
     obstacle[i].obstacle_set_rect_h(15);
@@ -162,16 +162,16 @@ void GameEngine::obj_updateUI(){
   }
 
   else{
-    if(state[SDL_SCANCODE_R]) screens.restart_game = true;
-    else if(state[SDL_SCANCODE_E]) game_is_running = false;
-    else if(state[SDL_SCANCODE_M] && screens.pause_game){
+    if(state[SDL_SCANCODE_R]) screens.restart_game = true; //restarts game
+    else if(state[SDL_SCANCODE_E]) game_is_running = false; //exits game
+    else if(state[SDL_SCANCODE_M] && screens.pause_game){ //returns to main menu from pause menu
       screens.pause_game = false;
       screens.in_main_menu = true;
-    }else if(state[SDL_SCANCODE_M] && !player_alive){
+    }else if(state[SDL_SCANCODE_M] && !player_alive){ //returns to main menu from game over screen
       player_alive = true;
       screens.end_game = false;
       screens.in_main_menu = true;
-    }else if(screens.pause_game && state[SDL_SCANCODE_P]){
+    }else if(screens.pause_game && state[SDL_SCANCODE_P]){ //returns to game from pause menu
       if(!key_down){
         screens.pause_game = false;
       }
@@ -194,13 +194,13 @@ void GameEngine::obj_update(){
     player_alive = true; //sets player to be alive
     screens.pause_game = false; //resets pause game
     screens.restart_game = false; //reset restart game
-    total_cases = 2;
-    lasers = 3;
-    player.player_set_vel(10);
+    total_cases = 2; //sets total obstacle locations back to 2
+    lasers = 3; //sets total possible lasers on the screen back to 3
+    player.player_set_vel(10); //sets player velocity back to 10
   }
 
   if(player_alive && !screens.pause_game && !screens.in_main_menu){
-    for(int i = 0; i <  lasers; i++){ //obstacle collision detection
+    for(int i = 0; i <  lasers; i++){ //obstacle collision detection (Rectangle collider)
       if(player.player_get_pos_x() + 33 >= obstacle[i].obstacle_get_x_pos()){ //if the rightmost pos of player is greater than the leftmost pos of obstacle
         if(player.player_get_pos_x() <= obstacle[i].obstacle_get_x_pos() + 58){ //if the leftmost pos of player is less than the rightmost pos of obstacle
           if(player.player_get_pos_y() + 65 >= obstacle[i].obstacle_get_y_pos()){ //if pos of bottom of player is greater than top of obstacle
@@ -212,7 +212,6 @@ void GameEngine::obj_update(){
       }
     }
 
-    //particle_emit.particle_emitter_update();
     if(sprite.sprite_get_gravity_state()){ //if sprite is changing gravity
       sprite.sprite_set_state(0);
       if(sprite.sprite_get_direction()){ //player is normal oriented, changing gravity back toward the bottom ground
@@ -229,12 +228,11 @@ void GameEngine::obj_update(){
         }
       }
     }
-    if(score % 300 == 0 && score != 0){
+    if(score % 300 == 0 && score != 0){ //increases difficulty as game/score progresses
       if(total_cases < 3) total_cases++;
       if(lasers < 6) lasers++;
       player.player_add_vel(1);
     }
-    // cout << total_cases << endl;
     for(int i = 0; i < lasers; i++){ //loop that updates and generates the obstacle/obstacles
       int num = rand() % total_cases;
       int section_x_pos = 640;
@@ -306,7 +304,7 @@ void GameEngine::obj_render(){
       bool left_end = true;
       bool right_end = true;
 
-      for(int j = 0; j < lasers; j++){
+      for(int j = 0; j < lasers; j++){ //next two for loops ensure that connected lasers only have 2 endpoints
         if(i != j){
           if(obstacle[i].obstacle_get_type() == obstacle[j].obstacle_get_type() && obstacle[i].obstacle_get_x_pos() > obstacle[j].obstacle_get_x_pos()){
             if(obstacle[i].obstacle_get_x_pos() <= obstacle[j].obstacle_get_x_pos() + 100){
@@ -334,21 +332,14 @@ void GameEngine::obj_render(){
     }
   }
 
-  //particle_emit.particle_emitter_draw(obj_renderer); //renders particles
+  if(!screens.in_main_menu) screens.render_score(obj_renderer, score); //renders score
 
-  if(!screens.in_main_menu) screens.render_score(obj_renderer, score);
-
-  if(!player_alive) screens.render_death_screen(obj_renderer);
+  if(!player_alive) screens.render_death_screen(obj_renderer); //renders death screen
   
-  if(screens.in_main_menu && !screens.credits && !screens.instructions){ //renders main menu
-    screens.main_menu(obj_renderer);
-  }else if(screens.pause_game){ //renders pause menu
-    screens.pause_menu(obj_renderer);
-  }else if(screens.credits){ //renders credits
-    screens.render_credits(obj_renderer);
-  }else if(screens.instructions){ //renders instructions
-    screens.render_instructions(obj_renderer);
-  }
+  if(screens.in_main_menu && !screens.credits && !screens.instructions) screens.render_main_menu(obj_renderer); //renders main menu
+  else if(screens.pause_game) screens.render_pause_menu(obj_renderer); //renders pause menu
+  else if(screens.credits) screens.render_credits(obj_renderer); //renders credits
+  else if(screens.instructions) screens.render_instructions(obj_renderer); //renders instructions
 
   SDL_RenderPresent(obj_renderer);
 

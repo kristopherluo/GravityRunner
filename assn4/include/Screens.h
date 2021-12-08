@@ -11,12 +11,8 @@
 #include <SDL2/SDL_image.h> 
 using namespace std;
 
-class Screens
-{
-    // private:
-
+class Screens{
     public:
-
     bool in_main_menu; //false if user starts game from main menu
     bool restart_game; //true if user restarts the game
     bool end_game; //true if user ends game
@@ -27,14 +23,13 @@ class Screens
     Screens();
     ~Screens();
 
-
-    void main_menu(SDL_Renderer* obj_renderer); //menu that appears when game is launched
-    void pause_menu(SDL_Renderer* obj_renderer); //menu that appears while pausing in game
+    void render_main_menu(SDL_Renderer* obj_renderer); //menu that appears when game is launched
+    void render_pause_menu(SDL_Renderer* obj_renderer); //menu that appears while pausing in game
     void render_death_screen(SDL_Renderer* obj_renderer); //screen that appears when player dies
 
-    void render_score(SDL_Renderer* obj_renderer, int);
-    void render_credits(SDL_Renderer* obj_renderer);
-    void render_instructions(SDL_Renderer* obj_renderer);
+    void render_score(SDL_Renderer* obj_renderer, int); //score that appears during the game
+    void render_credits(SDL_Renderer* obj_renderer); //renders the credits screen
+    void render_instructions(SDL_Renderer* obj_renderer); //renders the instructions screen
 };
 
 #endif
