@@ -13,7 +13,7 @@ Screens::~Screens(){}
 void Screens::main_menu(SDL_Renderer* obj_renderer)
 {
   //Load background
-  SDL_Surface* backSurface = IMG_Load("./images/background4.png");
+  SDL_Surface* backSurface = IMG_Load("./images/background1.png");
   SDL_Rect backDest = { 0, 0, 640, 480 };
   SDL_Texture* backText = SDL_CreateTextureFromSurface(obj_renderer, backSurface);
   SDL_RenderCopy(obj_renderer, backText, NULL, &backDest);
@@ -90,7 +90,6 @@ void Screens::pause_menu(SDL_Renderer* obj_renderer)
   SDL_SetRenderDrawColor(obj_renderer, 0, 0, 0, 255);
   SDL_RenderDrawRect(obj_renderer, &fill_the_screen);
   SDL_RenderFillRect(obj_renderer, &fill_the_screen);
-
 
   // Load in fonts and colors
   TTF_Font* ethnocenticItalic = TTF_OpenFont("./Fonts/ethnocentric rg it.ttf", 40);

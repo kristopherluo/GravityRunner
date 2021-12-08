@@ -17,7 +17,7 @@ using namespace std;
 class TileHandler{
     private:
         SDL_Texture* tile_texture[5]; //stores the 3 textures background, ground, and ground2
-        SDL_Rect tile_rect[5]; //stores the SDL_Rect information for the different textures
+        SDL_Rect tile_rect[4]; //stores the SDL_Rect information for the different textures
         SDL_RendererFlip flip; //controls where the sprite is flipped or not
         int screen_left; //represents the left edge camera view
     public:
