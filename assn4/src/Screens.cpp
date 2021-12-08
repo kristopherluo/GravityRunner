@@ -13,7 +13,7 @@ Screens::~Screens(){}
 void Screens::main_menu(SDL_Renderer* obj_renderer)
 {
   //Load background
-  SDL_Surface* backSurface = IMG_Load("./images/background1.png");
+  /*SDL_Surface* backSurface = IMG_Load("./images/background1.png");
   SDL_Rect backDest = { 0, 0, 640, 480 };
   SDL_Texture* backText = SDL_CreateTextureFromSurface(obj_renderer, backSurface);
   SDL_RenderCopy(obj_renderer, backText, NULL, &backDest);
@@ -21,7 +21,7 @@ void Screens::main_menu(SDL_Renderer* obj_renderer)
   SDL_Surface* playerSurface = IMG_Load("./images/door1.png");
   SDL_Rect PlayerDest = { 290, 200, playerSurface->w + 20, playerSurface->h + 20 };
   SDL_Texture* playerText = SDL_CreateTextureFromSurface(obj_renderer, playerSurface);
-  SDL_RenderCopy(obj_renderer, playerText, NULL, &PlayerDest);
+  SDL_RenderCopy(obj_renderer, playerText, NULL, &PlayerDest);*/
 
 
   // Load in fonts and colors
@@ -31,23 +31,23 @@ void Screens::main_menu(SDL_Renderer* obj_renderer)
 
   // The words on screen for Main menu
   SDL_Surface* mainMenuSurface = TTF_RenderText_Solid(ethnocenticItalic, "Gravity Runner", color);
-  SDL_Rect MainMenuDest = { 80, 100, mainMenuSurface->w, mainMenuSurface->h };
+  SDL_Rect MainMenuDest = { 80, 140, mainMenuSurface->w, mainMenuSurface->h };
   SDL_Texture* MainMenutexture = SDL_CreateTextureFromSurface(obj_renderer, mainMenuSurface);
   SDL_RenderCopy(obj_renderer, MainMenutexture, NULL, &MainMenuDest);
 
 
   SDL_Surface* StartGame = TTF_RenderText_Solid(ethnocentic, "Space - Start", color);
-  SDL_Rect StartDest = { 80, 175, StartGame->w, StartGame->h };
+  SDL_Rect StartDest = { 80, 215, StartGame->w, StartGame->h };
   SDL_Texture* StartTexture = SDL_CreateTextureFromSurface(obj_renderer, StartGame);
   SDL_RenderCopy(obj_renderer, StartTexture, NULL, &StartDest);
   
   SDL_Surface* creditsSurface = TTF_RenderText_Solid(ethnocentic, "C- Credits", color);
-  SDL_Rect creditsDest = { 80, 225, creditsSurface->w, creditsSurface->h };
+  SDL_Rect creditsDest = { 80, 265, creditsSurface->w, creditsSurface->h };
   SDL_Texture* creditsTexture = SDL_CreateTextureFromSurface(obj_renderer, creditsSurface);
   SDL_RenderCopy(obj_renderer, creditsTexture, NULL, &creditsDest); 
 
   SDL_Surface* MainMenuEnd = TTF_RenderText_Solid(ethnocentic, "E - Exit", color);
-  SDL_Rect MainMenuEndDest = { 80, 275, MainMenuEnd->w, MainMenuEnd->h };
+  SDL_Rect MainMenuEndDest = { 80, 315, MainMenuEnd->w, MainMenuEnd->h };
   SDL_Texture* MainMenuEndTexture = SDL_CreateTextureFromSurface(obj_renderer, MainMenuEnd);
   SDL_RenderCopy(obj_renderer, MainMenuEndTexture, NULL, &MainMenuEndDest);
 

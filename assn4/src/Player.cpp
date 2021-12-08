@@ -2,7 +2,7 @@
 
 Player::Player(){
   player_pos_x = 200;
-  player_pos_y = 330;
+  player_pos_y = 370;
   player_vel = 10;
   player_step = 40;
 }
