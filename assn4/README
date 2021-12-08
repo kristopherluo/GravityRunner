@@ -1,26 +1,27 @@
  RUNNING/COMPILING:
 - make clean: cleans
 - make: compiles the program
-- ./my_game: runs the program
+- ./gravity_runner: runs the program
+
+Requirements:
+- SDL2
+- Coded in C++
 
 GAME OBJECTIVE:
-- Change gravity to dodge all of the obstacles
+- You are an Alien who can control gravity! Change gravity to dodge all of the lasers.
 
 PLAYER CONTROL KEYS:
-- Space bar to change gravity
+- Space bar: change gravity
+- P: pause game
 
 IMAGES (SPRITE SHEETS, TILE SHEETS, COLLECTIBLES):
-- I downloaded all my images from a website called CraftPix.net.
+- The Alien sprite, ground1 tile, and obstacles were created by Emily Johnson.
+- The rest of the images are from a tile sheet made by Balaji Sethuraman.
 
-DESCRIPTION:
-This program displays, at the horizontal center of the screen, a player sprite constructed from sprite sheets. When idle, the player sprite loops through an "idle" sprite sheet, which displays the player sprite's idle animation. The player sprite can be controlled by the LEFT and RIGHT arrow keys, which displays the player sprite's running animation by looping through a "run" sprite sheet. 
+Credits:
+- Kristopher Luo: Team Leader, Designer, Programmer
+- Chase Williams: Designer, Programmer
+- Logan Barrow: Designer
+- Chloe Caples: Programmer
+- Emily Johnson: Visual Artist, Programmer
 
-The program also displays a background and a ground constructed from a tile sheet. The ground and background is only rendered if it is in the camera frame. 
-
-When the user inputs the LEFT or RIGHT arrow keys to control the player, rather than moving the player sprite to the left or right, the ground and background move to give the illusion that the player is actually moving (the background moves at a slower speed than the ground for a PARALLAX effect). 
-
-However, when the player sprite/camera view "reaches" the edge of the set map of the game, the ground and background stop moving, and the player sprite is able to be physically moved on half the screen closest to the edge. When it returns back to the middle, the player becomes stationary, and the ground and background move once again. 
-
-There are also collectibles on the ground, which are all instances of a Collectible class. These collectibles (coins) can be collected by walking over them, which also has a particle effect when done. 
-
-There are also box collectibles stacked on the ground in two locations. They are in the collectible class because, later on, I hope to be able to destroy them to reveal coins or other collectible items. In the meantime, however, they just act as obstacles/walls that the player cannot walk through.
