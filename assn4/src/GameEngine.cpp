@@ -62,7 +62,7 @@ void GameEngine::obj_init(){
   sprite.sprite_serve_texture_run(temp, obj_renderer);
   SDL_FreeSurface(temp);
 
-  temp = IMG_Load("./images/ground1.png");
+  temp = IMG_Load("./images/tileGradient.png");
   tile.tile_serve_texture(temp, obj_renderer, 0);
   SDL_FreeSurface(temp);
 
@@ -70,7 +70,7 @@ void GameEngine::obj_init(){
   tile.tile_serve_texture(temp, obj_renderer, 1);
   SDL_FreeSurface(temp);
 
-  temp = IMG_Load("./images/ground3.png");
+  temp = IMG_Load("./images/tileGradient.png");
   tile.tile_serve_texture(temp, obj_renderer, 2);
   SDL_FreeSurface(temp);
 
