@@ -126,7 +126,7 @@ void GameEngine::obj_updateUI(){
   SDL_Delay(50);
   }
   else if(screens.in_main_menu){
-    if(state[SDL_SCANCODE_SPACE] && screens.credits == false){ 
+    if(state[SDL_SCANCODE_SPACE] && screens.credits == false){ //starts the game
       if(!key_down){
         screens.in_main_menu = false;
         screens.credits = false;
@@ -134,19 +134,16 @@ void GameEngine::obj_updateUI(){
         score = 0;
       }
       key_down = true;
-    }else if(state[SDL_SCANCODE_E] && screens.credits == false){
+    }else if(state[SDL_SCANCODE_E] && screens.credits == false){ //exits the game
       game_is_running = false;
     }
-    else if(state[SDL_SCANCODE_C]){
+    else if(state[SDL_SCANCODE_C]){ //goes to credits
       screens.credits = true;
-
     }
-    else if(state[SDL_SCANCODE_M])
-    { 
+    else if(state[SDL_SCANCODE_M] && screens.credits == true){ //goes to main menu from credits
       screens.credits = false;
       screens.in_main_menu = true;
     }
-
     else key_down = false;
   }
 
