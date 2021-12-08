@@ -286,7 +286,7 @@ void Screens::render_credits(SDL_Renderer* obj_renderer)
   SDL_Texture* credit3Texture = SDL_CreateTextureFromSurface(obj_renderer, credit3Surface);
   SDL_RenderCopy(obj_renderer, credit3Texture, NULL, &credit3Dest);
 
-  SDL_Surface* credit4Surface = TTF_RenderText_Solid(ethnocentic, "Chloe Caples: Developer", color);
+  SDL_Surface* credit4Surface = TTF_RenderText_Solid(ethnocentic, "Chloe Caples: Programmer", color);
   SDL_Rect credit4Dest = { 100, 275, credit4Surface->w, credit4Surface->h };
   SDL_Texture* credit4Texture = SDL_CreateTextureFromSurface(obj_renderer, credit4Surface);
   SDL_RenderCopy(obj_renderer, credit4Texture, NULL, &credit4Dest);
