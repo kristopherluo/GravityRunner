@@ -6,7 +6,6 @@ Screens::Screens(){
   end_game = false;
   pause_game = false;
   credits = false;
-  controls = false;
 }
 
 Screens::~Screens(){}
@@ -273,19 +272,32 @@ void Screens::render_credits(SDL_Renderer* obj_renderer)
   SDL_RenderCopy(obj_renderer, creditsTexture, NULL, &creditsDest);
 
   SDL_Surface* credit1Surface = TTF_RenderText_Solid(ethnocentic, "Kristopher Luo: Team Leader, Designer, Programmer", color);
-  SDL_Rect credit1Dest = { 100, 175, credit1Surface->w, credit1Surface->h };
+  SDL_Rect credit1Dest = { 100, 125, credit1Surface->w, credit1Surface->h };
   SDL_Texture* credit1Texture = SDL_CreateTextureFromSurface(obj_renderer, credit1Surface);
   SDL_RenderCopy(obj_renderer, credit1Texture, NULL, &credit1Dest);
 
   SDL_Surface* credit2Surface = TTF_RenderText_Solid(ethnocentic, "Chase Williams: Designer, Programmer", color);
-  SDL_Rect credit2Dest = { 100, 225, credit2Surface->w, credit2Surface->h };
+  SDL_Rect credit2Dest = { 100, 175, credit2Surface->w, credit2Surface->h };
   SDL_Texture* credit2Texture = SDL_CreateTextureFromSurface(obj_renderer, credit2Surface);
   SDL_RenderCopy(obj_renderer, credit2Texture, NULL, &credit2Dest);
 
+  SDL_Surface* credit3Surface = TTF_RenderText_Solid(ethnocentic, "Logan Barrow: Designer", color);
+  SDL_Rect credit3Dest = { 100, 225, credit3Surface->w, credit3Surface->h };
+  SDL_Texture* credit3Texture = SDL_CreateTextureFromSurface(obj_renderer, credit3Surface);
+  SDL_RenderCopy(obj_renderer, credit3Texture, NULL, &credit3Dest);
 
+  SDL_Surface* credit4Surface = TTF_RenderText_Solid(ethnocentic, "Chloe Caples: Developer", color);
+  SDL_Rect credit4Dest = { 100, 275, credit4Surface->w, credit4Surface->h };
+  SDL_Texture* credit4Texture = SDL_CreateTextureFromSurface(obj_renderer, credit4Surface);
+  SDL_RenderCopy(obj_renderer, credit4Texture, NULL, &credit4Dest);
+
+  SDL_Surface* credit5Surface = TTF_RenderText_Solid(ethnocentic, "Emily Johnson: Visual Artist, Programmer", color);
+  SDL_Rect credit5Dest = { 100, 325, credit5Surface->w, credit5Surface->h };
+  SDL_Texture* credit5Texture = SDL_CreateTextureFromSurface(obj_renderer, credit5Surface);
+  SDL_RenderCopy(obj_renderer, credit5Texture, NULL, &credit5Dest);
 
   SDL_Surface* toMenu = TTF_RenderText_Solid(ethnocentic, "M - Menu", color);
-  SDL_Rect toMenuDest = { 100, 255, toMenu->w, toMenu->h };
+  SDL_Rect toMenuDest = { 100, 375, toMenu->w, toMenu->h };
   SDL_Texture* toMenuTexture = SDL_CreateTextureFromSurface(obj_renderer, toMenu);
   SDL_RenderCopy(obj_renderer, toMenuTexture, NULL, &toMenuDest);
 
@@ -294,23 +306,20 @@ void Screens::render_credits(SDL_Renderer* obj_renderer)
   SDL_FreeSurface(creditsSurface);
   SDL_FreeSurface(credit1Surface);
   SDL_FreeSurface(credit2Surface);
-
+  SDL_FreeSurface(credit3Surface);
+  SDL_FreeSurface(credit4Surface);
+  SDL_FreeSurface(credit5Surface);
   SDL_FreeSurface(toMenu);
-
-
 
   SDL_DestroyTexture(creditsTexture);
   SDL_DestroyTexture(credit1Texture);
   SDL_DestroyTexture(credit2Texture);
-
+  SDL_DestroyTexture(credit3Texture);
+  SDL_DestroyTexture(credit4Texture);
+  SDL_DestroyTexture(credit5Texture);
   SDL_DestroyTexture(toMenuTexture);
 
 
   TTF_CloseFont(ethnocenticItalic);
   TTF_CloseFont(ethnocentic);
-}
-
-void Screens::render_controls(SDL_Renderer* obj_renderer)
-{
-
 }
