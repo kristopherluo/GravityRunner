@@ -235,13 +235,13 @@ void Screens::render_score(SDL_Renderer* obj_renderer, int score){
   // cout<< the_score <<endl;
 
   SDL_Surface* scoreSurface = TTF_RenderText_Solid(ethnocentic, the_score, color);
-  SDL_Rect scoreDest = { 20, 10, scoreSurface->w, scoreSurface->h };
+  SDL_Rect scoreDest = { 20, 2, scoreSurface->w, scoreSurface->h };
   SDL_Texture* scoreTexture = SDL_CreateTextureFromSurface(obj_renderer, scoreSurface);
   SDL_RenderCopy(obj_renderer, scoreTexture, NULL, &scoreDest);
 
 //pause HUD message
   SDL_Surface* HUDSurface = TTF_RenderText_Solid(ethnocentic, HUD_pause, color);
-  SDL_Rect HUDDest = { 470, 10, HUDSurface->w, HUDSurface->h };
+  SDL_Rect HUDDest = { 470, 2, HUDSurface->w, HUDSurface->h };
   SDL_Texture* HUDTexture = SDL_CreateTextureFromSurface(obj_renderer, HUDSurface);
   SDL_RenderCopy(obj_renderer, HUDTexture, NULL, &HUDDest);
 
