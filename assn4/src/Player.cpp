@@ -3,8 +3,8 @@
 Player::Player(){
   player_pos_x = 200;
   player_pos_y = 370;
-  player_vel = 10;
-  player_step = 40;
+  player_start_vel = 4;
+  player_vel = player_start_vel;
 }
 
 Player::~Player(){}
@@ -23,10 +23,6 @@ int Player::player_get_vel(){
 
 void Player::player_add_vel(int v){
     player_vel += v;
-}
-
-int Player::player_get_step(){
-    return player_step;
 }
 
 void Player::player_set_pos_x(int x){

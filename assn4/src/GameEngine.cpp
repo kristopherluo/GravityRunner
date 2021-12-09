@@ -4,8 +4,7 @@ GameEngine::GameEngine(SDL_Renderer* ren){
   screen_width = 640;
   screen_height = 480;
 
-  this_start_time = SDL_GetTicks();
-  fps = 60;
+  fps = 70;
   frame_duration = 1000/fps;
 
   obstacle_rect_x = -300;
@@ -15,6 +14,10 @@ GameEngine::GameEngine(SDL_Renderer* ren){
   
   lasers = 3;
   total_cases = 2;
+
+  for(int i = 0; i < 5; i++){
+    counter[i] = 0;
+  }
 
   key_down = false;
 
@@ -93,6 +96,7 @@ void GameEngine::obj_init(){
 }
 
 void GameEngine::obj_updateUI(){
+  this_start_time = SDL_GetTicks();
   while (SDL_PollEvent(&obj_event)){
     if (obj_event.type == SDL_QUIT) game_is_running = false; //quits game is user presses X
   }
@@ -120,13 +124,13 @@ void GameEngine::obj_updateUI(){
       sprite.sprite_set_state(1);
       tile.tile_update_screen_left(-1 * player.player_get_vel());
     }
-  SDL_Delay(50);
   }
   else if(screens.in_main_menu){
     sprite.sprite_set_gravity_change();
     sprite.sprite_set_direction(SDL_FLIP_NONE); 
     player.player_set_pos_y(370);
     sprite.sprite_set_state(1);
+    player.player_set_vel(player.player_start_vel);
     tile.tile_update_screen_left(-1 * player.player_get_vel());
     for(int i = 0; i <  lasers; i++){
       obstacle[i].obstacle_set_rect_x(-100);
@@ -159,7 +163,6 @@ void GameEngine::obj_updateUI(){
       screens.in_main_menu = true;
     }
     else key_down = false;
-    SDL_Delay(50);
   }
 
   else{
@@ -182,7 +185,6 @@ void GameEngine::obj_updateUI(){
 }
 
 void GameEngine::obj_update(){
-
   if(screens.restart_game){ //resets player and obstacle/obstacle positions and states
     for(int i = 0; i <  lasers; i++){
       obstacle[i].obstacle_set_rect_x(-100);
@@ -197,7 +199,7 @@ void GameEngine::obj_update(){
     screens.restart_game = false; //reset restart game
     total_cases = 2; //sets total obstacle locations back to 2
     lasers = 3; //sets total possible lasers on the screen back to 3
-    player.player_set_vel(10); //sets player velocity back to 10
+    player.player_set_vel(player.player_start_vel); //sets player velocity back to 10
   }
 
   if(player_alive && !screens.pause_game && !screens.in_main_menu){
@@ -217,29 +219,33 @@ void GameEngine::obj_update(){
       sprite.sprite_set_state(0);
       if(sprite.sprite_get_direction()){ //player is normal oriented, changing gravity back toward the bottom ground
         if(player.player_get_pos_y() < 370){ //ensures player stops changing gravity once it reaches the top ground
-          player.player_set_pos_y(player.player_get_pos_y() + 10);
+          player.player_set_pos_y(player.player_get_pos_y() + player.player_start_vel);
         }else{
           sprite.sprite_set_gravity_change();
         }
       }else if(!sprite.sprite_get_direction()){ //player is upside down, changing gravity toward the top ground
           if(player.player_get_pos_y() > 50){ //ensures player stops changing gravity once it reaches the bottom ground
-          player.player_set_pos_y(player.player_get_pos_y() - 10);
+          player.player_set_pos_y(player.player_get_pos_y() - player.player_start_vel);
         }else{
           sprite.sprite_set_gravity_change();
         }
       }
     }
-    if(score % 300 == 0 && score != 0){ //increases difficulty as game/score progresses
+    if(score % 1000 == 0 && score != 0){ //increases difficulty as game/score progresses
       if(total_cases < 3) total_cases++;
       if(lasers < 6) lasers++;
-      player.player_add_vel(1);
     }
+    if(score % 1500 == 0 && score != 0) player.player_add_vel(1);
+
     for(int i = 0; i < lasers; i++){ //loop that updates and generates the obstacle/obstacles
       int num = rand() % total_cases;
       int section_x_pos = 640;
       bool available = true;
 
-      obstacle[i].obstacle_update();
+      if(counter[i] == 5){
+        obstacle[i].obstacle_update();
+        counter[i] = 0;
+      }else counter[i]++;
 
       if(obstacle[i].obstacle_get_x_pos() >= -64){ //changes obstacle position
           obstacle[i].obstacle_change_rect_x(-1 * player.player_get_vel());
