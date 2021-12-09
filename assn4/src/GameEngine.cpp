@@ -237,9 +237,10 @@ void GameEngine::obj_update(){
       if(total_cases < 3) total_cases++;
       if(lasers < 6) lasers++;
     }
-    if(score % speed_update == 0 && score != speed_update && score != 0){ 
+    if((score % speed_update == 0 && score != speed_update && score != 0) || score == 1000){ 
       player.player_add_vel(1);
       speed_update += 500;
+      cout << speed_update << endl;
     }
 
     for(int i = 0; i < lasers; i++){ //loop that updates and generates the obstacle/obstacles
@@ -299,7 +300,7 @@ void GameEngine::obj_update(){
   }
   sprite.sprite_set_rect_x(player.player_get_pos_x());
   sprite.sprite_set_rect_y(player.player_get_pos_y());
-  if(!screens.pause_game) sprite.sprite_update_frame();
+  if(!screens.pause_game && player_alive) sprite.sprite_update_frame();
 }
 
 void GameEngine::obj_render(){
