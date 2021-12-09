@@ -4,7 +4,7 @@ GameEngine::GameEngine(SDL_Renderer* ren){
   screen_width = 640;
   screen_height = 480;
 
-  fps = 70;
+  fps = 60;
   frame_duration = 1000/fps;
 
   obstacle_rect_x = -300;
@@ -16,8 +16,10 @@ GameEngine::GameEngine(SDL_Renderer* ren){
   total_cases = 2;
 
   for(int i = 0; i < 5; i++){
-    counter[i] = 0;
+    obstacle_counter[i] = 0;
   }
+
+  speed_update = 1000;
 
   key_down = false;
 
@@ -235,17 +237,20 @@ void GameEngine::obj_update(){
       if(total_cases < 3) total_cases++;
       if(lasers < 6) lasers++;
     }
-    if(score % 1500 == 0 && score != 0) player.player_add_vel(1);
+    if(score % speed_update == 0 && score != speed_update && score != 0){ 
+      player.player_add_vel(1);
+      speed_update += 500;
+    }
 
     for(int i = 0; i < lasers; i++){ //loop that updates and generates the obstacle/obstacles
       int num = rand() % total_cases;
       int section_x_pos = 640;
       bool available = true;
 
-      if(counter[i] == 5){
+      if(obstacle_counter[i] == 5){
         obstacle[i].obstacle_update();
-        counter[i] = 0;
-      }else counter[i]++;
+        obstacle_counter[i] = 0;
+      }else obstacle_counter[i]++;
 
       if(obstacle[i].obstacle_get_x_pos() >= -64){ //changes obstacle position
           obstacle[i].obstacle_change_rect_x(-1 * player.player_get_vel());
