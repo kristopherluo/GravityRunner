@@ -104,6 +104,7 @@ void GameEngine::obj_updateUI(){
       if(!key_down){ //ensures user cannot hold space key down to continuously change gravity
         sprite.sprite_change_gravity();
       }
+      sprite.sprite_set_state(1);
       key_down = true;
       tile.tile_update_screen_left(-1 * player.player_get_vel());
     }else if(state[SDL_SCANCODE_P]){

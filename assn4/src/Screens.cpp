@@ -224,7 +224,7 @@ void Screens::render_death_screen(SDL_Renderer* obj_renderer){
 void Screens::render_score(SDL_Renderer* obj_renderer, int score){
   // Load in fonts and colors
   TTF_Font* ethnocentic = TTF_OpenFont("./Fonts/ethnocentric rg.ttf", 20);
-  SDL_Color color = { 50, 205, 50 };
+  SDL_Color color = { 255, 255, 255 };
 
   string str_score = "Score: " + to_string(score);
   char const * the_score = str_score.c_str();
