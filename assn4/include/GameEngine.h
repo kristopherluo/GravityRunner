@@ -22,7 +22,7 @@ class GameEngine{
         int lasers; //number of obstacle one's
         int total_cases; //keeps track of the difficulty
         int obstacle_counter[6]; //counters to track when to update obstacles
-        int speed_update;
+        int speed_update; //when to update the speed
         bool key_down; //keeps track of whether or not a key is down
 
         Player player; //variable of type Player to call that class' functions
