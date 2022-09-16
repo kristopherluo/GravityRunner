@@ -1,5 +1,7 @@
 # GravityRunner
 
+- You are an Alien who can control gravity! Change gravity to dodge all of the lasers.
+
 RUNNING/COMPILING:
 - make clean: cleans
 - make: compiles the program
